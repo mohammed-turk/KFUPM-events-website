@@ -1,9 +1,9 @@
 import React from "react";
-import Header from "../components/Header";
-import Event from "../components/Event";
-import adminImage from "../assets/admin.jpg";
-import e1 from "../assets/event1.jpg";
-import e2 from "../assets/event2.jpg";
+import Header from "../../components/Header";
+import EventMod from "../../components/Event&Mod";
+import adminImage from "../../assets/admin.jpg";
+import e1 from "../../assets/event1.jpg";
+import e2 from "../../assets/event2.jpg";
 
 function AdminProfilePage() {
     let ResClub = 5;
@@ -21,8 +21,8 @@ function AdminProfilePage() {
                 </div>
                 <h2>Events</h2>
                 <div className={"EventsList"}>
-                    <Event src={e1}/>
-                    <Event src={e2}/>
+                    <EventMod src={e1}/>
+                    <EventMod src={e2}/>
                 </div>
             </div>
         </div>

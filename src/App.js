@@ -1,8 +1,8 @@
 import './App.css';
-import LoginPage from "./pages/LoginPage";
-import AdminClubPage from "./pages/AdminClubPage";
-import AdminProfilePage from "./pages/AdminProfilePage";
-import MembersList from "./pages/MembersList";
+import LoginPage from "./pages/shared/LoginPage";
+import AdminClubPage from "./pages/admin/AdminClubPage";
+import AdminProfilePage from "./pages/admin/AdminProfilePage";
+import MembersList from "./pages/org/MembersList";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 
 function App() {

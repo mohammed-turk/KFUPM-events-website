@@ -1,12 +1,12 @@
 import React from "react";
-import AdminProfilePage from "../pages/AdminProfilePage";
+import AdminProfilePage from "../pages/admin/AdminProfilePage";
 import {useNavigate} from "react-router-dom";
 
 function Header() {
     const navigate = useNavigate();
     const userType = "admin";
     let mode = userType === "admin" ? "Admin Mode" :
-        userType === "Org" ? "Event Organizer Mode" : "";
+        userType === "Org" ? "EventMod Organizer Mode" : "";
 
     const goHome = () => {
         navigate('/adminProf'); // Example route for AdminProfilePage
@@ -16,7 +16,7 @@ function Header() {
     if (userType === "admin") {
         mode = 'Admin Mode'
     } else if (userType === "Org") {
-        mode = 'Event Organizer Mode'
+        mode = 'EventMod Organizer Mode'
     }
 
     return (<div>

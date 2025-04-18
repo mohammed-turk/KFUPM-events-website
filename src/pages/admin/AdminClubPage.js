@@ -1,8 +1,8 @@
 import React from "react";
-import Header from "../components/Header";
-import Event from "../components/Event";
-import e1 from "../assets/event1.jpg";
-import c1 from "../assets/club.jpg";
+import Header from "../../components/Header";
+import EventMod from "../../components/Event&Mod";
+import e1 from "../../assets/event1.jpg";
+import c1 from "../../assets/club.jpg";
 
 function AdminClubPage() {
     return (
@@ -19,7 +19,7 @@ function AdminClubPage() {
                 </div>
                 <h2>Events</h2>
                 <div className={"EventsList"}>
-                    <Event src={e1}/>
+                    <EventMod src={e1}/>
                 </div>
             </div>
         </div>

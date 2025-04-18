@@ -1,11 +1,11 @@
 import React from "react";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 
 function LoginPage() {
     return (
         <div>
             <Header/>
-            <div className="loginPage">
+            <div className="pageBody" id={"loginPage"}>
                 <div className="loginTab">
                     <h1 style={{fontSize:"62px", letterSpacing:"7px"}}>Login</h1>
                     <form>

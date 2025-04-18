@@ -69,11 +69,13 @@ Header{
     width: auto; height: auto;
 }
 
-.eventTitle{
+.posterData{
     position: absolute;
     z-index: 1;
     margin-top: 240px;
-
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 
     padding: 5px 45px 13px;
     width: 100%;
@@ -82,12 +84,16 @@ Header{
     color: white;
 }
 
-.loginPage, .loginTab, form{
+.icon{
+    aspect-ratio: 1/1;
+    height: 30px;
+}
+
+#loginPage, .loginTab, form{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-
 }
 
 .loginTab{
@@ -120,4 +126,44 @@ button[type="submit"]{
     height: 40px; width: 150px;
     border-radius: 10px;
     font-size: 18px;
+}
+
+#membersPage{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin-top:140px;
+}
+
+#membersTitle{
+    position: absolute;
+    left: 15px;
+    top:65px;
+}
+
+.members{
+    display: flex;
+
+    margin-top: 50px;
+}
+
+.MemberElement{
+    height: 75px; width: 200px;
+    border: 5px solid darkblue;
+    border-radius: 15px;
+    background-color: rgba(65, 105, 225, 0.28);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    margin: 0 10px 7px;
+}
+
+.memberPic{
+    position: relative;
+    height: 80%; aspect-ratio: 1/1;
+    border-radius: 20%;
+    border: 3px solid darkblue;
 }
