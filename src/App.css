@@ -1,38 +1,82 @@
-.App {
-  text-align: center;
+h1{font-size: xxx-large;}
+h2{font-size: xx-large;}
+p{font-size: large;}
+
+Header{
+    position: fixed;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.HeaderItems{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.homeBtn{
+    position: absolute;
+    margin-top: 10px;
+    left: 10px;
+    font-size: 18px;
+    background: royalblue;
+    border-radius: 15px;
+    width: 110px; height: 40px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.pageBody{
+    margin-left: 25px;
 }
 
-.App-link {
-  color: #61dafb;
+.info{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.profImg{
+    height: 150px;
+    margin: 20px 50px 20px 5px;
+    border-radius: 50%;
+    border: 5px solid blue;
+}
+
+.EventsList{
+    display: flex;
+    flex-direction: row;
+    margin-left: 15px;
+    overflow: auto;
+    box-sizing: border-box;
+}
+
+.event{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    min-height: 300px; min-width: 250px;
+    max-height: 300px; max-width: 250px;
+    margin: 0 15px;
+    border: 5px solid rgba(30,144,255, 0.65);
+    overflow: hidden;
+}
+
+.eventPoster{
+    z-index: 0;
+    position: relative;
+    min-width: 250px; max-width: 250px;
+    width: auto; height: auto;
+}
+
+.eventTitle{
+    position: absolute;
+    z-index: 1;
+    margin-top: 240px;
+
+
+    padding: 5px 45px 12px;
+    width: 100%;
+    text-align: center;
+    background: rgba(30,144,255, 0.65);
+
+    object-position: center;
+    object-fit: cover;
 }
