@@ -30,6 +30,6 @@ function Header(prob) {
     </div>)
 }
 
-Header.defaultProps = {type: " "}
+Header.defaultProps = {type: ""}
 
 export default Header;
