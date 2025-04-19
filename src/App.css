@@ -1,169 +1,385 @@
-h1{font-size: xxx-large;}
-h2{font-size: xx-large;}
-
-html, body, #root{height:100%;}
-
-Header{
-    position: fixed;
+h1 {
+  font-size: xxx-large;
+}
+h2 {
+  font-size: xx-large;
 }
 
-.HeaderItems{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+html,
+body,
+#root {
+  height: 100%;
 }
 
-.homeBtn{
-    position: absolute;
-    margin-top: 10px;
-    left: 10px;
-    font-size: 18px;
-    background: royalblue;
-    border-radius: 15px;
-    width: 110px; height: 40px;
+Header {
+  position: fixed;
 }
 
-.pageBody{
-    margin-left: 25px;
-    height: 100%;
+.HeaderItems {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.info{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 85%;
+.homeBtn {
+  position: absolute;
+  margin-top: 10px;
+  left: 10px;
+  font-size: 18px;
+  background: royalblue;
+  border-radius: 15px;
+  width: 110px;
+  height: 40px;
 }
 
-.profImg{
-    height: 150px;
-    margin: 20px 50px 20px 5px;
-    border-radius: 50%;
-    border: 5px solid darkblue;
+.pageBody {
+  margin-left: 25px;
+  height: 100%;
 }
 
-.EventsList{
-    display: flex;
-    flex-direction: row;
-    margin-left: 15px;
-    overflow: auto;
-    box-sizing: border-box;
+.info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 85%;
 }
 
-.event{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    min-height: 300px; min-width: 250px;
-    max-height: 300px; max-width: 250px;
-    margin: 0 15px;
-    border: 5px solid rgba(30,144,255, 0.85);
-    overflow: hidden;
+.profImg {
+  height: 150px;
+  margin: 20px 50px 20px 5px;
+  border-radius: 50%;
+  border: 5px solid darkblue;
 }
 
-.eventPoster{
-    z-index: 0;
-    position: relative;
-    min-width: 250px; max-width: 250px;
-    width: auto; height: auto;
+.EventsList {
+  display: flex;
+  flex-direction: row;
+  margin-left: 15px;
+  overflow: auto;
+  box-sizing: border-box;
 }
 
-.posterData{
-    position: absolute;
-    z-index: 1;
-    margin-top: 240px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
-    padding: 5px 45px 13px;
-    width: 100%;
-    text-align: center;
-    background: rgba(30,144,255, 0.85);
-    color: white;
+.event {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  min-height: 300px;
+  min-width: 250px;
+  max-height: 300px;
+  max-width: 250px;
+  margin: 0 15px;
+  border: 5px solid rgba(30, 144, 255, 0.85);
+  overflow: hidden;
 }
 
-.icon{
-    aspect-ratio: 1/1;
-    height: 30px;
+.eventPoster {
+  z-index: 0;
+  position: relative;
+  min-width: 250px;
+  max-width: 250px;
+  width: auto;
+  height: auto;
 }
 
-#loginPage, .loginTab, form{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
+.posterData {
+  position: absolute;
+  z-index: 1;
+  margin-top: 240px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  padding: 5px 45px 13px;
+  width: 100%;
+  text-align: center;
+  background: rgba(30, 144, 255, 0.85);
+  color: white;
 }
 
-.loginTab{
-    margin-top: 75px;
-    border:5px solid rgba(30,144,255, 0.65);
-    border-radius: 50px;
-    padding: 10px 75px;
-    background-color: rgba(65, 105, 225, 0.28);
-    backdrop-filter: blur(20px);
+.icon {
+  aspect-ratio: 1/1;
+  height: 30px;
 }
 
-form{
-    padding-top:5px;
+#loginPage,
+.loginTab,
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
-label{
-    margin: 10px 0;
-    font-size: 18px;
+.loginTab {
+  margin-top: 75px;
+  border: 5px solid rgba(30, 144, 255, 0.65);
+  border-radius: 50px;
+  padding: 10px 75px;
+  background-color: rgba(65, 105, 225, 0.28);
+  backdrop-filter: blur(20px);
 }
 
-input{
-    margin-bottom: 10px;
-    height: 25px; width: 205px;
-    border-radius: 5px;
-    border: 2px solid gray;
+form {
+  padding-top: 5px;
 }
 
-button[type="submit"]{
-    margin-top: 40px;
-    height: 40px; width: 150px;
-    border-radius: 10px;
-    font-size: 18px;
+label {
+  margin: 10px 0;
+  font-size: 18px;
 }
 
-#membersPage{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    margin-top:140px;
+input {
+  margin-bottom: 10px;
+  height: 25px;
+  width: 205px;
+  border-radius: 5px;
+  border: 2px solid gray;
 }
 
-#membersTitle{
-    position: absolute;
-    left: 15px;
-    top:65px;
+button[type="submit"] {
+  margin-top: 40px;
+  height: 40px;
+  width: 150px;
+  border-radius: 10px;
+  font-size: 18px;
 }
 
-.members{
-    display: flex;
+#membersPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-    margin-top: 50px;
+  margin-top: 140px;
 }
 
-.MemberElement{
-    height: 75px; width: 200px;
-    border: 5px solid darkblue;
-    border-radius: 15px;
-    background-color: rgba(65, 105, 225, 0.28);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
-    margin: 0 10px 7px;
+#membersTitle {
+  position: absolute;
+  left: 15px;
+  top: 65px;
 }
 
-.memberPic{
-    position: relative;
-    height: 80%; aspect-ratio: 1/1;
-    border-radius: 20%;
-    border: 3px solid darkblue;
+.members {
+  display: flex;
+
+  margin-top: 50px;
+}
+
+.MemberElement {
+  height: 75px;
+  width: 200px;
+  border: 5px solid darkblue;
+  border-radius: 15px;
+  background-color: rgba(65, 105, 225, 0.28);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  margin: 0 10px 7px;
+}
+
+.memberPic {
+  position: relative;
+  height: 80%;
+  aspect-ratio: 1/1;
+  border-radius: 20%;
+  border: 3px solid darkblue;
+}
+.back-btn-img {
+  width: 42px;
+  height: 42px;
+}
+
+/*//////////////////////////////////////////////////*/
+/*//////////////////////////////////////////////////*/
+/*//////////////////////////////////////////////////*/
+/* Page layout */
+.ClubsListPage {
+  padding: 20px 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Page title */
+.clubs-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #111;
+  margin: 0 0 24px 0;
+  white-space: nowrap;
+}
+
+/* Grid of club cards */
+.club-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+}
+
+/* Club item styled like a card */
+.club-item {
+  aspect-ratio: 1;
+  background-color: white;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.club-item:hover {
+  border-color: #007aff;
+  transform: translateY(-4px);
+}
+
+/* Club image fills the card */
+.club-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/*////////////////////////////////*/
+/*////////////////////////////////*/
+/*////////////////////////////////*/
+
+/* Container styling */
+.ClubsListPage {
+  padding: 20px 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header row: Title left, search/filter center */
+.clubs-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+  position: relative;
+}
+
+/* Page title */
+.clubs-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #111;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Search + Filter container (centered absolutely) */
+.search-filter-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #e0e0e0;
+  padding: 8px 16px;
+  border-radius: 32px;
+  height: 48px;
+}
+
+/* Search input */
+.club-search {
+  all: unset;
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  width: 200px;
+}
+
+/* Filter dropdown */
+.filter-select {
+  border: none;
+  background-color: #fff;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+  font-weight: 400;
+  appearance: none;
+}
+
+.filter-select:focus {
+  outline: none;
+}
+
+/* Club grid layout */
+.club-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+}
+
+/* Card-like container */
+.club-item {
+  aspect-ratio: 1;
+  background-color: white;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.club-item:hover {
+  border-color: #007aff;
+  transform: translateY(-4px);
+}
+
+/* Image inside card */
+.club-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Floating "+" button */
+.bottom-buttons {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  display: flex;
+}
+
+.fab {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  color: white;
+  font-size: 32px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.fab:hover {
+  transform: scale(1.1);
+}
+
+.fab.blue {
+  background-color: #007aff;
 }
