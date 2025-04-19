@@ -1,45 +1,44 @@
-
 import React from "react";
-import AdminProfilePage from "../pages/admin/AdminProfilePage";
 import { useNavigate } from "react-router-dom";
 
-function HOmePageHeader(userType) {
+function HOmePageHeader({ name }) {
   const navigate = useNavigate();
-  
-  let mode =
-    userType.name === "admin"
-      ? "Admin Mode"
-      : userType.name === "Org"
-      ? "Event Organizer Mode"
-      : "Normal user mode";
 
   const goToProfile = () => {
-    if (userType.name === "admin") {
-        navigate("/adminProf"); // Example route for AdminProfilePage
-      } else if (userType.name === "org") {
-        navigate("org/HomeOrg");
-      } else if (userType.name === "NormalUser") {
-        navigate("User/HomeUser");
-      } 
-    
+    if (name === "admin") {
+      navigate("/adminProf");
+    } else if (name === "org") {
+      navigate("/org/HomeOrg");
+    } else if (name === "user") {
+      navigate("/User/HomeUser");
+    }
   };
 
-  if (userType.name === "admin") {
+  const SignOut = () => {
+    navigate("/login");
+  };
+
+  let mode = "";
+  if (name === "admin") {
     mode = "Admin Mode";
-  } else if (userType.name === "Org") {
+  } else if (name === "org") {
     mode = "Event Organizer Mode";
-  } else if (userType.name === "NormalUser") {
+  } else if (name === "user") {
     mode = "Normal user mode";
-  } 
+  }
 
   return (
-    <div>
-      <div className="HeaderItems">
-        <button className={"homeBtn"} onClick={goToProfile}>
-          profile
-        </button>
-        <br/><br/>
-      </div>
+    <div >
+    
+      
+      
+      <h3 className="mode-display ">{mode}</h3>
+      <button className="profile-btn" onClick={goToProfile}>
+        Profile
+      </button>
+      <button className="sign-out-btn " onClick={SignOut}>
+        Sign out
+      </button>
       <hr />
     </div>
   );
