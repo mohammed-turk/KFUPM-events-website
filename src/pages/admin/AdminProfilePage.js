@@ -21,8 +21,8 @@ function AdminProfilePage() {
                 </div>
                 <h2>Events</h2>
                 <div className={"EventsList"}>
-                    <EventMod src={e1}/>
-                    <EventMod src={e2}/>
+                    <EventMod src={e1} user={1}/>
+                    <EventMod src={e2} user={1}/>
                 </div>
             </div>
         </div>
