@@ -6,16 +6,19 @@ function HOmePageHeader({ name }) {
 
   const goToProfile = () => {
     if (name === "admin") {
-      navigate("/adminProf");
+      navigate("/admin/prof");
     } else if (name === "org") {
-      navigate("/org/HomeOrg");
+      navigate("/org/prof");
     } else if (name === "user") {
-      navigate("/User/HomeUser");
+      navigate("/User/prof");
     }
   };
 
   const SignOut = () => {
     navigate("/login");
+  };
+  const addOrg = () => {
+    navigate("/admin/addOrg");
   };
 
   let mode = "";
@@ -38,6 +41,10 @@ function HOmePageHeader({ name }) {
       </button>
       <button className="sign-out-btn " onClick={SignOut}>
         Sign out
+      </button>
+
+      <button className="sign-out-btn " onClick={addOrg}>
+        add Organization
       </button>
       <hr />
     </div>
