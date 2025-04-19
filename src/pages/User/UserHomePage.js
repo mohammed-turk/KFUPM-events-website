@@ -24,6 +24,13 @@ function HomeUser() {
     navigate(`/admin/event/${eventId}`); // Example navigation
   };
 
+  const showAll = () => {
+    navigate("/ClubsList");
+  };
+
+  const showMore = () => {
+    navigate("/user/eventList");
+  };
   return (
     <div className="home-admin-container">
       <HOmePageHeader name="user" />
@@ -42,7 +49,7 @@ function HomeUser() {
             <img src={clubIcon} alt="Club Icon" className="club-icon" />
             <p className="club-label">Club icon</p>
           </button>
-          <button className="show-all-button">Show All</button>
+          <button className="show-all-button" onClick = {showAll}>Show All</button>
         </div>
       </section>
 
@@ -93,7 +100,7 @@ function HomeUser() {
           </button>
 
           {/* Moved the "Show more" button outside the last event card */}
-          <button className="show-more-button-carousel">
+          <button className="show-more-button-carousel" onClick = {showMore}>
             &gt; <span className="show-more-text">Show more</span>
           </button>
         </div>

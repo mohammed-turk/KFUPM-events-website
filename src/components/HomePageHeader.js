@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 function HOmePageHeader({ name }) {
   const navigate = useNavigate();
+  const addminPage = false;
 
   const goToProfile = () => {
     if (name === "admin") {
@@ -42,10 +43,8 @@ function HOmePageHeader({ name }) {
       <button className="sign-out-btn " onClick={SignOut}>
         Sign out
       </button>
-
-      <button className="sign-out-btn " onClick={addOrg}>
-        add Organization
-      </button>
+      
+      
       <hr />
     </div>
   );

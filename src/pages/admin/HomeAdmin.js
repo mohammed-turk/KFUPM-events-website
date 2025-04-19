@@ -25,11 +25,15 @@ function HomeAdmin() {
   };
 
   const showAll = () => {
-    navigate("/login");
+    navigate("/AdminClubsList");
   };
 
   const showMore = () => {
-    navigate("/login");
+    navigate("/admin/eventList");
+  };
+
+  const addOrg = () => {
+    navigate("/admin/addOrg");
   };
 
   return (
@@ -108,7 +112,11 @@ function HomeAdmin() {
       </section>
 
       <section className="calendar-section">
+
         <EventsCalendar />
+        <button className="sign-out-btn " onClick={addOrg}>
+        add Organization
+      </button> 
       </section>
     </div>
   );

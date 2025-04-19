@@ -25,9 +25,18 @@ function HomeOrg() {
     navigate(`/admin/event/${eventId}`); // Example navigation
   };
 
+  const showAll = () => {
+    navigate("/ClubsList");
+  };
+
+  const showMore = () => {
+    navigate("/org/eventList");
+  };
+ 
+
   return (
     <div className="home-admin-container">
-      <HOmePageHeader name="user" />
+      <HOmePageHeader name="org" />
       <section className="clubs-section">
         <h2>Clubs & Colleges</h2>
         <div className="clubs-grid">
@@ -43,7 +52,7 @@ function HomeOrg() {
             <img src={clubIcon} alt="Club Icon" className="club-icon" />
             <p className="club-label">Club icon</p>
           </button>
-          <button className="show-all-button">Show All</button>
+          <button className="show-all-button" onClick = {showAll}>Show All</button>
         </div>
       </section>
 
@@ -94,8 +103,8 @@ function HomeOrg() {
           </button>
 
           {/* Moved the "Show more" button outside the last event card */}
-          <button className="show-more-button-carousel">
-            &gt; <span className="show-more-text">Show more</span>
+          <button className="show-more-button-carousel" onClick = {showMore}>
+            &gt; <span className="show-more-text" >Show more</span>
           </button>
         </div>
       </section>
