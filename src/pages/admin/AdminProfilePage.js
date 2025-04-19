@@ -10,7 +10,7 @@ function AdminProfilePage() {
 
     return (
         <div>
-            <Header/>
+            <Header type={"Admin Mode"}/>
             <div className="pageBody">
                 <div className={"info"}>
                     <img src={adminImage} alt="Admin Profile Pic" className={"profImg"}/>
