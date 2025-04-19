@@ -23,6 +23,10 @@ import LoginPage from "./pages/shared/LoginPage";
 // Assuming it's in the pages/user directory:
 import UserAllEventList from "./pages/user/UserAllEventList";
 import OrgAllEventList from "./pages/org/OrgAllEventList";
+// Alsahli
+import ClubsList from "./pages/shared/ClubsList";
+import AdminClubsList from "./pages/admin/AdminClubsList";
+
 
 function App() {
     return (
@@ -54,6 +58,10 @@ function App() {
 
                     <Route path="/" element={<Navigate to="/login" />} />
                     <Route path="*" element={<h1>Page Not Found</h1>} />
+                                             
+                                             
+                    <Route path="/ClubsList" element={<ClubsList />} />
+                    <Route path="/AdminClubsList" element={<AdminClubsList />} />                         
                 </Routes>
             </BrowserRouter>
         </div>
