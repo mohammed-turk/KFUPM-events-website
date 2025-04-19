@@ -6,11 +6,19 @@ function LoginPage() {
     const navigate = useNavigate();
     
     const handleAdminAccess = () => {
-        navigate("/admin/AdminAllEventList");
+        navigate("/admin/home");
     };
     
     const handleUserAccess = () => {
-        navigate("/user/UserAllEventList");
+        navigate("/user/home");
+    };
+
+    const handleOrgAccess = () => {
+        navigate("/org/home");
+    };
+
+    const handleSignup = () => {
+        navigate("/signup");
     };
     
     return (
@@ -26,7 +34,7 @@ function LoginPage() {
                         <input type="password" />
                         <button type={"submit"}>Login</button>
                     </form>
-                    <p>new User? sign up</p>
+                    <p>new User? <a href={"/signup"}>sign up</a></p>
                     
                     {/* Access Buttons */}
                     <div style={{marginTop: "20px", borderTop: "1px solid #ccc", paddingTop: "15px"}}>
@@ -65,6 +73,22 @@ function LoginPage() {
                                 }}
                             >
                                 Admin Interface
+                            </button>
+
+                            <button
+                                onClick={handleOrgAccess}
+                                style={{
+                                    backgroundColor: "red",
+                                    color: "white",
+                                    padding: "10px 15px",
+                                    borderRadius: "4px",
+                                    border: "none",
+                                    cursor: "pointer",
+                                    fontWeight: "bold",
+                                    flex: "1"
+                                }}
+                            >
+                                Org Interface
                             </button>
                         </div>
                     </div>
