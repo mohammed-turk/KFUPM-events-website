@@ -4,52 +4,57 @@ import AdminAllEventList from "./pages/admin/AdminAllEventList";
 import AdminClubPage from "./pages/admin/AdminClubPage";
 import AdminProfilePage from "./pages/admin/AdminProfilePage";
 import MembersList from "./pages/org/MembersList";
+import UserProfilePage from "./pages/User/UserProfilePage";
+import SignUpPage from "./pages/User/SignUpPage";
+import OrgProfilePage from "./pages/org/OrgProfilePage";
+import AddOrgPage from "./pages/admin/AddOrgPage";
 
-// grean files imports
+// green files imports
 import AddEventOrg from "./pages/admin/AddEventOrganization";
 import HomeAdmin from "./pages/admin/HomeAdmin";
 import ClubsListAdmin from "./pages/admin/ClubListAdmin";
 import EventAdmin from "./pages/admin/EventAdmin";
-import HomeUser from "./pages/user/UserHomePage";
-// import HomeUser from "./pages/user/HomeUser";
+import HomeUser from "./pages/User/UserHomePage";
+// import HomeUser from "./pages/User/HomeUser";
 import HOmeOrg from "./pages/org/HomeOrg";
 
 import LoginPage from "./pages/shared/LoginPage";
 // Make sure to import UserAllEventList component from the correct path
 // Assuming it's in the pages/user directory:
-import UserAllEventList from "./pages/user/UserAllEventList";
+import UserAllEventList from "./pages/User/UserAllEventList";
 
 function App() {
-  return (
-    <div>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/adminClubs" element={<AdminClubPage />} />
-          <Route path="/members" element={<MembersList />} />
-          <Route path="/adminProf" element={<AdminProfilePage />} />
+    return (
+        <div>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/login" element={<LoginPage/>}/>
+                    <Route path="/signup" element={<SignUpPage/>}/>
 
-          <Route path="/admin/HomeAdmin" element={<HomeAdmin />} />
-          <Route path="/admin/AddEventOrg" element={<AddEventOrg />} />
+                    <Route path="/admin/home" element={<HomeAdmin />} />
+                    <Route path="/admin/club" element={<AdminClubPage/>}/>
+                    <Route path="/admin/prof" element={<AdminProfilePage/>}/>
+                    <Route path="/admin/addOrg" element={<AddOrgPage/>}/>
+                    <Route path="/admin/clubsList" element={<ClubsListAdmin />} />
+                    <Route path="/admin/event" element={<EventAdmin />} />
+                    <Route path="/admin/allEvents" element={<AdminAllEventList />}/>
 
-          <Route path="/admin/ClubsListAdmin" element={<ClubsListAdmin />} />
-          <Route path="/admin/EventAdmin" element={<EventAdmin />} />
 
-          <Route path="/user/UserHOmePage" element={<HomeUser />} />
+                    <Route path="/user/home" element={<HomeUser />} />
+                    <Route path="/user/prof" element={<UserProfilePage/>}/>
+                    <Route path="/user/eventList" element={<UserAllEventList />} />
 
-          <Route path="/org/HomeOrg" element={<HOmeOrg />} />
 
-          <Route path="/" element={<Navigate to="/login" />} />
+                    <Route path="/org/home" element={<HOmeOrg />} />
+                    <Route path="/org/prof" element={<OrgProfilePage/>}/>
+                    <Route path="/org/members" element={<MembersList/>}/>
 
-          <Route
-            path="/admin/AdminAllEventList"
-            element={<AdminAllEventList />}
-          />
-          <Route path="/user/UserAllEventList" element={<UserAllEventList />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+                    <Route path="/" element={<Navigate to="/login" />} />
+                    <Route path="*" element={<h1>Page Not Found</h1>} />
+                </Routes>
+            </BrowserRouter>
+        </div>
+    );
 }
 
 export default App;

@@ -39,7 +39,7 @@ function AdminAllEventList() {
 
   return (
     <div>
-      <Header />
+      <Header type={"Admin Mode"}/>
       <div className="pageBody">
         <h1 style={{textAlign: "center", margin: "20px 0"}}>Admin Mode</h1>
         

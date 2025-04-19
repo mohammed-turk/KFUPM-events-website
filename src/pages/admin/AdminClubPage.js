@@ -7,7 +7,7 @@ import c1 from "../../assets/club.jpg";
 function AdminClubPage() {
     return (
         <div>
-            <Header/>
+            <Header type={"Admin Mode"}/>
             <div className={"pageBody"}>
                 <div className={"info"}>
                     <img className={"profImg"} src={c1} alt="club"/>
