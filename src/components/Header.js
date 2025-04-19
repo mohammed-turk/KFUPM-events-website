@@ -9,10 +9,22 @@ function Header(prob) {
         navigate('/adminProf'); // Example route for AdminProfilePage
     };
 
+    const goToProfile = () => {
+        if (prob.type.toLowerCase().includes("admin")) {
+            navigate("/adminProf");
+        } else if (prob.type.toLowerCase().includes("org")) {
+            navigate("org/HomeOrg");
+        } else {
+            navigate("User/HomeUser");
+        }
+
+    };
+
     return (<div>
         <div className="HeaderItems">
-            <button className={"homeBtn"} onClick={goHome}>Home</button>
+            <button className={"headerBtn"} onClick={goHome}>Home</button>
             <h3 className="mode">{prob.type}</h3>
+            <button className={"headerBtn"} onClick={goToProfile}>Profile</button>
         </div>
         <hr/>
     </div>)

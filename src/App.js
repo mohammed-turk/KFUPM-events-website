@@ -4,24 +4,24 @@ import AdminAllEventList from "./pages/admin/AdminAllEventList";
 import AdminClubPage from "./pages/admin/AdminClubPage";
 import AdminProfilePage from "./pages/admin/AdminProfilePage";
 import MembersList from "./pages/org/MembersList";
-import UserProfilePage from "./pages/user/UserProfilePage";
-import SignUpPage from "./pages/user/SignUpPage";
+import UserProfilePage from "./pages/User/UserProfilePage";
+import SignUpPage from "./pages/User/SignUpPage";
 import OrgProfilePage from "./pages/org/OrgProfilePage";
 import AddOrgPage from "./pages/admin/AddOrgPage";
 
-// grean files imports
+// green files imports
 import AddEventOrg from "./pages/admin/AddEventOrganization";
 import HomeAdmin from "./pages/admin/HomeAdmin";
 import ClubsListAdmin from "./pages/admin/ClubListAdmin";
 import EventAdmin from "./pages/admin/EventAdmin";
-import HomeUser from "./pages/user/UserHomePage";
-// import HomeUser from "./pages/user/HomeUser";
+import HomeUser from "./pages/User/UserHomePage";
+// import HomeUser from "./pages/User/HomeUser";
 import HOmeOrg from "./pages/org/HomeOrg";
 
 import LoginPage from "./pages/shared/LoginPage";
 // Make sure to import UserAllEventList component from the correct path
 // Assuming it's in the pages/user directory:
-import UserAllEventList from "./pages/user/UserAllEventList";
+import UserAllEventList from "./pages/User/UserAllEventList";
 
 function App() {
     return (
@@ -40,9 +40,9 @@ function App() {
                     <Route path="/admin/allEvents" element={<AdminAllEventList />}/>
 
 
-                    <Route path="/user/userHome" element={<HomeUser />} />
+                    <Route path="/user/home" element={<HomeUser />} />
                     <Route path="/user/prof" element={<UserProfilePage/>}/>
-                    <Route path="/user/UserAllEventList" element={<UserAllEventList />} />
+                    <Route path="/user/eventList" element={<UserAllEventList />} />
 
 
                     <Route path="/org/home" element={<HOmeOrg />} />
