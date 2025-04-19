@@ -4,8 +4,8 @@ import AdminAllEventList from "./pages/admin/AdminAllEventList";
 import AdminClubPage from "./pages/admin/AdminClubPage";
 import AdminProfilePage from "./pages/admin/AdminProfilePage";
 import MembersList from "./pages/org/MembersList";
-import UserProfilePage from "./pages/User/UserProfilePage";
-import SignUpPage from "./pages/User/SignUpPage";
+import UserProfilePage from "./pages/user/UserProfilePage";
+import SignUpPage from "./pages/user/SignUpPage";
 import OrgProfilePage from "./pages/org/OrgProfilePage";
 import AddOrgPage from "./pages/admin/AddOrgPage";
 
@@ -14,14 +14,15 @@ import AddEventOrg from "./pages/admin/AddEventOrganization";
 import HomeAdmin from "./pages/admin/HomeAdmin";
 import ClubsListAdmin from "./pages/admin/ClubListAdmin";
 import EventAdmin from "./pages/admin/EventAdmin";
-import HomeUser from "./pages/User/UserHomePage";
-// import HomeUser from "./pages/User/HomeUser";
+import HomeUser from "./pages/user/UserHomePage";
+// import HomeUser from "./pages/user/HomeUser";
 import HOmeOrg from "./pages/org/HomeOrg";
 
 import LoginPage from "./pages/shared/LoginPage";
 // Make sure to import UserAllEventList component from the correct path
 // Assuming it's in the pages/user directory:
-import UserAllEventList from "./pages/User/UserAllEventList";
+import UserAllEventList from "./pages/user/UserAllEventList";
+import OrgAllEventList from "./pages/org/OrgAllEventList";
 
 function App() {
     return (
@@ -37,7 +38,7 @@ function App() {
                     <Route path="/admin/addOrg" element={<AddOrgPage/>}/>
                     <Route path="/admin/clubsList" element={<ClubsListAdmin />} />
                     <Route path="/admin/event" element={<EventAdmin />} />
-                    <Route path="/admin/allEvents" element={<AdminAllEventList />}/>
+                    <Route path="/admin/eventList" element={<AdminAllEventList />}/>
 
 
                     <Route path="/user/home" element={<HomeUser />} />
@@ -48,6 +49,8 @@ function App() {
                     <Route path="/org/home" element={<HOmeOrg />} />
                     <Route path="/org/prof" element={<OrgProfilePage/>}/>
                     <Route path="/org/members" element={<MembersList/>}/>
+                    <Route path="/org/eventList" element={<OrgAllEventList />}/>
+
 
                     <Route path="/" element={<Navigate to="/login" />} />
                     <Route path="*" element={<h1>Page Not Found</h1>} />
