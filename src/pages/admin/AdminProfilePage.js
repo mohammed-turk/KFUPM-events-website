@@ -10,7 +10,7 @@ function AdminProfilePage() {
 
     return (
         <div>
-            <Header/>
+            <Header type={"Admin Mode"}/>
             <div className="pageBody">
                 <div className={"info"}>
                     <img src={adminImage} alt="Admin Profile Pic" className={"profImg"}/>
@@ -21,8 +21,8 @@ function AdminProfilePage() {
                 </div>
                 <h2>Events</h2>
                 <div className={"EventsList"}>
-                    <EventMod src={e1}/>
-                    <EventMod src={e2}/>
+                    <EventMod src={e1} user={1}/>
+                    <EventMod src={e2} user={1}/>
                 </div>
             </div>
         </div>

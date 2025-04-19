@@ -4,10 +4,10 @@ import EventMod from "../../components/Event&Mod";
 import e1 from "../../assets/event1.jpg";
 import c1 from "../../assets/club.jpg";
 
-function AdminClubPage() {
+function OrgProfilePage() {
     return (
         <div>
-            <Header type={"Admin Mode"}/>
+            <Header type={"Organizer Mode"}/>
             <div className={"pageBody"}>
                 <div className={"info"}>
                     <img className={"profImg"} src={c1} alt="club"/>
@@ -26,4 +26,4 @@ function AdminClubPage() {
     );
 }
 
-export default AdminClubPage;
+export default OrgProfilePage;
