@@ -2,13 +2,14 @@ import React from "react";
 import "./HomeAdmin.css"; // Ensure this CSS file exists and has styles
 import HOmePageHeader from "../../components/HomePageHeader"; // Adjust path if needed
 import Header from "../../components/Header"; // Adjust path if needed
-
 import clubIcon from "../../assets/club.jpg"; // Adjust path to your club icon
 import eventPlaceholder from "../../assets/event1.jpg";
 import eventPlaceholder2 from "../../assets/event2.jpg"; // Adjust path to a placeholder event image
 import editIcon from "../../assets/icons/mod.png"; // Adjust path to your edit icon
 import { useNavigate } from "react-router-dom";
 import EventsCalendar from "../../components/EventsCalendar";
+
+
 function HomeAdmin() {
   const navigate = useNavigate();
 
@@ -24,9 +25,19 @@ function HomeAdmin() {
     navigate(`/admin/event/${eventId}`); // Example navigation
   };
 
+  const handleShowClubs = () => {
+    // Replace with actual logic to navigate to the event's details page
+    navigate(`/admin/clubsList/`); // Example navigation
+  };
+
+  const handleShowEvents = () => {
+    // Replace with actual logic to navigate to the event's details page
+    navigate(`/admin/eventList/`); // Example navigation
+  };
+
   return (
     <div className="home-admin-container">
-      <HOmePageHeader name="admin" />
+      <Header type="Admin Mode" />
       <section className="clubs-section">
         <h2>Clubs & Colleges</h2>
         <div className="clubs-grid">
@@ -42,7 +53,7 @@ function HomeAdmin() {
             <img src={clubIcon} alt="Club Icon" className="club-icon" />
             <p className="club-label">Club icon</p>
           </button>
-          <button className="show-all-button">Show All</button>
+          <button className="show-all-button" onClick={handleShowClubs}>Show All</button>
         </div>
       </section>
 
@@ -93,7 +104,7 @@ function HomeAdmin() {
           </button>
 
           {/* Moved the "Show more" button outside the last event card */}
-          <button className="show-more-button-carousel" >
+          <button className="show-more-button-carousel"  onClick={handleShowEvents}>
             &gt; <span className="show-more-text">Show more</span>
           </button>
         </div>
