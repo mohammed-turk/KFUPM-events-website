@@ -7,7 +7,7 @@ import m2 from "../../assets/member2.jpg";
 function MembersList() {
     return (
         <div>
-            <Header/>
+            <Header type={"Organizer Mode"}/>
             <div className="pageBody" id={"membersPage"}>
                 <h1 id={"membersTitle"}>Members</h1>
                 <input type={"text"} placeholder={"Search"} className="search"/>

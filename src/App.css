@@ -21,15 +21,24 @@ Header {
   align-items: center;
 }
 
+.headerBtn,
 .homeBtn {
-  position: absolute;
-  margin-top: 10px;
-  left: 10px;
   font-size: 18px;
   background: royalblue;
   border-radius: 15px;
   width: 110px;
   height: 40px;
+  color: white;
+}
+
+.homeBtn {
+  position: absolute;
+  margin-top: 10px;
+  left: 10px;
+}
+
+.headerBtn {
+  margin: 10px 20px 0;
 }
 
 .pageBody {
@@ -89,7 +98,6 @@ Header {
   display: flex;
   justify-content: space-around;
   align-items: center;
-
   padding: 5px 45px 13px;
   width: 100%;
   text-align: center;
@@ -118,6 +126,8 @@ form {
   padding: 10px 75px;
   background-color: rgba(65, 105, 225, 0.28);
   backdrop-filter: blur(20px);
+  width: 50%;
+  text-wrap: wrap;
 }
 
 form {
@@ -143,6 +153,8 @@ button[type="submit"] {
   width: 150px;
   border-radius: 10px;
   font-size: 18px;
+  background-color: rgb(65, 105, 225);
+  color: floralwhite;
 }
 
 #membersPage {
@@ -150,7 +162,6 @@ button[type="submit"] {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   margin-top: 140px;
 }
 
@@ -162,7 +173,6 @@ button[type="submit"] {
 
 .members {
   display: flex;
-
   margin-top: 50px;
 }
 
@@ -175,7 +185,6 @@ button[type="submit"] {
   display: flex;
   justify-content: space-around;
   align-items: center;
-
   margin: 0 10px 7px;
 }
 
@@ -186,75 +195,33 @@ button[type="submit"] {
   border-radius: 20%;
   border: 3px solid darkblue;
 }
+
 .back-btn-img {
   width: 42px;
   height: 42px;
 }
 
-/*//////////////////////////////////////////////////*/
-/*//////////////////////////////////////////////////*/
-/*//////////////////////////////////////////////////*/
-/* Page layout */
-.ClubsListPage {
-  padding: 20px 32px;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-/* Page title */
-.clubs-title {
-  font-size: 28px;
-  font-weight: 600;
-  color: #111;
-  margin: 0 0 24px 0;
-  white-space: nowrap;
-}
-
-/* Grid of club cards */
-.club-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 24px;
-  margin-top: 40px;
-}
-
-/* Club item styled like a card */
-.club-item {
-  aspect-ratio: 1;
-  background-color: white;
-  border: 2px solid #ddd;
-  border-radius: 12px;
-  overflow: hidden;
+.joinedClub {
+  background-color: rgb(65, 105, 225);
   display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  justify-content: center;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  height: 150px;
+  border-radius: 25px;
+  padding-bottom: 20px;
+  margin-left: 20px;
 }
 
-.club-item:hover {
-  border-color: #007aff;
-  transform: translateY(-4px);
-}
+/* ////////////////////////////////////////////////// */
+/* Clubs Page (Admin & User) */
 
-/* Club image fills the card */
-.club-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-/*////////////////////////////////*/
-/*////////////////////////////////*/
-/*////////////////////////////////*/
-
-/* Container styling */
 .ClubsListPage {
   padding: 20px 32px;
   max-width: 1400px;
   margin: 0 auto;
 }
 
-/* Header row: Title left, search/filter center */
 .clubs-header-row {
   display: flex;
   align-items: center;
@@ -264,7 +231,6 @@ button[type="submit"] {
   position: relative;
 }
 
-/* Page title */
 .clubs-title {
   font-size: 28px;
   font-weight: 600;
@@ -273,7 +239,6 @@ button[type="submit"] {
   white-space: nowrap;
 }
 
-/* Search + Filter container (centered absolutely) */
 .search-filter-container {
   position: absolute;
   left: 50%;
@@ -287,7 +252,6 @@ button[type="submit"] {
   height: 48px;
 }
 
-/* Search input */
 .club-search {
   all: unset;
   font-size: 16px;
@@ -300,7 +264,6 @@ button[type="submit"] {
   width: 200px;
 }
 
-/* Filter dropdown */
 .filter-select {
   border: none;
   background-color: #fff;
@@ -318,7 +281,6 @@ button[type="submit"] {
   outline: none;
 }
 
-/* Club grid layout */
 .club-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -326,7 +288,6 @@ button[type="submit"] {
   margin-top: 40px;
 }
 
-/* Card-like container */
 .club-item {
   aspect-ratio: 1;
   background-color: white;
@@ -345,14 +306,12 @@ button[type="submit"] {
   transform: translateY(-4px);
 }
 
-/* Image inside card */
 .club-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* Floating "+" button */
 .bottom-buttons {
   position: fixed;
   bottom: 16px;

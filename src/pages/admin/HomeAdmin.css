@@ -1,0 +1,184 @@
+/* HomeAdmin.css */
+
+.home-admin-container {
+    padding: 15px;
+    background-color: #f8f8f8; /* Light grey background */
+  }
+  
+  /* Header Styling (assuming your Header component handles its own internal layout) */
+  .HeaderItems {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+  
+  .HeaderItems .homeBtn {
+    background-color: #e0f7fa;
+    color: #00bcd4;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9em;
+  }
+  
+  .HeaderItems .mode {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9em;
+  }
+  
+  /* Clubs & Colleges Section */
+  .clubs-section {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .clubs-section h2 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+  }
+  
+  .clubs-grid {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .club-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #bbdefb;
+    color: #1976d2;
+    border-radius: 8px;
+    padding: 10px;
+    width: 80px; /* Adjust width as needed */
+    text-align: center;
+  }
+  
+  .club-icon {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    margin-bottom: 5px;
+  }
+  
+  .club-label {
+    font-size: 0.8em;
+  }
+  
+  .show-all-button {
+    background-color: #90caf9;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9em;
+  }
+  
+  /* This week Events Section */
+  .events-section {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .events-section h2 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+  }
+  
+  .events-carousel {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 15px;
+    align-items: center; /* Align items vertically in the carousel */
+  }
+  
+  .event-card {
+    background-color: #e3f2fd;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    min-width: 150px; /* Adjust width as needed */
+    flex: 0 0 auto;
+  }
+  
+  .event-poster-container {
+    height: 90px; /* Adjust height as needed */
+    background-color: #d4e6f1; /* Placeholder color */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Clip the image to the container */
+  }
+  
+  .event-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .event-info {
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .provider-date {
+    color: #555;
+    font-size: 0.8em;
+    line-height: 1.2;
+  }
+  
+  .edit-button {
+    background-color: #aed581;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.7em;
+  }
+  
+  .edit-icon-img {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+  }
+  
+  .show-more-button-carousel {
+    background-color: #64b5f6;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.8em;
+    align-self: stretch; /* Make it the height of the carousel items */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Prevent shrinking */
+  }
+  
+  .show-more-text {
+    margin-left: 5px;
+  }
