@@ -1,28 +1,25 @@
-import React from 'react';
-
-
-import "./HomeOrg.css"; // Ensure this CSS file exists and has styles
-import HOmePageHeader from "../../components/HomePageHeader"; // Adjust path if needed
-import Header from "../../components/Header"; // Adjust path if needed
-import clubIcon from "../../assets/club.jpg"; // Adjust path to your club icon
-import eventPlaceholder from "../../assets/event1.jpg";
-import eventPlaceholder2 from "../../assets/event2.jpg"; // Adjust path to a placeholder event image
-import editIcon from "../../assets/icons/mod.png"; // Adjust path to your edit icon
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import HOmePageHeader from "../../components/HomePageHeader";
 import EventsCalendar from "../../components/EventsCalendar";
+import eventPlaceholder from "../../assets/event1.jpg";
+import eventPlaceholder2 from "../../assets/event2.jpg";
+import editIcon from "../../assets/icons/mod.png";
+
+// Load club icons dynamically
+const clubIcons = Array.from({ length: 8 }).map((_, i) =>
+  require(`../../assets/icons/Clubs icons/club${(i % 5) + 1}.jpeg`)
+);
+
 function HomeOrg() {
   const navigate = useNavigate();
 
   const handleClubClick = (clubId) => {
-    // Replace with actual logic to navigate to the club's page
-    console.log(`Clicked on club with ID: ${clubId}`);
-    navigate(`/admin/club/${clubId}`); // Example navigation
+    navigate(`/admin/club/${clubId}`);
   };
 
   const handleEventClick = (eventId) => {
-    // Replace with actual logic to navigate to the event's details page
-    console.log(`Clicked on event with ID: ${eventId}`);
-    navigate(`/admin/event/${eventId}`); // Example navigation
+    navigate(`/admin/event/${eventId}`);
   };
 
   const showAll = () => {
@@ -32,84 +29,78 @@ function HomeOrg() {
   const showMore = () => {
     navigate("/org/eventList");
   };
- 
 
   return (
-    <div className="home-admin-container">
+    <div
+      style={{
+        padding: "30px",
+        backgroundColor: "rgb(160, 179, 197)",
+        minHeight: "100vh",
+        fontFamily: "'Segoe UI', sans-serif",
+      }}
+    >
+      {/* Header */}
       <HOmePageHeader name="org" />
-      <section className="clubs-section">
-        <h2>Clubs & Colleges</h2>
-        <div className="clubs-grid">
-          <button className="club-item" onClick={() => handleClubClick(1)}>
-            <img src={clubIcon} alt="Club Icon" className="club-icon" />
-            <p className="club-label">Club icon</p>
+
+      {/* Clubs Section */}
+      <section style={sectionBox}>
+        <div style={sectionHeader}>
+          <h2 style={sectionTitle}>Clubs & Colleges</h2>
+          <button style={sectionButton} onClick={showAll}>
+            Show All
           </button>
-          <button className="club-item" onClick={() => handleClubClick(2)}>
-            <img src={clubIcon} alt="Club Icon" className="club-icon" />
-            <p className="club-label">Club icon</p>
-          </button>
-          <button className="club-item" onClick={() => handleClubClick(3)}>
-            <img src={clubIcon} alt="Club Icon" className="club-icon" />
-            <p className="club-label">Club icon</p>
-          </button>
-          <button className="show-all-button" onClick = {showAll}>Show All</button>
+        </div>
+        <div style={clubsGrid}>
+          {clubIcons.map((icon, index) => (
+            <button
+              key={index}
+              style={clubItem}
+              onClick={() => handleClubClick(index + 1)}
+            >
+              <img src={icon} alt={`Club ${index + 1}`} style={clubIconStyle} />
+            </button>
+          ))}
         </div>
       </section>
 
-      <section className="events-section">
-        <h2>Events</h2>
-        <div className="events-carousel">
-          <button className="event-card" onClick={() => handleEventClick(101)}>
-            <div className="event-poster-container">
-              <img
-                src={eventPlaceholder}
-                alt="Event Poster"
-                className="event-poster"
-                style={{ objectFit: "cover" }}
-              />{" "}
-              {/* Added inline style for objectFit */}
-            </div>
-            <div className="event-info">
-              <p className="provider-date">
-                provider
-                <br />
-                Date & time
-              </p>
-              <button className="edit-button">
-                <img src={editIcon} alt="Edit" className="edit-icon-img" />
-              </button>
-            </div>
+      {/* Events Section */}
+      <section style={sectionBox}>
+        <div style={sectionHeader}>
+          <h2 style={sectionTitle}>Events</h2>
+          <button style={sectionButton} onClick={showMore}>
+            &gt; <span style={{ marginLeft: 6 }}>Show more</span>
           </button>
-          <button className="event-card" onClick={() => handleEventClick(102)}>
-            <div className="event-poster-container">
-              <img
-                src={eventPlaceholder2}
-                alt="Event Poster"
-                className="event-poster"
-                style={{ objectFit: "cover" }}
-              />{" "}
-              {/* Added inline style for objectFit */}
-            </div>
-            <div className="event-info">
-              <p className="provider-date">
-                provider
-                <br />
-                Date & time
-              </p>
-              <button className="edit-button">
-                <img src={editIcon} alt="Edit" className="edit-icon-img" />
-              </button>
-            </div>
-          </button>
-
-          {/* Moved the "Show more" button outside the last event card */}
-          <button className="show-more-button-carousel" onClick = {showMore}>
-            &gt; <span className="show-more-text" >Show more</span>
-          </button>
+        </div>
+        <div style={eventsCarousel}>
+          {[eventPlaceholder, eventPlaceholder2].map((poster, index) => (
+            <button
+              key={index}
+              style={eventCard}
+              onClick={() => handleEventClick(index + 101)}
+            >
+              <div style={eventPosterContainer}>
+                <img src={poster} alt="Event Poster" style={eventPoster} />
+              </div>
+              <div style={eventInfo}>
+                <p style={providerDate}>
+                  provider
+                  <br />
+                  Date & time
+                </p>
+                <button style={editButton}>
+                  <img src={editIcon} alt="Edit" style={editIconImg} />
+                </button>
+              </div>
+            </button>
+          ))}
         </div>
       </section>
 
-      <section className="calendar-section">
+      {/* Calendar Section */}
+      <section style={sectionBox}>
+        <div style={sectionHeader}>
+          <h2 style={sectionTitle}>Calendar</h2>
+        </div>
         <EventsCalendar />
       </section>
     </div>
@@ -117,3 +108,127 @@ function HomeOrg() {
 }
 
 export default HomeOrg;
+
+// === Inline Styles ===
+
+const sectionBox = {
+  backgroundColor: "rgba(64, 92, 118, 0.76)",
+  borderRadius: "16px",
+  padding: "24px 32px",
+  marginBottom: "30px",
+  width: "100%",
+  maxWidth: "1200px",
+  marginInline: "auto",
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+};
+
+const sectionHeader = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: "20px",
+};
+
+const sectionTitle = {
+  fontSize: "1.5rem",
+  fontWeight: "bold",
+  margin: 0,
+  color: "#1f2937",
+};
+
+const sectionButton = {
+  backgroundColor: "#3b82f6",
+  color: "white",
+  border: "none",
+  padding: "10px 20px",
+  borderRadius: "8px",
+  fontWeight: "bold",
+  cursor: "pointer",
+  fontSize: "0.9rem",
+};
+
+const clubsGrid = {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "20px",
+  justifyContent: "flex-start",
+  alignItems: "center",
+};
+
+const clubItem = {
+  backgroundColor: "#ffffff",
+  borderRadius: "10px",
+  width: "100px",
+  height: "100px",
+  overflow: "hidden",
+  padding: 0,
+  border: "2px solid transparent",
+  transition: "border-color 0.3s ease, transform 0.2s ease",
+  cursor: "pointer",
+};
+
+const clubIconStyle = {
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  display: "block",
+};
+
+const eventsCarousel = {
+  display: "flex",
+  overflowX: "auto",
+  gap: "20px",
+  paddingBottom: "10px",
+};
+
+const eventCard = {
+  backgroundColor: "#f1f5f9",
+  borderRadius: "10px",
+  minWidth: "220px",
+  flex: "0 0 auto",
+  boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+  transition: "transform 0.2s ease",
+  cursor: "pointer",
+};
+
+const eventPosterContainer = {
+  height: "120px",
+  borderTopLeftRadius: "10px",
+  borderTopRightRadius: "10px",
+  overflow: "hidden",
+};
+
+const eventPoster = {
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+};
+
+const eventInfo = {
+  padding: "12px",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+};
+
+const providerDate = {
+  fontSize: "0.85rem",
+  color: "#475569",
+};
+
+const editButton = {
+  backgroundColor: "#22c55e",
+  border: "none",
+  borderRadius: "50%",
+  width: "28px",
+  height: "28px",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  cursor: "pointer",
+};
+
+const editIconImg = {
+  width: "16px",
+  height: "16px",
+};

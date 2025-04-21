@@ -1,24 +1,24 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./UserHomePage.css";
-
 import HOmePageHeader from "../../components/HomePageHeader";
-import clubIcon from "../../assets/club.jpg";
+import EventsCalendar from "../../components/EventsCalendar";
 import eventPlaceholder from "../../assets/event1.jpg";
 import eventPlaceholder2 from "../../assets/event2.jpg";
 import editIcon from "../../assets/icons/mod.png";
-import EventsCalendar from "../../components/EventsCalendar";
+
+// Load club icons dynamically
+const clubIcons = Array.from({ length: 8 }).map((_, i) =>
+  require(`../../assets/icons/Clubs icons/club${(i % 5) + 1}.jpeg`)
+);
 
 function HomeUser() {
   const navigate = useNavigate();
 
   const handleClubClick = (clubId) => {
-    console.log(`Clicked on club with ID: ${clubId}`);
     navigate(`/admin/club/${clubId}`);
   };
 
   const handleEventClick = (eventId) => {
-    console.log(`Clicked on event with ID: ${eventId}`);
     navigate(`/admin/event/${eventId}`);
   };
 
@@ -31,83 +31,94 @@ function HomeUser() {
   };
 
   return (
-    <div className="home-admin-container">
+    <div
+      style={{
+        padding: "30px",
+        backgroundColor: "rgb(160, 179, 197)",
+        minHeight: "100vh",
+        fontFamily: "'Segoe UI', sans-serif",
+      }}
+    >
+      {/* Header (outside section box) */}
       <HOmePageHeader name="user" />
 
       {/* Clubs Section */}
-      <section className="section-box">
-        <h2 className="section-title">Clubs & Colleges</h2>
-        <div className="clubs-grid">
-          <button className="club-item" onClick={() => handleClubClick(1)}>
-            <img src={clubIcon} alt="Club Icon" className="club-icon" />
-            <p className="club-label">Club icon</p>
-          </button>
-          <button className="club-item" onClick={() => handleClubClick(2)}>
-            <img src={clubIcon} alt="Club Icon" className="club-icon" />
-            <p className="club-label">Club icon</p>
-          </button>
-          <button className="club-item" onClick={() => handleClubClick(3)}>
-            <img src={clubIcon} alt="Club Icon" className="club-icon" />
-            <p className="club-label">Club icon</p>
-          </button>
-          <button className="show-all-button" onClick={showAll}>
+      <section style={sectionBox}>
+        <div style={sectionHeader}>
+          <h2 style={sectionTitle}>Clubs & Colleges</h2>
+          <button style={sectionButton} onClick={showAll}>
             Show All
           </button>
+        </div>
+        <div style={clubsGrid}>
+          {clubIcons.map((icon, index) => (
+            <button
+              key={index}
+              style={clubItem}
+              onClick={() => handleClubClick(index + 1)}
+            >
+              <img src={icon} alt={`Club ${index + 1}`} style={clubIcon} />
+            </button>
+          ))}
         </div>
       </section>
 
       {/* Events Section */}
-      <section className="section-box">
-        <h2 className="section-title">Events</h2>
-        <div className="events-carousel">
-          <button className="event-card" onClick={() => handleEventClick(101)}>
-            <div className="event-poster-container">
+      <section style={sectionBox}>
+        <div style={sectionHeader}>
+          <h2 style={sectionTitle}>Events</h2>
+          <button style={sectionButton} onClick={showMore}>
+            &gt; <span style={{ marginLeft: 6 }}>Show more</span>
+          </button>
+        </div>
+        <div style={eventsCarousel}>
+          <button style={eventCard} onClick={() => handleEventClick(101)}>
+            <div style={eventPosterContainer}>
               <img
                 src={eventPlaceholder}
                 alt="Event Poster"
-                className="event-poster"
+                style={eventPoster}
               />
             </div>
-            <div className="event-info">
-              <p className="provider-date">
+            <div style={eventInfo}>
+              <p style={providerDate}>
                 provider
                 <br />
                 Date & time
               </p>
-              <button className="edit-button">
-                <img src={editIcon} alt="Edit" className="edit-icon-img" />
+              <button style={editButton}>
+                <img src={editIcon} alt="Edit" style={editIconImg} />
               </button>
             </div>
           </button>
 
-          <button className="event-card" onClick={() => handleEventClick(102)}>
-            <div className="event-poster-container">
+          <button style={eventCard} onClick={() => handleEventClick(102)}>
+            <div style={eventPosterContainer}>
               <img
                 src={eventPlaceholder2}
                 alt="Event Poster"
-                className="event-poster"
+                style={eventPoster}
               />
             </div>
-            <div className="event-info">
-              <p className="provider-date">
+            <div style={eventInfo}>
+              <p style={providerDate}>
                 provider
                 <br />
                 Date & time
               </p>
-              <button className="edit-button">
-                <img src={editIcon} alt="Edit" className="edit-icon-img" />
+              <button style={editButton}>
+                <img src={editIcon} alt="Edit" style={editIconImg} />
               </button>
             </div>
           </button>
         </div>
-        <button className="show-more-button-carousel" onClick={showMore}>
-          &gt; <span className="show-more-text">Show more</span>
-        </button>
       </section>
 
       {/* Calendar Section */}
-      <section className="section-box calendar-section">
-        <h2 className="section-title">Calendar</h2>
+      <section style={sectionBox}>
+        <div style={sectionHeader}>
+          <h2 style={sectionTitle}>Calendar</h2>
+        </div>
         <EventsCalendar />
       </section>
     </div>
@@ -115,3 +126,127 @@ function HomeUser() {
 }
 
 export default HomeUser;
+
+// === Styles ===
+
+const sectionBox = {
+  backgroundColor: "rgba(64, 92, 118, 0.76)",
+  borderRadius: "16px",
+  padding: "24px 32px",
+  marginBottom: "30px",
+  width: "100%",
+  maxWidth: "1200px",
+  marginInline: "auto",
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+};
+
+const sectionHeader = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: "20px",
+};
+
+const sectionTitle = {
+  fontSize: "1.5rem",
+  fontWeight: "bold",
+  margin: 0,
+  color: "#1f2937",
+};
+
+const sectionButton = {
+  backgroundColor: "#3b82f6",
+  color: "white",
+  border: "none",
+  padding: "10px 20px",
+  borderRadius: "8px",
+  fontWeight: "bold",
+  cursor: "pointer",
+  fontSize: "0.9rem",
+};
+
+const clubsGrid = {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "20px",
+  justifyContent: "flex-start",
+  alignItems: "center",
+};
+
+const clubItem = {
+  backgroundColor: "#ffffff",
+  borderRadius: "10px",
+  width: "100px",
+  height: "100px",
+  overflow: "hidden",
+  padding: 0,
+  border: "2px solid transparent",
+  transition: "border-color 0.3s ease, transform 0.2s ease",
+  cursor: "pointer",
+};
+
+const clubIcon = {
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  display: "block",
+};
+
+const eventsCarousel = {
+  display: "flex",
+  overflowX: "auto",
+  gap: "20px",
+  paddingBottom: "10px",
+};
+
+const eventCard = {
+  backgroundColor: "#f1f5f9",
+  borderRadius: "10px",
+  minWidth: "220px",
+  flex: "0 0 auto",
+  boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+  transition: "transform 0.2s ease",
+  cursor: "pointer",
+};
+
+const eventPosterContainer = {
+  height: "120px",
+  borderTopLeftRadius: "10px",
+  borderTopRightRadius: "10px",
+  overflow: "hidden",
+};
+
+const eventPoster = {
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+};
+
+const eventInfo = {
+  padding: "12px",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+};
+
+const providerDate = {
+  fontSize: "0.85rem",
+  color: "#475569",
+};
+
+const editButton = {
+  backgroundColor: "#22c55e",
+  border: "none",
+  borderRadius: "50%",
+  width: "28px",
+  height: "28px",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  cursor: "pointer",
+};
+
+const editIconImg = {
+  width: "16px",
+  height: "16px",
+};
