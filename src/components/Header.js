@@ -1,35 +1,51 @@
 import React from "react";
-import AdminProfilePage from "../pages/admin/AdminProfilePage";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Header(prob) {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const goHome = () => {
-        navigate('/adminProf'); // Example route for AdminProfilePage
-    };
+  const goHome = () => {
+    const type = prob?.type?.toLowerCase() || "";
 
-    const goToProfile = () => {
-        if (prob.type.toLowerCase().includes("admin")) {
-            navigate("/adminProf");
-        } else if (prob.type.toLowerCase().includes("org")) {
-            navigate("org/HomeOrg");
-        } else {
-            navigate("User/HomeUser");
-        }
+    if (type.includes("admin")) {
+      navigate("/admin/home");
+    } else if (type.includes("org")) {
+      navigate("/org/home");
+    } else {
+      navigate("/user/home"); // ✅ default to user home
+    }
+  };
 
-    };
+  const goToProfile = () => {
+    const type = prob?.type?.toLowerCase() || "";
 
-    return (<div>
-        <div className="HeaderItems">
-            <button className={"headerBtn"} onClick={goHome}>Home</button>
-            <h3 className="mode">{prob.type}</h3>
-            <button className={"headerBtn"} onClick={goToProfile}>Profile</button>
-        </div>
-        <hr/>
-    </div>)
+    if (type.includes("admin")) {
+      navigate("/admin/prof");
+    } else if (type.includes("org")) {
+      navigate("/org/prof");
+    } else {
+      navigate("/user/prof"); // ✅ default to user profile
+    }
+  };
+
+  return (
+    <div>
+      <div className="HeaderItems">
+        <button className="headerBtn" onClick={goHome}>
+          Home
+        </button>
+        <h3 className="mode">{prob?.type || "User"}</h3>
+        <button className="headerBtn" onClick={goToProfile}>
+          Profile
+        </button>
+      </div>
+      <hr />
+    </div>
+  );
 }
 
-Header.defaultProps = {type: ""}
+Header.defaultProps = {
+  type: "",
+};
 
 export default Header;

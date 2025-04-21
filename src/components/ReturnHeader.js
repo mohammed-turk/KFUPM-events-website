@@ -1,20 +1,23 @@
 import React from "react";
 import BackButtonImg from "../../src/assets/icons/BackBtn.png";
-
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function ReturnHeader() {
   const navigate = useNavigate();
-  const userType = "admin";
-  let mode =
-    userType === "admin"
-      ? "Admin Mode"
-      : userType === "Org"
-      ? "EventMod Organizer Mode"
-      : "";
+  const location = useLocation();
+
+  // Only show "Clubs Section" if path includes "club" or "Clubs"
+  const showClubsLabel = location.pathname.toLowerCase().includes("club");
 
   const goHome = () => {
-    navigate("/adminProf"); // Example route for AdminProfilePage
+    // Navigate based on known path context
+    if (location.pathname.startsWith("/admin")) {
+      navigate("/admin/home");
+    } else if (location.pathname.startsWith("/org")) {
+      navigate("/org/home");
+    } else {
+      navigate("/user/home");
+    }
   };
 
   return (
@@ -32,7 +35,7 @@ function ReturnHeader() {
         >
           <img src={BackButtonImg} alt="Back" className="back-btn-img" />
         </button>
-        <h3 className="mode">{mode}</h3>
+        {showClubsLabel && <h3 className="mode">Clubs Section</h3>}
       </div>
       <hr />
     </div>

@@ -1,27 +1,25 @@
 import React from "react";
-import "./UserHomePage.css"; // Ensure this CSS file exists and has styles
-import HOmePageHeader from "../../components/HomePageHeader"; // Adjust path if needed
-import Header from "../../components/Header"; // Adjust path if needed
-
-import clubIcon from "../../assets/club.jpg"; // Adjust path to your club icon
-import eventPlaceholder from "../../assets/event1.jpg";
-import eventPlaceholder2 from "../../assets/event2.jpg"; // Adjust path to a placeholder event image
-import editIcon from "../../assets/icons/mod.png"; // Adjust path to your edit icon
 import { useNavigate } from "react-router-dom";
+import "./UserHomePage.css";
+
+import HOmePageHeader from "../../components/HomePageHeader";
+import clubIcon from "../../assets/club.jpg";
+import eventPlaceholder from "../../assets/event1.jpg";
+import eventPlaceholder2 from "../../assets/event2.jpg";
+import editIcon from "../../assets/icons/mod.png";
 import EventsCalendar from "../../components/EventsCalendar";
+
 function HomeUser() {
   const navigate = useNavigate();
 
   const handleClubClick = (clubId) => {
-    // Replace with actual logic to navigate to the club's page
     console.log(`Clicked on club with ID: ${clubId}`);
-    navigate(`/admin/club/${clubId}`); // Example navigation
+    navigate(`/admin/club/${clubId}`);
   };
 
   const handleEventClick = (eventId) => {
-    // Replace with actual logic to navigate to the event's details page
     console.log(`Clicked on event with ID: ${eventId}`);
-    navigate(`/admin/event/${eventId}`); // Example navigation
+    navigate(`/admin/event/${eventId}`);
   };
 
   const showAll = () => {
@@ -31,11 +29,14 @@ function HomeUser() {
   const showMore = () => {
     navigate("/user/eventList");
   };
+
   return (
     <div className="home-admin-container">
       <HOmePageHeader name="user" />
-      <section className="clubs-section">
-        <h2>Clubs & Colleges</h2>
+
+      {/* Clubs Section */}
+      <section className="section-box">
+        <h2 className="section-title">Clubs & Colleges</h2>
         <div className="clubs-grid">
           <button className="club-item" onClick={() => handleClubClick(1)}>
             <img src={clubIcon} alt="Club Icon" className="club-icon" />
@@ -49,12 +50,15 @@ function HomeUser() {
             <img src={clubIcon} alt="Club Icon" className="club-icon" />
             <p className="club-label">Club icon</p>
           </button>
-          <button className="show-all-button" onClick = {showAll}>Show All</button>
+          <button className="show-all-button" onClick={showAll}>
+            Show All
+          </button>
         </div>
       </section>
 
-      <section className="events-section">
-        <h2>Events</h2>
+      {/* Events Section */}
+      <section className="section-box">
+        <h2 className="section-title">Events</h2>
         <div className="events-carousel">
           <button className="event-card" onClick={() => handleEventClick(101)}>
             <div className="event-poster-container">
@@ -62,9 +66,7 @@ function HomeUser() {
                 src={eventPlaceholder}
                 alt="Event Poster"
                 className="event-poster"
-                style={{ objectFit: "cover" }}
-              />{" "}
-              {/* Added inline style for objectFit */}
+              />
             </div>
             <div className="event-info">
               <p className="provider-date">
@@ -77,15 +79,14 @@ function HomeUser() {
               </button>
             </div>
           </button>
+
           <button className="event-card" onClick={() => handleEventClick(102)}>
             <div className="event-poster-container">
               <img
                 src={eventPlaceholder2}
                 alt="Event Poster"
                 className="event-poster"
-                style={{ objectFit: "cover" }}
-              />{" "}
-              {/* Added inline style for objectFit */}
+              />
             </div>
             <div className="event-info">
               <p className="provider-date">
@@ -98,15 +99,15 @@ function HomeUser() {
               </button>
             </div>
           </button>
-
-          {/* Moved the "Show more" button outside the last event card */}
-          <button className="show-more-button-carousel" onClick = {showMore}>
-            &gt; <span className="show-more-text">Show more</span>
-          </button>
         </div>
+        <button className="show-more-button-carousel" onClick={showMore}>
+          &gt; <span className="show-more-text">Show more</span>
+        </button>
       </section>
 
-      <section className="calendar-section">
+      {/* Calendar Section */}
+      <section className="section-box calendar-section">
+        <h2 className="section-title">Calendar</h2>
         <EventsCalendar />
       </section>
     </div>
