@@ -1,31 +1,51 @@
 import React from "react";
-import AdminProfilePage from "../pages/admin/AdminProfilePage";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function Header() {
-    const navigate = useNavigate();
-    const userType = "admin";
-    let mode = userType === "admin" ? "Admin Mode" :
-        userType === "Org" ? "EventMod Organizer Mode" : "";
+function Header(prob) {
+  const navigate = useNavigate();
 
-    const goHome = () => {
-        navigate('/adminProf'); // Example route for AdminProfilePage
-    };
+  const goHome = () => {
+    const type = prob?.type?.toLowerCase() || "";
 
-
-    if (userType === "admin") {
-        mode = 'Admin Mode'
-    } else if (userType === "Org") {
-        mode = 'EventMod Organizer Mode'
+    if (type.includes("admin")) {
+      navigate("/admin/home");
+    } else if (type.includes("org")) {
+      navigate("/org/home");
+    } else {
+      navigate("/user/home"); // ✅ default to user home
     }
+  };
 
-    return (<div>
-        <div className="HeaderItems">
-            <button className={"homeBtn"} onClick={goHome}>Home</button>
-            <h3 className="mode">{mode}</h3>
-        </div>
-        <hr/>
-    </div>)
+  const goToProfile = () => {
+    const type = prob?.type?.toLowerCase() || "";
+
+    if (type.includes("admin")) {
+      navigate("/admin/prof");
+    } else if (type.includes("org")) {
+      navigate("/org/prof");
+    } else {
+      navigate("/user/prof"); // ✅ default to user profile
+    }
+  };
+
+  return (
+    <div>
+      <div className="HeaderItems">
+        <button className="headerBtn" onClick={goHome}>
+          Home
+        </button>
+        <h3 className="mode">{prob?.type || "User"}</h3>
+        <button className="headerBtn" onClick={goToProfile}>
+          Profile
+        </button>
+      </div>
+      <hr />
+    </div>
+  );
 }
+
+Header.defaultProps = {
+  type: "",
+};
 
 export default Header;

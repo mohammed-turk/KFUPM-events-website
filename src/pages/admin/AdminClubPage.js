@@ -7,7 +7,7 @@ import c1 from "../../assets/club.jpg";
 function AdminClubPage() {
     return (
         <div>
-            <Header/>
+            <Header type={"Admin Mode"}/>
             <div className={"pageBody"}>
                 <div className={"info"}>
                     <img className={"profImg"} src={c1} alt="club"/>
@@ -19,7 +19,7 @@ function AdminClubPage() {
                 </div>
                 <h2>Events</h2>
                 <div className={"EventsList"}>
-                    <EventMod src={e1}/>
+                    <EventMod src={e1} user={1}/>
                 </div>
             </div>
         </div>
