@@ -159,11 +159,19 @@ REACT_APP_FIREBASE_KEY=your-firebase-key
 
 ## 📸 Screenshots
 
-> _(Coming soon)_ Add screenshots or screen recordings showing:
 > - Login and Signup
+> - ![signup](https://github.com/user-attachments/assets/be2d8907-f82a-42da-aaf6-82d66d5f6c35)
+> - ![login](https://github.com/user-attachments/assets/e420bcb7-554a-4c58-b93d-207cbbff0c82)
+
 > - Dashboard
+> - ![home](https://github.com/user-attachments/assets/84714fc0-f7ab-4656-b18d-bcea25643233)
+
 > - Event Calendar
+> - ![calender](https://github.com/user-attachments/assets/a67016de-3b1f-47ae-8639-41a5d69411cb)
+
 > - Mobile Responsiveness
+> - ![phonelogin](https://github.com/user-attachments/assets/4fdaa8b0-7611-4402-b1f8-f5ed1bb56021)
+> - ![phone](https://github.com/user-attachments/assets/d4ab1638-6381-4498-a499-51998f243840)
 
 ---
 
