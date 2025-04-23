@@ -171,7 +171,6 @@ REACT_APP_FIREBASE_KEY=your-firebase-key
 
 > - Mobile Responsiveness
 > - ![phonelogin](https://github.com/user-attachments/assets/4fdaa8b0-7611-4402-b1f8-f5ed1bb56021)
-> - ![phone](https://github.com/user-attachments/assets/d4ab1638-6381-4498-a499-51998f243840)
 
 ---
 
