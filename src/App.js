@@ -30,6 +30,10 @@ import OrgAllEventList from "./pages/org/OrgAllEventList";
 // Alsahli
 import ClubsList from "./pages/shared/ClubsList";
 import AdminClubsList from "./pages/admin/AdminClubsList";
+import AddEventPage from "./pages/shared/AddEventPage";
+
+import React, { useEffect } from "react";
+
 
 function App() {
   return (
@@ -46,6 +50,7 @@ function App() {
           <Route path="/admin/clubsList" element={<ClubsListAdmin />} />
           <Route path="/admin/event" element={<EventAdmin />} />
           <Route path="/admin/eventList" element={<AdminAllEventList />} />
+          <Route path="/admin/addEvent" element={<AddEventPage />} />
 
           <Route path="/user/home" element={<HomeUser />} />
           <Route path="/user/prof" element={<UserProfilePage />} />
@@ -55,6 +60,7 @@ function App() {
           <Route path="/org/prof" element={<OrgProfilePage />} />
           <Route path="/org/members" element={<MembersList />} />
           <Route path="/org/eventList" element={<OrgAllEventList />} />
+          <Route path="/org/addEvent" element={<AddEventPage />} />
 
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="*" element={<h1>Page Not Found</h1>} />
