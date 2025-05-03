@@ -74,7 +74,6 @@ kfupm-events-website/
 │   │   └── ReturnHeader.js
 │
 │   ├── org/                      # Organizer pages
-│   │   ├── AddEventOrganization.js
 │   │   ├── AddOrgPage.js
 │   │   ├── HomeOrg.js
 │   │   └── OrgProfilePage.js
@@ -86,7 +85,7 @@ kfupm-events-website/
 │
 │   ├── shared/                   # Shared utilities or layout
 │
-│   ├── user/                     # User pages
+│   ├── user/                     # user pages
 │   │   ├── ClubPage.js
 │   │   ├── UserAllEventList.js
 │   │   ├── UserHomePage.js

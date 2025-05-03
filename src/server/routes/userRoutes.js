@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../models/User');
 const router = express.Router();
-const {createUser} = require('../config/db.js');
+const {createUser} = require('../controllers/userController.js');
 
 // POSTs
 router.post('/signup', async (req, res) => {
@@ -10,7 +10,7 @@ router.post('/signup', async (req, res) => {
         const newUser = await createUser({name, username, email, password});
         res.status(201).json({
             success: true,
-            message: 'User successfully created!',
+            message: 'user successfully created!',
             user:{username: newUser.username}
         });
     } catch (error) {
@@ -21,7 +21,7 @@ router.post('/signup', async (req, res) => {
 router.post('/:id', async (req, res) => {
     try {
         const updated = await User.findByIdAndUpdate(req.params.id, req.body, {new:true});
-        if(!updated) {return res.status(404).json({error: 'User does not exist'});}
+        if(!updated) {return res.status(404).json({error: 'user does not exist'});}
         res.json(updated);
     } catch (error) {
         res.status(400).json({error: error.message});
@@ -37,7 +37,7 @@ router.get('/',async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const User = await User.findById(req.params.id);
-        if (!User) {return res.status(404).json({error: 'User does not exist'});}
+        if (!User) {return res.status(404).json({error: 'user does not exist'});}
         res.json(User);
     }catch(error) {
         res.status(400).json({error: error.message});

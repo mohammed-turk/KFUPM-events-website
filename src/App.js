@@ -4,28 +4,18 @@ import AdminAllEventList from "./pages/admin/AdminAllEventList";
 import AdminClubPage from "./pages/admin/AdminClubPage";
 import AdminProfilePage from "./pages/admin/AdminProfilePage";
 import MembersList from "./pages/org/MembersList";
-import UserProfilePage from "./pages/User/UserProfilePage";
+import UserProfilePage from "./pages/user/UserProfilePage";
 
-import SignUpPage from "./pages/User/SignUpPage";
+import SignUpPage from "./pages/user/SignUpPage";
 import OrgProfilePage from "./pages/org/OrgProfilePage";
 import AddOrgPage from "./pages/admin/AddOrgPage";
-
 // green files imports
-import AddEventOrg from "./pages/admin/AddEventOrganization";
 import HomeAdmin from "./pages/admin/HomeAdmin";
-import ClubsListAdmin from "./pages/admin/ClubListAdmin";
 import EventAdmin from "./pages/admin/EventAdmin";
-import HomeUser from "./pages/User/UserHomePage";
-// import HomeUser from "./pages/User/HomeUser";
-
-// import HomeUser from "./pages/user/HomeUser";
+import HomeUser from "./pages/user/UserHomePage";
 import HOmeOrg from "./pages/org/HomeOrg";
-
 import LoginPage from "./pages/shared/LoginPage";
-// Make sure to import UserAllEventList component from the correct path
-// Assuming it's in the pages/user directory:
-
-import UserAllEventList from "./pages/User/UserAllEventList";
+import UserAllEventList from "./pages/user/UserAllEventList";
 import OrgAllEventList from "./pages/org/OrgAllEventList";
 // Alsahli
 import ClubsList from "./pages/shared/ClubsList";
@@ -46,8 +36,8 @@ function App() {
           <Route path="/admin/home" element={<HomeAdmin />} />
           <Route path="/admin/club" element={<AdminClubPage />} />
           <Route path="/admin/prof" element={<AdminProfilePage />} />
-          <Route path="/admin/addOrg" element={<AddOrgPage />} />
-          <Route path="/admin/clubsList" element={<ClubsListAdmin />} />
+          <Route path="/admin/clubsList" element={<AdminClubsList />} />
+          <Route path="/admin/clubsList/addOrg" element={<AddOrgPage />} />
           <Route path="/admin/event" element={<EventAdmin />} />
           <Route path="/admin/eventList" element={<AdminAllEventList />} />
           <Route path="/admin/addEvent" element={<AddEventPage />} />
@@ -66,7 +56,6 @@ function App() {
           <Route path="*" element={<h1>Page Not Found</h1>} />
 
           <Route path="/ClubsList" element={<ClubsList />} />
-          <Route path="/AdminClubsList" element={<AdminClubsList />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -23,7 +23,7 @@ function HOmePageHeader({ name }) {
       ? "Admin Mode"
       : name === "org"
       ? "Event Organizer Mode"
-      : "Normal User Mode";
+      : "Normal user Mode";
 
   return (
     <section

@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
+const clubRoutes = require('./routes/clubRoutes');
 const cors = require('cors');
 
 const app = express();
@@ -24,19 +25,14 @@ mongoose.connect(uri, {
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.log('MongoDB error:', err));
 
-// Allow all CORS requests (for easy frontend testing)
-// app.use((req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Methods', 'GET, POST');
-//     next();
-// });
-//
+
 app.get('/', (req, res) => {
     res.send('Backend is running!');
 });
-//
-// User signup route
+
+// user signup route
 app.use('/api/users', userRoutes);
+app.use('/api/clubs', clubRoutes);
 
 // Start server
 app.listen(3000, () => {

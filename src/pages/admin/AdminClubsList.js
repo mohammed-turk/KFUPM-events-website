@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ReturnHeader from "../../components/ReturnHeader";
+import {useNavigate} from "react-router-dom";
 
 // Load 20 club icons by rotating through 5 sample images
 const clubIcons = Array.from({ length: 20 }).map((_, i) =>
@@ -8,6 +9,8 @@ const clubIcons = Array.from({ length: 20 }).map((_, i) =>
 
 function AdminClubsList() {
   const [filterBy, setFilterBy] = useState(""); // default is empty (placeholder)
+  const navigate = useNavigate();
+
 
   const handleFilterChange = (e) => {
     setFilterBy(e.target.value);
@@ -52,7 +55,7 @@ function AdminClubsList() {
         </div>
 
         <div className="bottom-buttons">
-          <button className="fab blue">＋</button>
+          <button className="fab blue" onClick={() => navigate("./addOrg")}>＋</button>
         </div>
       </div>
     </div>
