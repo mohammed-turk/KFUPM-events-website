@@ -36,5 +36,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+<<<<<<< Updated upstream
+=======
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-react-app": "^7.0.1",
+    "nodemon": "^3.1.10"
+>>>>>>> Stashed changes
   }
 }
