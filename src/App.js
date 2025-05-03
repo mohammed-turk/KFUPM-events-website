@@ -4,9 +4,9 @@ import AdminAllEventList from "./pages/admin/AdminAllEventList";
 import AdminClubPage from "./pages/admin/AdminClubPage";
 import AdminProfilePage from "./pages/admin/AdminProfilePage";
 import MembersList from "./pages/org/MembersList";
-import UserProfilePage from "./pages/User/UserProfilePage";
+import UserProfilePage from "./pages/user/UserProfilePage";
 
-import SignUpPage from "./pages/User/SignUpPage";
+import SignUpPage from "./pages/user/SignUpPage";
 import OrgProfilePage from "./pages/org/OrgProfilePage";
 import AddOrgPage from "./pages/admin/AddOrgPage";
 
@@ -14,7 +14,7 @@ import AddOrgPage from "./pages/admin/AddOrgPage";
 import HomeAdmin from "./pages/admin/HomeAdmin";
 import ClubsListAdmin from "./pages/admin/ClubListAdmin";
 import EventAdmin from "./pages/admin/EventAdmin";
-import HomeUser from "./pages/User/UserHomePage";
+import HomeUser from "./pages/user/UserHomePage";
 // import HomeUser from "./pages/User/HomeUser";
 
 // import HomeUser from "./pages/user/HomeUser";
@@ -24,7 +24,7 @@ import LoginPage from "./pages/shared/LoginPage";
 // Make sure to import UserAllEventList component from the correct path
 // Assuming it's in the pages/user directory:
 
-import UserAllEventList from "./pages/User/UserAllEventList";
+import UserAllEventList from "./pages/user/UserAllEventList";
 import OrgAllEventList from "./pages/org/OrgAllEventList";
 // Alsahli
 import ClubsList from "./pages/shared/ClubsList";
@@ -32,7 +32,6 @@ import AdminClubsList from "./pages/admin/AdminClubsList";
 import AddEventPage from "./pages/shared/AddEventPage";
 
 import React, { useEffect } from "react";
-
 
 function App() {
   return (
