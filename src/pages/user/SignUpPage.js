@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Header from "../../components/Header";
 import {useNavigate} from "react-router-dom";
 
 function SignUpPage() {
@@ -52,14 +51,14 @@ function SignUpPage() {
                         <label>Password</label>
                         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                         <button type="submit">Sign up</button>
-                        <p style={{color:"black"}}>
-                            Have account?{" "}
-                            <span
-                                onClick={() => navigate("/login")}
-                                style={{ cursor: "pointer", textDecoration: "underline", color:"blue" }}
-                            >log in</span>
-                        </p>
                     </form>
+                    <p style={{color:"black"}}>
+                        Have account?{" "}
+                        <span
+                            onClick={() => navigate("/login")}
+                            style={{ cursor: "pointer", textDecoration: "underline", color:"blue" }}
+                        >log in</span>
+                    </p>
                 </div>
             </div>
         </div>

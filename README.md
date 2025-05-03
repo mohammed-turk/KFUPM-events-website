@@ -85,7 +85,7 @@ kfupm-events-website/
 │
 │   ├── shared/                   # Shared utilities or layout
 │
-│   ├── user/                     # User pages
+│   ├── user/                     # user pages
 │   │   ├── ClubPage.js
 │   │   ├── UserAllEventList.js
 │   │   ├── UserHomePage.js
