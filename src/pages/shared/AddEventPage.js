@@ -20,7 +20,7 @@ function AddEventPage() {
                         <input type={"time"}/>
                         <label>Poster</label>
                         <input type={"file"}/>
-                        <button type={"submit"}>add event</button>
+                        <button type={"submit"}>Add event</button>
                     </form>
                 </div>
             </div>
