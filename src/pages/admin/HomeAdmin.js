@@ -23,7 +23,7 @@ function HomeAdmin() {
   };
 
   const showAll = () => {
-    navigate("/AdminClubsList");
+    navigate("/admin/clubsList");
   };
 
   const showMore = () => {

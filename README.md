@@ -74,7 +74,6 @@ kfupm-events-website/
 │   │   └── ReturnHeader.js
 │
 │   ├── org/                      # Organizer pages
-│   │   ├── AddEventOrganization.js
 │   │   ├── AddOrgPage.js
 │   │   ├── HomeOrg.js
 │   │   └── OrgProfilePage.js

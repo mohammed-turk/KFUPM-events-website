@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Header from "../../components/Header";
+import {useNavigate} from "react-router-dom";
 
 function SignUpPage() {
     const [name, setName] = useState("");
@@ -7,33 +8,36 @@ function SignUpPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
             const response = await fetch('http://localhost:3000/api/users/signup', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({name, username, email, password}),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, username, email, password }),
             });
             const result = await response.json();
-            setMessage(result);
+
+            // Assuming the backend sends `message` in the response
+            setMessage(result.message);
 
             // Clear form on success
-            setName("");
-            setUsername("");
-            setEmail("");
-            setPassword("");
-
+            if (result.success) {
+                setName("");
+                setUsername("");
+                setEmail("");
+                setPassword("");
+            }
         } catch (error) {
             console.error("error:", error);
-            setMessage("Failed to submit: " + error);
+            setMessage("Failed to submit: " + error.message);
         }
     };
 
     return (
         <div>
-            <Header />
             <div className="pageBody" id="loginPage">
                 <div className="loginTab">
                     <h1 style={{ fontSize: "62px", letterSpacing: "7px" }}>Sign up</h1>
@@ -48,6 +52,13 @@ function SignUpPage() {
                         <label>Password</label>
                         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                         <button type="submit">Sign up</button>
+                        <p style={{color:"black"}}>
+                            Have account?{" "}
+                            <span
+                                onClick={() => navigate("/login")}
+                                style={{ cursor: "pointer", textDecoration: "underline", color:"blue" }}
+                            >log in</span>
+                        </p>
                     </form>
                 </div>
             </div>

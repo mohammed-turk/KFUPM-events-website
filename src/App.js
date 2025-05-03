@@ -11,7 +11,6 @@ import OrgProfilePage from "./pages/org/OrgProfilePage";
 import AddOrgPage from "./pages/admin/AddOrgPage";
 
 // green files imports
-import AddEventOrg from "./pages/admin/AddEventOrganization";
 import HomeAdmin from "./pages/admin/HomeAdmin";
 import ClubsListAdmin from "./pages/admin/ClubListAdmin";
 import EventAdmin from "./pages/admin/EventAdmin";
@@ -46,8 +45,8 @@ function App() {
           <Route path="/admin/home" element={<HomeAdmin />} />
           <Route path="/admin/club" element={<AdminClubPage />} />
           <Route path="/admin/prof" element={<AdminProfilePage />} />
-          <Route path="/admin/addOrg" element={<AddOrgPage />} />
-          <Route path="/admin/clubsList" element={<ClubsListAdmin />} />
+          <Route path="/admin/clubsList" element={<AdminClubsList />} />
+          <Route path="/admin/clubsList/addOrg" element={<AddOrgPage />} />
           <Route path="/admin/event" element={<EventAdmin />} />
           <Route path="/admin/eventList" element={<AdminAllEventList />} />
           <Route path="/admin/addEvent" element={<AddEventPage />} />
@@ -66,7 +65,6 @@ function App() {
           <Route path="*" element={<h1>Page Not Found</h1>} />
 
           <Route path="/ClubsList" element={<ClubsList />} />
-          <Route path="/AdminClubsList" element={<AdminClubsList />} />
         </Routes>
       </BrowserRouter>
     </div>
