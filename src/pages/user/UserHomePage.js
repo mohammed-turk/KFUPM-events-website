@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import HOmePageHeader from "../../components/HomePageHeader";
-import EventsCalendar from "../../components/EventsCalendar";
 import eventPlaceholder from "../../assets/event1.jpg";
 import eventPlaceholder2 from "../../assets/event2.jpg";
 import editIcon from "../../assets/icons/mod.png";
@@ -113,21 +112,13 @@ function HomeUser() {
           </button>
         </div>
       </section>
-
-      {/* Calendar Section */}
-      <section style={sectionBox}>
-        <div style={sectionHeader}>
-          <h2 style={sectionTitle}>Calendar</h2>
-        </div>
-        <EventsCalendar />
-      </section>
     </div>
   );
 }
 
 export default HomeUser;
 
-// === Styles ===
+// === Styles remain unchanged ===
 
 const sectionBox = {
   backgroundColor: "rgba(64, 92, 118, 0.76)",

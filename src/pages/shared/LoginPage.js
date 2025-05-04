@@ -1,15 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginPage.css";
 import logoImg from "../../assets/kfupm-logo.png";
 
 function LoginPage() {
   const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleAdminAccess = () => navigate("/admin/home");
-  const handleUserAccess = () => navigate("/user/home");
-  const handleOrgAccess = () => navigate("/org/home");
-  const handleSignup = () => navigate("/signup");
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("http://localhost:3000/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Login failed");
+        return;
+      }
+
+      localStorage.setItem("token", data.token);
+
+      const tokenPayload = JSON.parse(atob(data.token.split(".")[1]));
+      const role = tokenPayload.role;
+
+      if (role === 0) navigate("/admin/home");
+      else if (role === 1) navigate("/org/home");
+      else navigate("/user/home");
+    } catch (err) {
+      console.error(err);
+      setError("Login failed");
+    }
+  };
 
   return (
     <div className="split-container">
@@ -36,16 +65,24 @@ function LoginPage() {
             around campus.
           </p>
 
-          <form className="login-form">
+          <form className="login-form" onSubmit={handleLogin}>
             <label>Username</label>
-            <input type="text" placeholder="example@kfupm.edu.sa" />
+            <input
+              type="text"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
 
             <label>Password</label>
-            <input type="password" placeholder="●●●●●●" />
+            <input
+              type="password"
+              placeholder="●●●●●●"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-            <div className="form-footer">
-              <span className="forgot-password">Forgot password?</span>
-            </div>
+            {error && <div className="error">{error}</div>}
 
             <button type="submit" className="submit-btn">
               Login
@@ -54,20 +91,8 @@ function LoginPage() {
 
           <p className="signup-text">
             Don’t have an account?{" "}
-            <span onClick={handleSignup}>Sign Up for free</span>
+            <span onClick={() => navigate("/signup")}>Sign Up for free</span>
           </p>
-
-          <div className="access-buttons">
-            <button className="access user" onClick={handleUserAccess}>
-              User Interface
-            </button>
-            <button className="access admin" onClick={handleAdminAccess}>
-              Admin Interface
-            </button>
-            <button className="access org" onClick={handleOrgAccess}>
-              Org Interface
-            </button>
-          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,65 @@
+.ClubsListPage {
+  padding: 30px;
+  background-color: #b0c4d9;
+  min-height: 100vh;
+}
+
+.clubs-title {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 600;
+  color: #1c1c1c;
+}
+
+.club-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  padding-bottom: 40px;
+}
+
+.club-card {
+  width: 140px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.club-card:hover {
+  transform: scale(1.05);
+}
+
+.club-img-wrapper {
+  width: 100%;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f6f6f6;
+}
+
+.club-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  padding: 10px;
+}
+
+.club-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  padding: 10px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

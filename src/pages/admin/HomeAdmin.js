@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import HOmePageHeader from "../../components/HomePageHeader";
-import EventsCalendar from "../../components/EventsCalendar";
 import eventPlaceholder from "../../assets/event1.jpg";
 import eventPlaceholder2 from "../../assets/event2.jpg";
 import editIcon from "../../assets/icons/mod.png";
@@ -99,17 +98,6 @@ function HomeAdmin() {
           ))}
         </div>
       </section>
-
-      {/* Calendar Section */}
-      {/*<section style={sectionBox}>*/}
-      {/*  <div style={sectionHeader}>*/}
-      {/*    <h2 style={sectionTitle}>Calendar</h2>*/}
-      {/*    <button style={sectionButton} onClick={addOrg}>*/}
-      {/*      Add Organization*/}
-      {/*    </button>*/}
-      {/*  </div>*/}
-      {/*  <EventsCalendar />*/}
-      {/*</section>*/}
     </div>
   );
 }
