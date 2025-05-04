@@ -52,21 +52,23 @@ function HOmePageHeader({ name }) {
       </h3>
 
       <div style={{ display: "flex", gap: "12px" }}>
-        <button
-          onClick={goToProfile}
-          style={{
-            backgroundColor: "#2563eb",
-            color: "#fff",
-            border: "none",
-            padding: "10px 20px",
-            borderRadius: "8px",
-            fontWeight: "600",
-            fontSize: "0.95rem",
-            cursor: "pointer",
-          }}
-        >
-          Profile
-        </button>
+          {name !== "admin" && (
+              <button
+                  onClick={goToProfile}
+                  style={{
+                      backgroundColor: "#2563eb",
+                      color: "#fff",
+                      border: "none",
+                      padding: "10px 20px",
+                      borderRadius: "8px",
+                      fontWeight: "600",
+                      fontSize: "0.95rem",
+                      cursor: "pointer",
+                  }}
+              >
+                  Profile
+              </button>
+          )}
 
         <button
           onClick={SignOut}

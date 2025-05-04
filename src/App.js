@@ -40,7 +40,7 @@ function App() {
           <Route path="/admin/clubsList/addOrg" element={<AddOrgPage />} />
           <Route path="/admin/event" element={<EventAdmin />} />
           <Route path="/admin/eventList" element={<AdminAllEventList />} />
-          <Route path="/admin/addEvent" element={<AddEventPage />} />
+          <Route path="/admin/eventList/addEvent" element={<AddEventPage />} />
 
           <Route path="/user/home" element={<HomeUser />} />
           <Route path="/user/prof" element={<UserProfilePage />} />

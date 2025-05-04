@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Header from "../../components/Header";
+import {useNavigate} from "react-router-dom";
 
 function AdminAllEventList() {
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
   const [events, setEvents] = useState([
     { id: 1, title: 'EventPoster', provider: 'provider', date: 'Date & time' },
     { id: 2, title: 'EventPoster', provider: 'provider', date: 'Date & time' },
@@ -16,16 +18,6 @@ function AdminAllEventList() {
     setSearchTerm(e.target.value);
   };
 
-  const handleAddEvent = () => {
-    // Function to add a new event
-    const newEvent = {
-      id: events.length + 1,
-      title: 'New Event',
-      provider: 'New Provider',
-      date: 'New Date & time'
-    };
-    setEvents([...events, newEvent]);
-  };
 
   const handleDeleteEvent = (id) => {
     // Function to delete an event
@@ -66,7 +58,7 @@ function AdminAllEventList() {
             }}
           />
           <button 
-            onClick={handleAddEvent}
+            onClick={() => navigate("./addEvent")}
             style={{
               backgroundColor: "#4CAF50",
               color: "white",

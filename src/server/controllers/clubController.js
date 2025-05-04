@@ -1,5 +1,6 @@
 const Club = require('../models/Club');
 const cloudinary = require('../utils/cloudinary');
+const {createUser} = require("./userController");
 
 async function fetchClubs() {
     try {
@@ -17,6 +18,8 @@ async function createClub(clubData) {
         const club = new Club(clubData);
         await club.save();
         console.log(`${club.name} created!`);
+        createUser({"name":club.name, "username":club.name, "email":club.email, "password":club.password, "usertype":1});
+        console.log(`${club.name} was added to users list!`)
         return club.name;
     } catch(err) {
         console.error('Error creating club:', err);

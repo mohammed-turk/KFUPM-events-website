@@ -9,7 +9,7 @@ const eventSchema = new mongoose.Schema({
         ref: 'Club',
         required: true
     },
-});
+}, {collection: 'Event'});
 
 
 eventSchema.statics.getAllEvents = async function () {

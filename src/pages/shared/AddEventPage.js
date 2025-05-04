@@ -1,11 +1,10 @@
 import React from "react";
 import Header from "../../components/Header";
 
-
 function AddEventPage() {
     return (
         <div>
-            <Header/>
+            <Header type={"Admin mode"}/>
             <div className="pageBody" id={"loginPage"}>
                 <div className="loginTab">
                     <h1 style={{fontSize:"62px", letterSpacing:"7px"}}>Add a new event</h1>

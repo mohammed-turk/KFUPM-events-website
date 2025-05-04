@@ -101,15 +101,15 @@ function HomeAdmin() {
       </section>
 
       {/* Calendar Section */}
-      <section style={sectionBox}>
-        <div style={sectionHeader}>
-          <h2 style={sectionTitle}>Calendar</h2>
-          <button style={sectionButton} onClick={addOrg}>
-            Add Organization
-          </button>
-        </div>
-        <EventsCalendar />
-      </section>
+      {/*<section style={sectionBox}>*/}
+      {/*  <div style={sectionHeader}>*/}
+      {/*    <h2 style={sectionTitle}>Calendar</h2>*/}
+      {/*    <button style={sectionButton} onClick={addOrg}>*/}
+      {/*      Add Organization*/}
+      {/*    </button>*/}
+      {/*  </div>*/}
+      {/*  <EventsCalendar />*/}
+      {/*</section>*/}
     </div>
   );
 }
