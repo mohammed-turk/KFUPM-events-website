@@ -159,14 +159,12 @@ REACT_APP_FIREBASE_KEY=your-firebase-key
 ## 📸 Screenshots
 
 > - Login and Signup
-> - ![signup](https://github.com/user-attachments/assets/be2d8907-f82a-42da-aaf6-82d66d5f6c35)
 > - ![login](https://github.com/user-attachments/assets/e420bcb7-554a-4c58-b93d-207cbbff0c82)
 
-> - Dashboard
-> - ![home](https://github.com/user-attachments/assets/84714fc0-f7ab-4656-b18d-bcea25643233)
+![image](https://github.com/user-attachments/assets/b92703f6-97c0-4581-b6f2-fef4031fbf0c)
+![image](https://github.com/user-attachments/assets/c4c783e2-ab42-4412-b30d-dc5de6a97d62)
+![image](https://github.com/user-attachments/assets/45c6f435-7e94-45a1-96c9-dd32e87b8c30)
 
-> - Event Calendar
-> - ![calender](https://github.com/user-attachments/assets/a67016de-3b1f-47ae-8639-41a5d69411cb)
 
 > - Mobile Responsiveness
 > - ![phonelogin](https://github.com/user-attachments/assets/4fdaa8b0-7611-4402-b1f8-f5ed1bb56021)
