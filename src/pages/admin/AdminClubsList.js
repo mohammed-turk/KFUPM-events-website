@@ -1,65 +1,77 @@
-import React, { useState } from "react";
-import ReturnHeader from "../../components/ReturnHeader";
-import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./ClubsListAdmin.css";
 
-// Load 20 club icons by rotating through 5 sample images
-const clubIcons = Array.from({ length: 20 }).map((_, i) =>
-  require(`../../assets/icons/Clubs icons/club${(i % 5) + 1}.jpeg`)
-);
-
-function AdminClubsList() {
-  const [filterBy, setFilterBy] = useState(""); // default is empty (placeholder)
+function ClubsListAdmin() {
+  const [clubs, setClubs] = useState([]);
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchClubs = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/clubs");
+        const data = await res.json();
+        setClubs(data);
+      } catch (err) {
+        console.error("Failed to fetch clubs:", err);
+      }
+    };
 
-  const handleFilterChange = (e) => {
-    setFilterBy(e.target.value);
-    // Add your filtering logic here if needed
-  };
+    fetchClubs();
+  }, []);
+
+  const filteredClubs = clubs.filter((club) =>
+    club.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <div>
-      <ReturnHeader />
+    <div className="admin-page">
+      <div className="admin-header-row">
+        <button className="back-btn" onClick={() => navigate(-1)}>
+          ← Back
+        </button>
+        <h2 className="admin-title">Clubs & Colleges Management</h2>
+        <div style={{ width: "80px" }} /> {/* Spacer to balance layout */}
+      </div>
 
-      <div className="pageBody ClubsListPage">
-        <div className="clubs-header-row">
-          <h2 className="clubs-title">Clubs & Colleges</h2>
+      <div className="admin-top-bar">
+        <input
+          type="text"
+          placeholder="Search by name..."
+          className="admin-search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <button className="add-btn" onClick={() => navigate("./addOrg")}>
+          ＋ Add Club
+        </button>
+      </div>
 
-          <div className="search-filter-container">
-            <input type="text" className="club-search" placeholder="Search" />
-            <select
-              className="filter-select"
-              value={filterBy}
-              onChange={handleFilterChange}
-            >
-              <option value="" disabled hidden>
-                Filter By
-              </option>
-              <option value="clubName">By Club Name</option>
-              <option value="clubId">By Club ID</option>
-              <option value="date">By Date</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="club-grid">
-          {clubIcons.map((iconSrc, index) => (
-            <div key={index} className="club-item">
+      <div className="admin-grid">
+        {filteredClubs.map((club, index) => (
+          <div key={index} className="admin-card">
+            <div className="admin-img-wrapper">
               <img
-                src={iconSrc}
-                alt={`Club ${index + 1}`}
-                className="club-img"
+                src={club.iconURL || "https://via.placeholder.com/120"}
+                alt={club.name}
+                className="admin-img"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "https://via.placeholder.com/120";
+                }}
               />
             </div>
-          ))}
-        </div>
-
-        <div className="bottom-buttons">
-          <button className="fab blue" onClick={() => navigate("./addOrg")}>＋</button>
-        </div>
+            <p className="admin-club-name">{club.name}</p>
+            <div className="admin-actions">
+              <button className="edit-btn">Edit</button>
+              <button className="delete-btn">Delete</button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-export default AdminClubsList;
+export default ClubsListAdmin;
