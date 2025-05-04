@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-
 const eventSchema = new mongoose.Schema({
-    title: { type: String, required: true },
+    title : { type: String, required: true },
     timing: { type: Date, required: true },
     posterURL: { type: String, required: true },
     provider: {
