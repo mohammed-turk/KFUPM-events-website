@@ -144,7 +144,7 @@ label {
   font-size: 18px;
 }
 
-input {
+input, Select {
   margin-bottom: 10px;
   height: 25px;
   width: 85%;

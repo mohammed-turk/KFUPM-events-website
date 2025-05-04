@@ -8,7 +8,6 @@ router.post("/signup", signup);
 router.post("/login", login);
 
 // USER MANAGEMENT ROUTES
-
 // Get all users
 router.get("/", async (req, res) => {
   try {
