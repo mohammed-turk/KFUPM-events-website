@@ -23,9 +23,11 @@ const clubsData = [
   { id: 8, name: "Innovation Club 2", description: "More tech innovations" },
 ];
 
+/////fetchin clubs info
 function HomeUser() {
 
   const [clubs, setClubs] = useState([]);
+
 
   useEffect(() => {
     const fetchClubs = async () => {
@@ -40,8 +42,25 @@ function HomeUser() {
 
     fetchClubs();
   }, []);
+///////
 
+/// events fetching
+const [events, setEvents]=useState([])
 
+useEffect(()=>{
+  const fetchEvents= async()=>{
+    try{
+      const res = await fetch("http://localhost:3000/api/events")
+      const data=await res.json();
+      setEvents(data.events);
+    }
+    catch(err){
+      console.error("Failed to fetch events:", err);
+    }
+  }
+  fetchEvents();
+},[]);
+///
 
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
@@ -136,6 +155,7 @@ function HomeUser() {
             &gt; <span style={{ marginLeft: 6 }}>Show more</span>
           </button>
         </div>
+
         <div style={eventsCarousel}>
           {events.length > 0 && (
             <>
@@ -159,6 +179,48 @@ function HomeUser() {
                   </p>
                 </div>
               </button>
+
+          
+        {events.map((event,index)=>(
+            <button style={eventCard} /**onClick={() => handleEventClick(101)}*/>
+            <div style={eventPosterContainer}>
+              <img
+                src={event.posterURL}
+                alt="Event Poster"
+                style={eventPoster}
+              />
+              
+            </div>
+            <div style={eventInfo}>
+              <p style={providerDate}>
+                {event.title}
+                <br />
+                {event.timing}
+              </p>
+              
+            </div>
+          </button>
+          ))}
+          
+          <button style={eventCard} onClick={() => handleEventClick(101)}>
+            <div style={eventPosterContainer}>
+              <img
+                src={eventPlaceholder}
+                alt="Event Poster"
+                style={eventPoster}
+              />
+            </div>
+            <div style={eventInfo}>
+              <p style={providerDate}>
+                provider
+                <br />
+                Date & time
+              </p>
+              <button style={editButton}>
+                <img src={editIcon} alt="Edit" style={editIconImg} />
+              </button>
+            </div>
+          </button>
 
               {/* Event 2 */}
               {events.length > 1 && (
@@ -187,6 +249,26 @@ function HomeUser() {
           {events.length === 0 && (
             <p>No events available.</p>
           )}
+          <button style={eventCard} onClick={() => handleEventClick(102)}>
+            <div style={eventPosterContainer}>
+              <img
+                src={eventPlaceholder2}
+                alt="Event Poster"
+                style={eventPoster}
+              />
+            </div>
+            <div style={eventInfo}>
+              <p style={providerDate}>
+                provider
+                <br />
+                Date & time
+              </p>
+              <button style={editButton}>
+                <img src={editIcon} alt="Edit" style={editIconImg} />
+              </button>
+            </div>
+          </button>
+
         </div>
       </section>
     </div>
