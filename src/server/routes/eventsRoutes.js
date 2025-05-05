@@ -17,45 +17,24 @@ router.post("/addEvent", async (req, res) => {
       title: title,
     });
 
-    res.status(201).json({
-      success: true,
-      event: newEvent,
-    });
+    res.status(201).json(newEvent); // Send the newly created event directly
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// GET - List all events (with pagination)
+// GET - List all events (without pagination, returning only the array)
 router.get("/", async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-
     const events = await Event.find()
       .populate("provider", "name")
-      .sort({ timing: -1 })
-      .skip(skip)
-      .limit(limit);
+      .sort({ timing: -1 });
 
-    const totalEvents = await Event.countDocuments();
-
-    res.json({
-      success: true,
-      count: events.length,
-      total: totalEvents,
-      page,
-      pages: Math.ceil(totalEvents / limit),
-      events,
-    });
+    res.json(events); // Send the array of events directly
   } catch (error) {
     console.error("Error fetching events:", error);
-    res.status(500).json({
-      success: false,
-      error: "Server error while fetching events",
-    });
+    res.status(500).json({ error: "Server error while fetching events" });
   }
 });
 
@@ -63,10 +42,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({
-        success: false,
-        error: "Invalid event ID format",
-      });
+      return res.status(400).json({ error: "Invalid event ID format" });
     }
 
     const event = await Event.findById(req.params.id).populate(
@@ -75,22 +51,13 @@ router.get("/:id", async (req, res) => {
     );
 
     if (!event) {
-      return res.status(404).json({
-        success: false,
-        error: "Event not found",
-      });
+      return res.status(404).json({ error: "Event not found" });
     }
 
-    res.json({
-      success: true,
-      event,
-    });
+    res.json(event); // Send the single event object directly
   } catch (error) {
     console.error("Error fetching event:", error);
-    res.status(500).json({
-      success: false,
-      error: "Server error while fetching event",
-    });
+    res.status(500).json({ error: "Server error while fetching event" });
   }
 });
 
@@ -99,32 +66,21 @@ router.put("/:id", async (req, res) => {
   try {
     const { title, provider, timing, posterUrl } = req.body;
 
-    // Validate event exists
     const existingEvent = await Event.findById(req.params.id);
     if (!existingEvent) {
-      return res.status(404).json({
-        success: false,
-        error: "Event not found",
-      });
+      return res.status(404).json({ error: "Event not found" });
     }
 
-    // Update fields
     if (title) existingEvent.title = title;
     if (provider) {
       if (!mongoose.Types.ObjectId.isValid(provider)) {
-        return res.status(400).json({
-          success: false,
-          error: "Invalid provider ID format",
-        });
+        return res.status(400).json({ error: "Invalid provider ID format" });
       }
       existingEvent.provider = provider;
     }
     if (timing) {
       if (isNaN(new Date(timing).getTime())) {
-        return res.status(400).json({
-          success: false,
-          error: "Invalid timing format",
-        });
+        return res.status(400).json({ error: "Invalid timing format" });
       }
       existingEvent.timing = timing;
     }
@@ -132,17 +88,10 @@ router.put("/:id", async (req, res) => {
 
     const updatedEvent = await existingEvent.save();
 
-    res.json({
-      success: true,
-      message: "Event updated successfully",
-      event: updatedEvent,
-    });
+    res.json(updatedEvent); // Send the updated event object directly
   } catch (error) {
     console.error("Error updating event:", error);
-    res.status(500).json({
-      success: false,
-      error: "Server error while updating event",
-    });
+    res.status(500).json({ error: "Server error while updating event" });
   }
 });
 
@@ -152,22 +101,13 @@ router.delete("/:id", async (req, res) => {
     const deletedEvent = await Event.findByIdAndDelete(req.params.id);
 
     if (!deletedEvent) {
-      return res.status(404).json({
-        success: false,
-        error: "Event not found",
-      });
+      return res.status(404).json({ error: "Event not found" });
     }
 
-    res.json({
-      success: true,
-      message: "Event deleted successfully",
-    });
+    res.json({ message: "Event deleted successfully" }); // Send a simple success message
   } catch (error) {
     console.error("Error deleting event:", error);
-    res.status(500).json({
-      success: false,
-      error: "Server error while deleting event",
-    });
+    res.status(500).json({ error: "Server error while deleting event" });
   }
 });
 
