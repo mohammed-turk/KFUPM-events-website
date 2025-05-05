@@ -17,6 +17,7 @@ import HOmeOrg from "./pages/org/HomeOrg";
 import LoginPage from "./pages/shared/LoginPage";
 import UserAllEventList from "./pages/user/UserAllEventList";
 import OrgAllEventList from "./pages/org/OrgAllEventList";
+import UserAllEventPage from "./pages/user/UserEventPage";
 // Alsahli
 import ClubsList from "./pages/shared/ClubsList";
 import EventList from "./pages/shared/EventList";
@@ -24,6 +25,10 @@ import AdminClubsList from "./pages/admin/AdminClubsList";
 import AddEventPage from "./pages/shared/AddEventPage";
 // New import for ClubInfo
 import ClubInfo from "./pages/shared/ClubInfo";
+
+
+import React, { useEffect } from "react";
+
 
 function App() {
   return (
@@ -45,6 +50,7 @@ function App() {
           <Route path="/user/home" element={<HomeUser />} />
           <Route path="/user/prof" element={<UserProfilePage />} />
           <Route path="/user/eventList" element={<UserAllEventList />} />
+          <Route path="/user/eventPage" element={<UserAllEventPage/>}/>
 
           <Route path="/org/home" element={<HOmeOrg />} />
           <Route path="/org/prof" element={<OrgProfilePage />} />
