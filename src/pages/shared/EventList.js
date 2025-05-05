@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import "./ClubList.css";
-// Make sure the component is defined as a function
+
 function EventsList() {
   const [searchTerm, setSearchTerm] = useState('');
   const [events, setEvents] = useState([]);
-  
-    useEffect(() => {
-      const fetchEvents = async () => {
-        try {
-          const res = await fetch("http://localhost:3000/api/events");
-          const data = await res.json();
-          setEvents(data);
-        } catch (err) {
-          console.error("Failed to fetch events:", err);
-        }
-      };
-      fetchEvents();
-    }, []);
-  
+
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/events");
+        const data = await res.json();
+        console.log(data);
+        setEvents(data);
+      } catch (err) {
+        console.error("Failed to fetch events:", err);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
 
   const handleSearch = (e) => {
@@ -26,14 +28,13 @@ function EventsList() {
   };
 
   const handleAddToMyList = (id) => {
-    setEvents(events.map(event => 
-      event.id === id ? { ...event, added: !event.added } : event
+    setEvents(events.map(event =>
+      event._id === id ? { ...event, added: !event.added } : event
     ));
   };
 
-  const filteredEvents = events.filter(event => 
-    event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    event.provider.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredEvents = events.filter(event =>
+    event.title?.includes(searchTerm)
   );
 
   return (
@@ -41,7 +42,7 @@ function EventsList() {
       <Header />
       <div className="pageBody">
         <h1 style={{textAlign: "center", margin: "20px 0"}}>Events Listing</h1>
-        
+
         {/* Search Bar */}
         <div style={{maxWidth: "600px", margin: "0 auto", padding: "0 20px"}}>
           <input
@@ -58,16 +59,12 @@ function EventsList() {
             }}
           />
         </div>
-        
+
         {/* Events List */}
         <h2>All Events</h2>
-        <div className="club-grid">
-        {events.map(event => (
-          <li key={event._id}>{event.title}</li> 
-        ))}
 
-        </div>
-        {/* <div className="EventsList" style={{
+
+        <div className="EventsList" style={{
           display: "flex",
           flexWrap: "wrap",
           gap: "20px",
@@ -75,7 +72,7 @@ function EventsList() {
           padding: "20px"
         }}>
           {filteredEvents.map(event => (
-            <div key={event.id} style={{
+            <div key={event._id} style={{ // Changed key to event._id
               border: "1px solid #ccc",
               borderRadius: "8px",
               overflow: "hidden",
@@ -90,7 +87,7 @@ function EventsList() {
                 justifyContent: "center",
                 color: "white"
               }}>
-                <h3>{event.title}</h3>
+                <h3>{event.title || "No Title Available"}</h3>
               </div>
               <div style={{
                 backgroundColor: "#4286f4",
@@ -103,8 +100,8 @@ function EventsList() {
                   <p>{event.provider}</p>
                   <p>{event.date}</p>
                 </div>
-                <button 
-                  onClick={() => handleAddToMyList(event.id)}
+                <button
+                  onClick={() => handleAddToMyList(event._id)} // Changed handleAddToMyList to use event._id
                   style={{
                     backgroundColor: event.added ? "#ff9800" : "#4CAF50",
                     color: "white",
@@ -125,11 +122,9 @@ function EventsList() {
               </div>
             </div>
           ))}
-        </div> */}
+        </div>
       </div>
     </div>
   );
 }
-
-// Make sure to use the proper export statement
 export default EventsList;
