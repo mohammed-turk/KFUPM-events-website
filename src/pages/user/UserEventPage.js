@@ -11,38 +11,61 @@ import { useParams } from 'react-router-dom';
 
 function UserAllEventPage(){
 
-    const [events, setEvents]=useState([])
+    const { id } = useParams();
 
-    useEffect(()=>{
-     const fetchEvents= async()=>{
-    try{
-      const res = await fetch("http://localhost:3000/api/events")
-      const data=await res.json();
-      setEvents(data.events);
-    }
-    catch(err){
-      console.error("Failed to fetch events:", err);
-    }
-     }
-     fetchEvents();
-    },[]);
+
+    const [event, setEvent]=useState(null)
+
+    useEffect(() => {
+        const fetchEventById = async () => {
+            try {
+                const res = await fetch(`http://localhost:3000/api/events/${id}`);  
+                const data = await res.json();
+                setEvent(data.event);  
+                console.log("event was found")
+            } catch (err) {
+                console.error("Failed to fetch event:", err);
+            }
+        };
+    
+        fetchEventById();
+    }, [id]);
 
 
     return(<div>
 
         {<Header/>}
-        {events.map((event,index)=>{
             
-            return<div className="card" style={{width: "18rem"}}>
-            <img src={event.posterURL} className="card-img-top" alt="..."/>
-                <div className="card-body">
-                    <h5 className="card-title">{event.title}</h5>
-                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" className="btn btn-primary">Go somewhere</a>
+
+            
+        
+
+            <div 
+                className="container shadow-lg rounded-4 p-4 mt-5 bg-light" 
+                style={{ maxWidth: "900px" }}
+            >
+                <div className="row align-items-center g-4">
+                    <div className="col-md-6 text-start">
+                        <h2 className="card-title mb-3">{event.title}</h2>
+                        <h6 className="text-muted mb-3">{event.timing}</h6>
+                        <p className="card-text">{event.info || "No additional info provided."}</p>
+                        <a href="#" className="btn btn-primary">add to favorite</a>
+                    </div>
+
+                    <div className="col-md-6 text-center">
+                        <img 
+                            src={event.posterURL || "https://via.placeholder.com/300"} 
+                            className="img-fluid rounded-3 shadow-sm" 
+                            alt="Event Poster" 
+                            style={{ maxHeight: "600px" }}
+                        />
+                    </div>
                 </div>
             </div> 
-
-        })}
+      
+            
+            
+        
 
         
     </div>)

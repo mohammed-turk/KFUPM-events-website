@@ -10,6 +10,16 @@ async function fetchEvents() {
     }
 }
 
+async function fetchEventById(id) {
+    try {
+        return await Event.findById(id);
+    } catch (err) {
+        console.error('Error fetching event by ID:', err);
+        throw err;
+    }
+}
+
+
 async function createEvent(eventData) {
     try {
         console.log("Uploading...");
@@ -27,10 +37,4 @@ async function createEvent(eventData) {
     }
 }
 
-
-
-
-
-module.exports = {
-  fetchEvents, createEvent
-};
+module.exports = { createEvent, fetchEvents, fetchEventById};
