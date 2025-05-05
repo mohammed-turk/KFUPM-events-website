@@ -100,8 +100,6 @@ function HomeAdmin() {
 
 export default HomeAdmin;
 
-// Styles remain unchanged...
-
 // === Styles ===
 
 const sectionBox = {

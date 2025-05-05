@@ -7,8 +7,6 @@ import e2 from "../../assets/event2.jpg";
 import c1 from "../../assets/club.jpg";
 
 function UserProfilePage() {
-    let ResClub = 5;
-
     return (
         <div>
             <Header/>

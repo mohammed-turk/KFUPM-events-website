@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.js");
 
-// SIGNUP - no password hashing
+// SIGNUP
 const signup = async (req, res) => {
   try {
     const { name, username, email, password, role } = req.body;

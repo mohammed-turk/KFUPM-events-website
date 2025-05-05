@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
 const clubRoutes = require("./routes/clubRoutes");
 const eventRoutes = require("./routes/eventRoutes");
+
 const cors = require("cors");
 
 const app = express();
@@ -23,6 +24,7 @@ app.use(express.json()); // replaces bodyParser.json()
 app.use("/api/events", eventRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/clubs", clubRoutes);
+app.use("/api/events", eventsRoutes);
 
 
 // Test route
