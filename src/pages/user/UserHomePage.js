@@ -5,6 +5,7 @@ import eventPlaceholder from "../../assets/event1.jpg";
 import eventPlaceholder2 from "../../assets/event2.jpg";
 import editIcon from "../../assets/icons/mod.png";
 
+
 // Load club icons dynamically
 const clubIcons = Array.from({ length: 8 }).map((_, i) =>
   require(`../../assets/icons/Clubs icons/club${(i % 5) + 1}.jpeg`)
@@ -23,6 +24,25 @@ const clubsData = [
 ];
 
 function HomeUser() {
+
+  const [clubs, setClubs] = useState([]);
+
+  useEffect(() => {
+    const fetchClubs = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/clubs");
+        const data = await res.json();
+        setClubs(data);
+      } catch (err) {
+        console.error("Failed to fetch clubs:", err);
+      }
+    };
+
+    fetchClubs();
+  }, []);
+
+
+
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
 
@@ -87,7 +107,7 @@ function HomeUser() {
           </button>
         </div>
         <div style={clubsGrid}>
-          {clubsData.map((club, index) => (
+          {clubs.slice(0,20).map((icon, index) => (
             <button
               key={index}
               style={clubItem}
@@ -95,10 +115,14 @@ function HomeUser() {
               title={club.name}
             >
               <img
-                src={clubIcons[index]}
-                alt={club.name}
-                style={clubIcon}
-              />
+                  src={icon.iconURL || "https://via.placeholder.com/120"}
+                  alt={icon.name}
+                  className="club-img"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "https://via.placeholder.com/120";
+                  }}
+                />
             </button>
           ))}
         </div>
