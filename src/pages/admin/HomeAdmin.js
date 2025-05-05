@@ -29,10 +29,6 @@ function HomeAdmin() {
     navigate("/admin/eventList");
   };
 
-  const addOrg = () => {
-    navigate("/admin/addOrg");
-  };
-
   return (
     <div
       style={{

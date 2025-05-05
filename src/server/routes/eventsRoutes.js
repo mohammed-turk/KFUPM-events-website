@@ -1,48 +1,29 @@
 const express = require('express');
 const router = express.Router();
 const Event = require('../models/Event');
-const Club = require('../models/Club');
+const {createEvent} = require('../controllers/eventController.js');
 const mongoose = require('mongoose');
 
 // POST - Create new event
-router.post('/admin/addEvent' || '/org/addEvent', async (req, res) => {
+router.post('/addEvent', async (req, res) => {
     try {
-        const { title, provider, timing, posterUrl } = req.body;
-
-        // Validate required fields
-        if (!title || !provider || !timing || !posterUrl) {
-            return res.status(400).json({
-                success: false,
-                error: 'All fields are required'
-            });
-        }
-
-        // Create new event
-        const newEvent = new Event({
-            title,
-            provider,
-            timing: new Date(timing),
-            posterUrl: posterUrl || null
+        console.log("reached the route...");
+        const {title, provider, date, timing, posterUrl} = req.body;
+        const newEvent = await createEvent({
+            date: date,
+            posterURL: posterUrl,
+            provider: provider,
+            timing: timing,
+            title: title,
         });
-
-        const savedEvent = await newEvent.save();
-
-        // Populate provider details in response
-        const myEvent = await Event.findById(savedEvent._id)
-            .populate('provider', 'name email');
 
         res.status(201).json({
             success: true,
-            message: 'Event created successfully',
-            myEvent: myEvent.title
+            event: newEvent
         });
-
     } catch (error) {
-        console.error('Error creating event:', error);
-        res.status(500).json({
-            success: false,
-            error: 'Server error while creating event',
-        });
+        console.error('Error:', error);
+        res.status(500).json({ error: error.message });
     }
 });
 

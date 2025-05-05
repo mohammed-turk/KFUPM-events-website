@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import Select from 'react-select';
-import makeAnimated from 'react-select/animated';
 
 function AddEventPage() {
     const [title, setTitle] = useState("");
@@ -10,80 +9,97 @@ function AddEventPage() {
     const [time, setTime] = useState("");
     const [poster, setPoster] = useState(null);
     const [clubOptions, setClubOptions] = useState([]);
-    const [isLoadingClubs, setIsLoadingClubs] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState("");
 
-    // Fetch and transform clubs into options format
+    // Fetch clubs for provider dropdown
     useEffect(() => {
         const fetchClubs = async () => {
-            setIsLoadingClubs(true);
             try {
                 const response = await fetch('http://localhost:3000/api/clubs');
                 const clubs = await response.json();
-
-                const options = clubs.map(club => ({
-                    value: club._id, // store the ID
-                    label: club.name // display the name
-                }));
-
-                setClubOptions(options);
+                setClubOptions(clubs.map(club => ({
+                    value: club._id,
+                    label: club.name
+                })));
             } catch (error) {
                 console.error("Error fetching clubs:", error);
                 setMessage("Failed to load clubs");
-            } finally {
-                setIsLoadingClubs(false);
             }
         };
         fetchClubs();
     }, []);
 
+    const handleImageChange = (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setPoster(file);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!selectedProvider) {
-            setMessage("Please select a provider");
+        //Validation
+        if (!selectedProvider || !poster) {
+            setMessage("Please select a provider and poster image");
             return;
         }
 
-        const timing = new Date(`${date}T${time}`).toISOString();
+        setIsLoading(true);
+        setMessage("");
 
         try {
-            // Upload poster if exists (same as before)
-            let posterUrl = "";
-            if (poster) {
-                // ... (your Cloudinary upload code)
+            const uploadData = new FormData();
+            uploadData.append('file', poster); // Use the state directly
+            uploadData.append('upload_preset', 'event_poster');
+
+            console.log('Uploading file:', poster.name); // Verify file
+
+            const cloudinaryResponse = await fetch(
+                'https://api.cloudinary.com/v1_1/dxvl17oal/image/upload',
+                { method: 'POST', body: uploadData }
+            );
+
+            const cloudinaryResult = await cloudinaryResponse.json();
+            console.log('Cloudinary result:', cloudinaryResult);
+
+            if (!cloudinaryResult.secure_url) {
+                throw new Error('Image upload failed: No URL returned');
             }
 
-            // Prepare event data
-            const eventData = {
+            // 2. Send to backend
+            const backendPayload = {
                 title,
-                provider: selectedProvider.value, // using the ID
-                timing,
-                posterUrl
+                provider: selectedProvider,
+                date,
+                timing: time,
+                poster: cloudinaryResult.secure_url
             };
 
-            const response = await fetch('http://localhost:3000/api/events', {
+            console.log("Final payload:", backendPayload); // Verify before sending
+
+
+            const response = await fetch('http://localhost:3000/api/clubs/admin/addOrg', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(eventData)
+                body: JSON.stringify(backendPayload)
             });
 
             const result = await response.json();
+            if (!response.ok) throw new Error(result.error || 'Failed to create event');
 
-            if (response.ok) {
-                setMessage("Event added successfully!");
-                setTitle("");
-                setSelectedProvider("");
-                setDate("");
-                setTime("");
-                setPoster(null);
-            } else {
-                throw new Error(result.message || "Failed to add event");
-            }
+            setMessage("Event created successfully!");
+            // Reset form
+            setTitle("");
+            setSelectedProvider(null);
+            setDate("");
+            setTime("");
+            setPoster(null);
 
         } catch (error) {
-            console.error("Error:", error);
             setMessage(error.message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -93,7 +109,11 @@ function AddEventPage() {
             <div className="pageBody" id={"loginPage"}>
                 <div className="loginTab">
                     <h1 style={{fontSize:"62px", letterSpacing:"7px"}}>Add a new event</h1>
-                    {message && <p style={{color: message.includes("success") ? "green" : "red"}}>{message}</p>}
+                    {message && (
+                        <p style={{color: message.includes("success") ? "green" : "red"}}>
+                            {message}
+                        </p>
+                    )}
                     <form onSubmit={handleSubmit}>
                         <label>Event Title</label>
                         <input
@@ -105,10 +125,7 @@ function AddEventPage() {
                         <label>Provider (Club)</label>
                         <Select
                             options={clubOptions}
-                            isLoading={isLoadingClubs}
-                            loadingMessage={() => "Loading clubs..."}
-                            placeholder="Search for a club..."
-                            noOptionsMessage={() => "No clubs found"}
+                            placeholder="Select a club..."
                             value={selectedProvider}
                             onChange={setSelectedProvider}
                             isSearchable
@@ -145,10 +162,13 @@ function AddEventPage() {
                         <input
                             type="file"
                             accept="image/*"
-                            onChange={(e) => setPoster(e.target.files[0])}
+                            onChange={handleImageChange}
+                            required
                         />
 
-                        <button type="submit">Add event</button>
+                        <button type="submit" disabled={isLoading}>
+                            {isLoading ? "Creating Event..." : "Add Event"}
+                        </button>
                     </form>
                 </div>
             </div>

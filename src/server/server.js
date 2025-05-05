@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
 const clubRoutes = require("./routes/clubRoutes");
+const eventsRoutes = require("./routes/eventsRoutes");
 const cors = require("cors");
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.json()); // replaces bodyParser.json()
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/clubs", clubRoutes);
+app.use("/api/events", eventsRoutes);
 
 // Test route
 app.get("/", (req, res) => {

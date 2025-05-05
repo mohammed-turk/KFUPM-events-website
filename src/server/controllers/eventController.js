@@ -1,4 +1,4 @@
-const Club = require('../models/Event');
+const Event = require('../models/Event');
 const cloudinary = require('../utils/cloudinary');
 
 async function fetchEvents() {
@@ -12,12 +12,12 @@ async function fetchEvents() {
 
 async function createEvent(eventData) {
     try {
-        const result = await cloudinary.uploader.upload(eventData.poster);
-        eventData.poster = result.secure_url;
-        const event = new Club(eventData);
+        const result = await cloudinary.uploader.upload(eventData.posterURL);
+        eventData.posterURL = result.secure_url;
+        const event = new Event(eventData);
         await event.save();
         console.log(`${event.title} created!`);
-        return event.name;
+        return event.title;
     } catch(err) {
         console.error('Error creating event:', err);
         throw err;

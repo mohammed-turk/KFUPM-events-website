@@ -12,15 +12,13 @@ function AddOrgPage() {
     const handleImageChange = (e) => {
         const file = e.target.files?.[0];
         if (!file) return;
-
-        console.log('Selected File:', file.name, file.size + ' bytes');
-        setIcon(file); // Immediately update state
+        setIcon(file);
     };
 
     const handleAdd = async (event) => {
         event.preventDefault();
 
-        // Immediate validation
+        //validation
         if (!icon) {
             setMessage("Please select an image first");
             return;
@@ -69,7 +67,11 @@ function AddOrgPage() {
             if (!response.ok) throw new Error(result.error || 'Backend error');
 
             setMessage('Club created successfully!');
-            // Reset form...
+            setName("");
+            setEmail("");
+            setPassword("");
+            setIcon(null);
+            setIsLoading(false);
 
         } catch (error) {
             console.error('Error:', error);

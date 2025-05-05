@@ -22,9 +22,6 @@ import ClubsList from "./pages/shared/ClubsList";
 import AdminClubsList from "./pages/admin/AdminClubsList";
 import AddEventPage from "./pages/shared/AddEventPage";
 
-import React, { useEffect } from "react";
-
-
 function App() {
   return (
     <div>
