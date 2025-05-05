@@ -20,9 +20,10 @@ app.use(
 app.use(express.json()); // replaces bodyParser.json()
 
 // Routes
+app.use("/api/events", eventRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/clubs", clubRoutes);
-app.use("/api/events", eventRoutes);
+
 
 // Test route
 app.get("/", (req, res) => {
