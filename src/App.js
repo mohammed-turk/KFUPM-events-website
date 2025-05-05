@@ -19,6 +19,7 @@ import UserAllEventList from "./pages/user/UserAllEventList";
 import OrgAllEventList from "./pages/org/OrgAllEventList";
 // Alsahli
 import ClubsList from "./pages/shared/ClubsList";
+import EventList from "./pages/shared/EventList";
 import AdminClubsList from "./pages/admin/AdminClubsList";
 import AddEventPage from "./pages/shared/AddEventPage";
 
@@ -56,6 +57,7 @@ function App() {
           <Route path="*" element={<h1>Page Not Found</h1>} />
 
           <Route path="/ClubsList" element={<ClubsList />} />
+          <Route path="/EventList" element={<EventList />} />
         </Routes>
       </BrowserRouter>
     </div>

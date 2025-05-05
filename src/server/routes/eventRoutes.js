@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const Club = require("../models/Event");
+const Event = require("../models/Event");
 
 router.get("/", async (req, res) => {
   try {
-    const events = await Club.find({}, "title posterURL"); // Adjust if needed
+    const events = await Event.find(); // Adjust if needed
     res.json(events);
   } catch (error) {
     console.error("Error fetching events:", error);

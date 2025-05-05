@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
 const clubRoutes = require("./routes/clubRoutes");
+const eventRoutes = require("./routes/eventRoutes");
 const cors = require("cors");
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(
   cors({
     origin: "http://localhost:3001",
     credentials: true,
+    
   })
 );
 app.use(express.json()); // replaces bodyParser.json()
@@ -20,6 +22,7 @@ app.use(express.json()); // replaces bodyParser.json()
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/clubs", clubRoutes);
+app.use("/api/events", eventRoutes);
 
 // Test route
 app.get("/", (req, res) => {

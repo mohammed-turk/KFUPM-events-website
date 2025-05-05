@@ -26,7 +26,7 @@ function HomeUser() {
   };
 
   const showMore = () => {
-    navigate("/user/eventList");
+    navigate("/EventList");
   };
 
   return (

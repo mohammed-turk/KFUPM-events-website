@@ -3,7 +3,7 @@ const Event = require("../models/Event");
 // Fetch all clubs
 const fetchEvents = async (req, res) => {
   try {
-    const events = await Event.find({}, "title posterURL"); // return only what's needed
+    const events = await Event.find({}, "title"); // return only what's needed
     res.json(events);
   } catch (err) {
     console.error("Error fetching events:", err);
@@ -12,5 +12,5 @@ const fetchEvents = async (req, res) => {
 };
 
 module.exports = {
-    fetchEvents,
+    fetchEvents,   
 };
