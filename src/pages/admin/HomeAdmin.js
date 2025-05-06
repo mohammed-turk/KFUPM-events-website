@@ -174,9 +174,9 @@ function HomeAdmin() {
                   </div>
                   <div style={eventInfo}>
                     <p style={providerDate}>
-                      Provider
+                      {event.provider}
                       <br />
-                      Date Time
+                      {event.timing}
                     </p>
                   </div>
                 </button>
