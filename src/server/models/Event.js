@@ -1,13 +1,16 @@
 const mongoose = require('mongoose');
 const eventSchema = new mongoose.Schema({
-    title : { type: String, required: true },
+    title: { type: String, required: true },
     timing: { type: String, required: true },
     posterURL: { type: String, required: true },
-    location: { type: String, required: true },
-    info: { type: String, required: true },
-    provider: {type: String,required: false},
-}, { collection: "Event" });
-
+    info:{type:String, required:false},
+    location:{type:String, required:false},
+    provider: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Club',
+        required: true
+    },
+}, {collection: 'Event'});
 
 
 eventSchema.statics.getAllEvents = async function () {

@@ -5,6 +5,7 @@ const clubRoutes = require("./routes/clubRoutes");
 const eventsRoutes = require("./routes/eventsRoutes");
 
 const cors = require("cors");
+const eventsRouter= require("./routes/eventsRoutes");
 
 const app = express();
 const uri =
@@ -24,8 +25,7 @@ app.use(express.json()); // replaces bodyParser.json()
 // app.use("/api/events", eventRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/clubs", clubRoutes);
-app.use("/api/events", eventsRoutes);
-
+app.use("/api/events", eventsRouter);
 
 // Test route
 app.get("/", (req, res) => {

@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import HOmePageHeader from "../../components/HomePageHeader";
 import eventPlaceholder from "../../assets/event1.jpg";
 import eventPlaceholder2 from "../../assets/event2.jpg";
+import editIcon from "../../assets/icons/mod.png";
+
 
 // Load club icons dynamically
 const clubIcons = Array.from({ length: 8 }).map((_, i) =>
@@ -41,7 +43,46 @@ const eventsData = [
   }
 ];
 
+/////fetchin clubs info
 function HomeUser() {
+
+  const [clubs, setClubs] = useState([]);
+
+
+  useEffect(() => {
+    const fetchClubs = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/clubs");
+        const data = await res.json();
+        setClubs(data);
+      } catch (err) {
+        console.error("Failed to fetch clubs:", err);
+      }
+    };
+
+    fetchClubs();
+  }, []);
+///////
+
+/// events fetching
+{/*
+const [events, setEvents]=useState([])
+
+useEffect(()=>{
+  const fetchEvents= async()=>{
+    try{
+      const res = await fetch("http://localhost:3000/api/events")
+      const data=await res.json();
+      setEvents(data.events);
+    }
+    catch(err){
+      console.error("Failed to fetch events:", err);
+    }
+  }
+  fetchEvents();
+},[]);
+*/}
+
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
 
@@ -66,6 +107,8 @@ function HomeUser() {
   }, []);
 
   const handleClubClick = (clubId) => {
+
+
     navigate(`/club/${clubId}`, {
       state: {
         clubData: clubsData.find(club => club.id === clubId)
@@ -111,7 +154,7 @@ function HomeUser() {
           </button>
         </div>
         <div style={clubsGrid}>
-          {clubsData.map((club, index) => (
+          {clubs.slice(0,20).map((club, index) => (
             <button
               key={index}
               style={clubItem}
@@ -119,10 +162,14 @@ function HomeUser() {
               title={club.name}
             >
               <img
-                src={clubIcons[index]}
-                alt={club.name}
-                style={clubIcon}
-              />
+                  src={club.iconURL || "https://via.placeholder.com/120"}
+                  alt={club.name}
+                  className="club-img"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "https://via.placeholder.com/120";
+                  }}
+                />
             </button>
           ))}
         </div>
@@ -136,6 +183,7 @@ function HomeUser() {
             &gt; <span style={{ marginLeft: 6 }}>Show more</span>
           </button>
         </div>
+
         <div style={eventsCarousel}>
           {events.length > 0 && (
             <>
@@ -159,6 +207,48 @@ function HomeUser() {
                   </p>
                 </div>
               </button>
+
+          
+        {events.map((event,index)=>(
+            <button style={eventCard} /**onClick={() => handleEventClick(101)}*/>
+            <div style={eventPosterContainer}>
+              <img
+                src={event.posterURL}
+                alt="Event Poster"
+                style={eventPoster}
+              />
+              
+            </div>
+            <div style={eventInfo}>
+              <p style={providerDate}>
+                {event.title}
+                <br />
+                {event.timing}
+              </p>
+              
+            </div>
+          </button>
+          ))}
+          
+          <button style={eventCard} onClick={() => handleEventClick(101)}>
+            <div style={eventPosterContainer}>
+              <img
+                src={eventPlaceholder}
+                alt="Event Poster"
+                style={eventPoster}
+              />
+            </div>
+            <div style={eventInfo}>
+              <p style={providerDate}>
+                provider
+                <br />
+                Date & time
+              </p>
+              <button style={editButton}>
+                <img src={editIcon} alt="Edit" style={editIconImg} />
+              </button>
+            </div>
+          </button>
 
               {/* Event 2 */}
               {events.length > 1 && (
