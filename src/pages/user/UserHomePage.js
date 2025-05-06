@@ -3,123 +3,79 @@ import { useNavigate } from "react-router-dom";
 import HOmePageHeader from "../../components/HomePageHeader";
 import eventPlaceholder from "../../assets/event1.jpg";
 import eventPlaceholder2 from "../../assets/event2.jpg";
-import editIcon from "../../assets/icons/mod.png";
 
-
-// Load club icons dynamically
-const clubIcons = Array.from({ length: 8 }).map((_, i) =>
-  require(`../../assets/icons/Clubs icons/club${(i % 5) + 1}.jpeg`)
-);
-
-// Sample club data
-const clubsData = [
-  { id: 1, name: "Cycling Club", description: "For cycling enthusiasts" },
-  { id: 2, name: "Cultural Club", description: "Celebrating diverse cultures" },
-  { id: 3, name: "Innovation Club", description: "Technology and innovation" },
-  { id: 4, name: "Computer Club", description: "For computer science students" },
-  { id: 5, name: "Arts Club", description: "Creative arts and performances" },
-  { id: 6, name: "Cycling Club 2", description: "Another cycling group" },
-  { id: 7, name: "Cultural Club 2", description: "Another cultural group" },
-  { id: 8, name: "Innovation Club 2", description: "More tech innovations" },
-];
-
-// Sample event data
-const eventsData = [
-  { 
-    id: 101, 
-    title: "Camp Night", 
-    description: "Join us for a night under the stars!",
-    provider: "Outdoor Club", 
-    date: "May 15, 2025", 
-    time: "7:00 PM"
-  },
-  { 
-    id: 102, 
-    title: "Winter Event", 
-    description: "Celebrate the winter season!",
-    provider: "Cultural Club", 
-    date: "May 20, 2025", 
-    time: "6:00 PM"
-  }
-];
-
-/////fetchin clubs info
 function HomeUser() {
-
-  const [clubs, setClubs] = useState([]);
-
-
-  useEffect(() => {
-    const fetchClubs = async () => {
-      try {
-        const res = await fetch("http://localhost:3000/api/clubs");
-        const data = await res.json();
-        setClubs(data);
-      } catch (err) {
-        console.error("Failed to fetch clubs:", err);
-      }
-    };
-
-    fetchClubs();
-  }, []);
-///////
-
-/// events fetching
-{/*
-const [events, setEvents]=useState([])
-
-useEffect(()=>{
-  const fetchEvents= async()=>{
-    try{
-      const res = await fetch("http://localhost:3000/api/events")
-      const data=await res.json();
-      setEvents(data.events);
-    }
-    catch(err){
-      console.error("Failed to fetch events:", err);
-    }
-  }
-  fetchEvents();
-},[]);
-*/}
-
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
+  const [clubs, setClubs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchEvents = async () => {
+    // Fetch both clubs and events when component mounts
+    const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/events");
-        const data = await res.json();
-        console.log(data);
-        if (Array.isArray(data)) {
-          setEvents(data);
+        setLoading(true);
+        
+        // Fetch events
+        const eventsRes = await fetch("http://localhost:3000/api/events");
+        if (!eventsRes.ok) {
+          throw new Error(`Events API returned ${eventsRes.status}`);
+        }
+        const eventsData = await eventsRes.json();
+        
+        // Fetch clubs
+        const clubsRes = await fetch("http://localhost:3000/api/clubs");
+        if (!clubsRes.ok) {
+          throw new Error(`Clubs API returned ${clubsRes.status}`);
+        }
+        const clubsData = await clubsRes.json();
+        
+        console.log("Fetched events:", eventsData);
+        console.log("Fetched clubs:", clubsData);
+        
+        if (Array.isArray(eventsData)) {
+          setEvents(eventsData);
         } else {
-          console.error("API response is not an array:", data);
+          console.error("Events API response is not an array:", eventsData);
           setEvents([]);
         }
+        
+        if (Array.isArray(clubsData)) {
+          setClubs(clubsData);
+        } else {
+          console.error("Clubs API response is not an array:", clubsData);
+          setClubs([]);
+        }
       } catch (err) {
-        console.error("Failed to fetch events:", err);
+        console.error("Failed to fetch data:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchEvents();
+    fetchData();
   }, []);
 
-  const handleClubClick = (clubId) => {
-
-    navigate(`/club/${clubId}`, {
+  const handleClubClick = (club) => {
+    if (!club || !club._id) {
+      console.error("Attempted to navigate to club with missing ID");
+      return;
+    }
+    
+    navigate(`/club/${club._id}`, {
       state: {
-        clubData: clubsData.find(club => club.id === clubId)
+        clubData: club
       }
     });
   };
 
   const handleEventClick = (eventId) => {
-    // Updated to use our new event route with state
+    // Navigate to event details
     navigate(`/event/${eventId}`, {
       state: {
-        eventData: eventsData.find(event => event.id === eventId)
+        eventData: events.find(event => event._id === eventId)
       }
     });
   };
@@ -133,15 +89,8 @@ useEffect(()=>{
   };
 
   return (
-    <div
-      style={{
-        padding: "30px",
-        backgroundColor: "rgb(160, 179, 197)",
-        minHeight: "100vh",
-        fontFamily: "'Segoe UI', sans-serif",
-      }}
-    >
-      {/* Header (outside section box) */}
+    <div style={pageContainer}>
+      {/* Header */}
       <HOmePageHeader name="user" />
 
       {/* Clubs Section */}
@@ -152,25 +101,36 @@ useEffect(()=>{
             Show All
           </button>
         </div>
-        <div style={clubsGrid}>
-          {clubs.slice(0,20).map((club, index) => (
-            <button
-              key={index}
-              style={clubItem}
-              onClick={() => handleClubClick(club.id)}
-              title={club.name}
-            >
-              <img
-                  src={club.iconURL || "https://via.placeholder.com/120"}
-                  alt={club.name}
-                  className="club-img"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "https://via.placeholder.com/120";
-                  }}
-                />
-            </button>
-          ))}
+        
+        <div>
+          {loading ? (
+            <p>Loading clubs...</p>
+          ) : error ? (
+            <p>Error loading clubs: {error}</p>
+          ) : clubs.length > 0 ? (
+            <div style={horizontalScrollContainer}>
+              {clubs.map((club, index) => (
+                <button
+                  key={club._id || index}
+                  style={clubItem}
+                  onClick={() => handleClubClick(club)}
+                  title={club.name}
+                >
+                  <img
+                    src={club.iconURL}
+                    alt={club.name}
+                    style={clubIcon}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "https://via.placeholder.com/100";
+                    }}
+                  />
+                </button>
+              ))}
+            </div>
+          ) : (
+            <p>No clubs available.</p>
+          )}
         </div>
       </section>
 
@@ -182,44 +142,46 @@ useEffect(()=>{
             &gt; <span style={{ marginLeft: 6 }}>Show more</span>
           </button>
         </div>
-
-        <div style={eventsCarousel}>
-
-          
-            
-
-          
-        {events.map((event,index)=>(
-            <button style={{...eventCard, maxWidth: "50px"}} onClick={() => handleEventClick(event._id)}>
-            <div style={eventPosterContainer}>
-              <img
-                src={event.posterURL}
-                alt="Event Poster"
-                style={eventPosterShrink} 
-              />
-              
+        
+        <div>
+          {loading ? (
+            <p>Loading events...</p>
+          ) : error ? (
+            <p>Error loading events: {error}</p>
+          ) : events.length > 0 ? (
+            <div style={eventsContainer}>
+              {events.slice(0, 4).map((event, index) => (
+                <button
+                  key={event._id || index}
+                  style={eventCard}
+                  onClick={() => handleEventClick(event._id)}
+                >
+                  <div style={eventPosterContainer}>
+                    <img
+                      src={event.posterURL || (index % 2 === 0 ? eventPlaceholder : eventPlaceholder2)}
+                      alt={`Event ${index + 1}`}
+                      style={eventPoster}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = index % 2 === 0 ? eventPlaceholder : eventPlaceholder2;
+                      }}
+                    />
+                  </div>
+                  <div style={eventInfo}>
+                    <p style={providerDate}>
+                      Provider
+                      <br />
+                      {event.timing ? 
+                        event.timing.split('|')[0].replace('date:', '').trim() : 
+                        "Date"}
+                    </p>
+                  </div>
+                </button>
+              ))}
             </div>
-            <div style={eventInfo}>
-              <p style={providerDate}>
-                {event.provider}
-                <br />
-                {event.timing}
-              </p>
-              
-            </div>
-          </button>
-          ))}
-          
-         
-
-              
-            
-          
-          {events.length === 0 && (
+          ) : (
             <p>No events available.</p>
           )}
-          
-
         </div>
       </section>
     </div>
@@ -230,6 +192,13 @@ export default HomeUser;
 
 // === Styles ===
 
+const pageContainer = {
+  padding: "30px",
+  backgroundColor: "rgb(160, 179, 197)",
+  minHeight: "100vh",
+  fontFamily: "'Segoe UI', sans-serif",
+};
+
 const sectionBox = {
   backgroundColor: "rgba(64, 92, 118, 0.76)",
   borderRadius: "16px",
@@ -239,6 +208,7 @@ const sectionBox = {
   maxWidth: "1200px",
   marginInline: "auto",
   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+  position: "relative",
 };
 
 const sectionHeader = {
@@ -266,12 +236,20 @@ const sectionButton = {
   fontSize: "0.9rem",
 };
 
-const clubsGrid = {
+// Horizontal scroll container for clubs
+const horizontalScrollContainer = {
   display: "flex",
-  flexWrap: "wrap",
-  gap: "20px",
-  justifyContent: "flex-start",
-  alignItems: "center",
+  flexWrap: "nowrap",
+  gap: "10px",
+  overflowX: "auto",
+  paddingBottom: "10px",
+  // Hide scrollbar for Chrome, Safari and Opera
+  "&::-webkit-scrollbar": {
+    display: "none"
+  },
+  // Hide scrollbar for IE, Edge and Firefox
+  msOverflowStyle: "none",  // IE and Edge
+  scrollbarWidth: "none",   // Firefox
 };
 
 const clubItem = {
@@ -282,8 +260,9 @@ const clubItem = {
   overflow: "hidden",
   padding: 0,
   border: "2px solid transparent",
-  transition: "border-color 0.3s ease, transform 0.2s ease",
+  transition: "transform 0.2s ease",
   cursor: "pointer",
+  flexShrink: 0,
 };
 
 const clubIcon = {
@@ -293,25 +272,36 @@ const clubIcon = {
   display: "block",
 };
 
-const eventsCarousel = {
+// Event styles - horizontal scroll container
+const eventsContainer = {
   display: "flex",
+  flexWrap: "nowrap",
+  gap: "10px",
   overflowX: "auto",
-  gap: "20px",
   paddingBottom: "10px",
+  // Hide scrollbar for Chrome, Safari and Opera
+  "&::-webkit-scrollbar": {
+    display: "none"
+  },
+  // Hide scrollbar for IE, Edge and Firefox
+  msOverflowStyle: "none",  // IE and Edge
+  scrollbarWidth: "none",   // Firefox
 };
 
 const eventCard = {
   backgroundColor: "#f1f5f9",
   borderRadius: "10px",
-  minWidth: "220px",
-  flex: "0 0 auto",
+  width: "220px",
+  height: "250px",
   boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
   transition: "transform 0.2s ease",
   cursor: "pointer",
+  overflow: "hidden",
+  flexShrink: 0,
 };
 
 const eventPosterContainer = {
-  height: "180px", // Increased height for better image display
+  height: "180px",
   borderTopLeftRadius: "10px",
   borderTopRightRadius: "10px",
   overflow: "hidden",
@@ -327,36 +317,15 @@ const eventPoster = {
 const eventInfo = {
   padding: "12px",
   display: "flex",
-  justifyContent: "center", // Changed from space-between to center
+  justifyContent: "center",
   alignItems: "center",
+  backgroundColor: "white",
+  height: "70px",
 };
 
 const providerDate = {
   fontSize: "0.85rem",
   color: "#475569",
-  textAlign: "center", // Added center alignment
+  textAlign: "center",
+  margin: 0,
 };
-
-const editButton = {
-  backgroundColor: "#22c55e",
-  border: "none",
-  borderRadius: "50%",
-  width: "28px",
-  height: "28px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  cursor: "pointer",
-  };
-  
-  const editIconImg = {
-    width: "16px", 
-    height: "16px", 
-    verticalAlign: "middle", 
-  };
-  const eventPosterShrink = {
-    width: "100%",
-    height: "100%",
-    objectFit: "scale-down", // Shrinks to fit within the container
-    display: "block",
-  };

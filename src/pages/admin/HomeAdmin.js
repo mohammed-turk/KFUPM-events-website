@@ -1,8 +1,10 @@
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import HOmePageHeader from "../../components/HomePageHeader";
-import React, { useState, useEffect } from "react";
+import eventPlaceholder from "../../assets/event1.jpg";
+import eventPlaceholder2 from "../../assets/event2.jpg";
 
-// Dynamically load club icons
+// Load club icons dynamically
 const clubIcons = Array.from({ length: 8 }).map((_, i) =>
   require(`../../assets/icons/Clubs icons/club${(i % 5) + 1}.jpeg`)
 );
@@ -10,46 +12,77 @@ const clubIcons = Array.from({ length: 8 }).map((_, i) =>
 function HomeAdmin() {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
+  const [clubs, setClubs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchEvents = async () => {
+    // Fetch both clubs and events when component mounts
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch("http://localhost:3000/api/events");
         
-        if (!res.ok) {
-          throw new Error(`Server returned ${res.status}: ${res.statusText}`);
+        // Fetch events
+        const eventsRes = await fetch("http://localhost:3000/api/events");
+        if (!eventsRes.ok) {
+          throw new Error(`Events API returned ${eventsRes.status}`);
         }
+        const eventsData = await eventsRes.json();
         
-        const data = await res.json();
-        console.log("Fetched events:", data);
+        // Fetch clubs
+        const clubsRes = await fetch("http://localhost:3000/api/clubs");
+        if (!clubsRes.ok) {
+          throw new Error(`Clubs API returned ${clubsRes.status}`);
+        }
+        const clubsData = await clubsRes.json();
         
-        if (Array.isArray(data)) {
-          setEvents(data);
+        console.log("Fetched events:", eventsData);
+        console.log("Fetched clubs:", clubsData);
+        
+        if (Array.isArray(eventsData)) {
+          setEvents(eventsData);
         } else {
-          console.error("API response is not an array:", data);
+          console.error("Events API response is not an array:", eventsData);
           setEvents([]);
         }
+        
+        if (Array.isArray(clubsData)) {
+          setClubs(clubsData);
+        } else {
+          console.error("Clubs API response is not an array:", clubsData);
+          setClubs([]);
+        }
       } catch (err) {
-        console.error("Failed to fetch events:", err);
+        console.error("Failed to fetch data:", err);
         setError(err.message);
-        setEvents([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchEvents();
+    fetchData();
   }, []);
 
-  const handleClubClick = (clubId) => {
-    navigate(`/admin/club/${clubId}`);
+  const handleClubClick = (club) => {
+    if (!club || !club._id) {
+      console.error("Attempted to navigate to club with missing ID");
+      return;
+    }
+    
+    navigate(`/admin/club/${club._id}`, {
+      state: {
+        clubData: club
+      }
+    });
   };
 
   const handleEventClick = (eventId) => {
-    navigate(`/admin/event/${eventId}`);
+    // Navigate to event details
+    navigate(`/admin/event/${eventId}`, {
+      state: {
+        eventData: events.find(event => event._id === eventId)
+      }
+    });
   };
 
   const showAll = () => {
@@ -61,14 +94,7 @@ function HomeAdmin() {
   };
 
   return (
-    <div
-      style={{
-        padding: "30px",
-        backgroundColor: "rgb(160, 179, 197)",
-        minHeight: "100vh",
-        fontFamily: "'Segoe UI', sans-serif",
-      }}
-    >
+    <div style={pageContainer}>
       {/* Header */}
       <HOmePageHeader name="admin" />
 
@@ -81,25 +107,35 @@ function HomeAdmin() {
           </button>
         </div>
         
-        <div style={scrollContainer}>
-          <div style={clubsGrid}>
-            {clubIcons.map((icon, index) => (
-              <button
-                key={index}
-                style={clubItem}
-                onClick={() => handleClubClick(index + 1)}
-              >
-                <img src={icon} alt={`Club ${index + 1}`} style={clubIconStyle} />
-              </button>
-            ))}
-          </div>
-          
-          {/* Simple scroll indicator */}
-          <div style={scrollIndicator}>
-            <div style={scrollTrack}>
-              <div style={scrollThumb}></div>
+        <div>
+          {loading ? (
+            <p>Loading clubs...</p>
+          ) : error ? (
+            <p>Error loading clubs: {error}</p>
+          ) : clubs.length > 0 ? (
+            <div style={horizontalScrollContainer}>
+              {clubs.map((club, index) => (
+                <button
+                  key={club._id || index}
+                  style={clubItem}
+                  onClick={() => handleClubClick(club)}
+                  title={club.name}
+                >
+                  <img
+                    src={club.iconURL || clubIcons[index % clubIcons.length]}
+                    alt={club.name || `Club ${index + 1}`}
+                    style={clubIcon}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = clubIcons[index % clubIcons.length];
+                    }}
+                  />
+                </button>
+              ))}
             </div>
-          </div>
+          ) : (
+            <p>No clubs available.</p>
+          )}
         </div>
       </section>
 
@@ -112,14 +148,14 @@ function HomeAdmin() {
           </button>
         </div>
         
-        <div style={scrollContainer}>
-          <div style={eventsCarousel}>
-            {loading ? (
-              <p>Loading events...</p>
-            ) : error ? (
-              <p>Error loading events: {error}</p>
-            ) : events.length > 0 ? (
-              events.map((event, index) => (
+        <div>
+          {loading ? (
+            <p>Loading events...</p>
+          ) : error ? (
+            <p>Error loading events: {error}</p>
+          ) : events.length > 0 ? (
+            <div style={eventsContainer}>
+              {events.slice(0, 4).map((event, index) => (
                 <button
                   key={event._id || index}
                   style={eventCard}
@@ -127,11 +163,12 @@ function HomeAdmin() {
                 >
                   <div style={eventPosterContainer}>
                     <img
-                      src={event.posterURL || require(`../../assets/event${index % 2 + 1}.jpg`)}
+                      src={event.posterURL || (index === 0 ? eventPlaceholder : eventPlaceholder2)}
                       alt={`Event ${index + 1}`}
                       style={eventPoster}
                       onError={(e) => {
-                        e.target.src = require(`../../assets/event${index % 2 + 1}.jpg`);
+                        e.target.onerror = null;
+                        e.target.src = index === 0 ? eventPlaceholder : eventPlaceholder2;
                       }}
                     />
                   </div>
@@ -143,26 +180,19 @@ function HomeAdmin() {
                     </p>
                   </div>
                 </button>
-              ))
-            ) : (
-              <div style={noEventsContainer}>
-                <p>No events available.</p>
-                <button 
-                  style={{...sectionButton, marginTop: "10px"}} 
-                  onClick={() => navigate("/admin/eventList/addEvent")}
-                >
-                  Add New Event
-                </button>
-              </div>
-            )}
-          </div>
-          
-          {/* Simple scroll indicator */}
-          <div style={scrollIndicator}>
-            <div style={scrollTrack}>
-              <div style={scrollThumb}></div>
+              ))}
             </div>
-          </div>
+          ) : (
+            <div style={noEventsContainer}>
+              <p>No events available.</p>
+              <button 
+                style={{...sectionButton, marginTop: "10px"}} 
+                onClick={() => navigate("/admin/eventList/addEvent")}
+              >
+                Add New Event
+              </button>
+            </div>
+          )}
         </div>
       </section>
     </div>
@@ -172,6 +202,13 @@ function HomeAdmin() {
 export default HomeAdmin;
 
 // === Styles ===
+
+const pageContainer = {
+  padding: "30px",
+  backgroundColor: "rgb(160, 179, 197)",
+  minHeight: "100vh",
+  fontFamily: "'Segoe UI', sans-serif",
+};
 
 const sectionBox = {
   backgroundColor: "rgba(64, 92, 118, 0.76)",
@@ -209,61 +246,61 @@ const sectionButton = {
   fontSize: "0.9rem",
 };
 
-const scrollContainer = {
+// Horizontal scroll container for clubs
+const horizontalScrollContainer = {
   display: "flex",
-  flexDirection: "column",
-  gap: "10px"
-};
-
-const clubsGrid = {
-  display: "flex",
+  flexWrap: "nowrap",
+  gap: "10px",
   overflowX: "auto",
-  gap: "20px",
   paddingBottom: "10px",
+  // Hide scrollbar for Chrome, Safari and Opera
+  "&::-webkit-scrollbar": {
+    display: "none"
+  },
+  // Hide scrollbar for IE, Edge and Firefox
+  msOverflowStyle: "none",  // IE and Edge
+  scrollbarWidth: "none",   // Firefox
 };
 
 const clubItem = {
   backgroundColor: "#ffffff",
   borderRadius: "10px",
-  minWidth: "100px",
+  width: "100px",
   height: "100px",
   overflow: "hidden",
   padding: 0,
   border: "2px solid transparent",
-  transition: "border-color 0.3s ease, transform 0.2s ease",
+  transition: "transform 0.2s ease",
   cursor: "pointer",
-  flex: "0 0 auto",
+  flexShrink: 0,
 };
 
-const clubIconStyle = {
+const clubIcon = {
   width: "100%",
   height: "100%",
   objectFit: "cover",
   display: "block",
 };
 
-const eventsCarousel = {
+// Event styles
+const eventsContainer = {
   display: "flex",
-  overflowX: "auto",
   gap: "20px",
-  paddingBottom: "10px",
-  minHeight: "250px",
+  justifyContent: "space-between",
 };
 
 const eventCard = {
   backgroundColor: "#f1f5f9",
   borderRadius: "10px",
-  minWidth: "220px",
-  flex: "0 0 auto",
+  width: "220px",
   boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
   transition: "transform 0.2s ease",
   cursor: "pointer",
-  position: "relative",
-  overflow: "hidden",
+  flexShrink: 0,
 };
 
 const eventPosterContainer = {
-  height: "180px", 
+  height: "180px",
   borderTopLeftRadius: "10px",
   borderTopRightRadius: "10px",
   overflow: "hidden",
@@ -287,8 +324,8 @@ const eventInfo = {
 const providerDate = {
   fontSize: "0.85rem",
   color: "#475569",
-  margin: 0,
   textAlign: "center",
+  margin: 0,
 };
 
 const noEventsContainer = {
@@ -296,32 +333,5 @@ const noEventsContainer = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  width: "100%",
   padding: "20px",
-};
-
-// Simple scroll indicator
-const scrollIndicator = {
-  width: "100%",
-  height: "10px",
-  display: "flex",
-  justifyContent: "center",
-};
-
-const scrollTrack = {
-  width: "50%",
-  height: "4px",
-  backgroundColor: "rgba(255, 255, 255, 0.2)",
-  borderRadius: "2px",
-  position: "relative",
-};
-
-const scrollThumb = {
-  position: "absolute",
-  left: "0",
-  top: "0",
-  height: "100%",
-  width: "100px",
-  backgroundColor: "rgba(255, 255, 255, 0.6)",
-  borderRadius: "2px",
 };

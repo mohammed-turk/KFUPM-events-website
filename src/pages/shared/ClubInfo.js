@@ -1,41 +1,100 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 
-// Fallback club data in case navigation state is lost on refresh
-const clubsData = [
-  { id: 1, name: "Cycling Club", description: "For cycling enthusiasts", members: 120, established: "2018", meetingLocation: "Sports Center, Building A" },
-  { id: 2, name: "Cultural Club", description: "Celebrating diverse cultures", members: 85, established: "2019", meetingLocation: "Arts Building, Room 203" },
-  { id: 3, name: "Innovation Club", description: "Technology and innovation", members: 64, established: "2020", meetingLocation: "Engineering Building, Lab 4" },
-  { id: 4, name: "Computer Club", description: "For computer science students", members: 150, established: "2017", meetingLocation: "Technology Center, Room 305" },
-  { id: 5, name: "Arts Club", description: "Creative arts and performances", members: 92, established: "2018", meetingLocation: "Fine Arts Building, Studio 12" },
-  { id: 6, name: "Cycling Club 2", description: "Another cycling group", members: 45, established: "2021", meetingLocation: "Sports Center, Building B" },
-  { id: 7, name: "Cultural Club 2", description: "Another cultural group", members: 78, established: "2020", meetingLocation: "Student Center, Room 110" },
-  { id: 8, name: "Innovation Club 2", description: "More tech innovations", members: 55, established: "2022", meetingLocation: "Science Building, Lab 2" },
-];
-
 function ClubInfo() {
   const { clubId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [club, setClub] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isJoined, setIsJoined] = useState(false);
+  const [joinButtonText, setJoinButtonText] = useState("Join Club");
 
   useEffect(() => {
-    // First check if club data was passed via location state
-    if (location.state?.clubData) {
-      // If we have basic club data from navigation state, enhance it with additional details
-      const basicClubData = location.state.clubData;
-      const fullClubData = clubsData.find(c => c.id === basicClubData.id) || basicClubData;
-      setClub(fullClubData);
-    } else {
-      // If no state (e.g., on direct page load or refresh), find club by ID
-      const foundClub = clubsData.find(c => c.id === parseInt(clubId));
-      if (foundClub) {
-        setClub(foundClub);
+    const fetchClubData = async () => {
+      try {
+        setLoading(true);
+        
+        // First check if club data was passed via location state
+        if (location.state?.clubData) {
+          setClub(location.state.clubData);
+          checkIfJoined(location.state.clubData._id);
+          setLoading(false);
+          return;
+        }
+        
+        // Otherwise fetch from API
+        const response = await fetch(`http://localhost:3000/api/clubs/${clubId}`);
+        
+        if (!response.ok) {
+          throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        console.log("Fetched club data:", data);
+        setClub(data);
+        checkIfJoined(data._id);
+      } catch (err) {
+        console.error("Error loading club:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-    }
-    setLoading(false);
+    };
+
+    fetchClubData();
   }, [clubId, location.state]);
+
+  // Function to check if user has already joined this club
+  const checkIfJoined = (clubId) => {
+    // In a real app, you would check this from your backend
+    // For now, we'll use localStorage to simulate this
+    const joinedClubs = JSON.parse(localStorage.getItem('joinedClubs') || '[]');
+    const alreadyJoined = joinedClubs.includes(clubId);
+    
+    setIsJoined(alreadyJoined);
+    setJoinButtonText(alreadyJoined ? "Leave Club" : "Join Club");
+  };
+
+  const handleJoinClub = () => {
+    if (!club) return;
+    
+    if (isJoined) {
+      // Leave the club
+      const joinedClubs = JSON.parse(localStorage.getItem('joinedClubs') || '[]');
+      const updatedClubs = joinedClubs.filter(id => id !== club._id);
+      localStorage.setItem('joinedClubs', JSON.stringify(updatedClubs));
+      
+      // Update button state
+      setIsJoined(false);
+      setJoinButtonText("Join Club");
+      
+      // Show feedback to user
+      alert(`You have left ${club.name}`);
+    } else {
+      // Join the club
+      const joinedClubs = JSON.parse(localStorage.getItem('joinedClubs') || '[]');
+      joinedClubs.push(club._id);
+      localStorage.setItem('joinedClubs', JSON.stringify(joinedClubs));
+      
+      // Update button state
+      setIsJoined(true);
+      setJoinButtonText("Leave Club");
+      
+      // Show feedback to user
+      alert(`You have joined ${club.name}! Welcome aboard!`);
+    }
+  };
+
+  const handleContactLeader = () => {
+    // In a real app, this would open a chat or email form to contact the club admin
+    if (club && club.email) {
+      window.location.href = `mailto:${club.email}`;
+    } else {
+      alert(`Contact information for ${club?.name || 'this club'} is not available.`);
+    }
+  };
 
   const handleGoBack = () => {
     navigate("/user/home");
@@ -51,12 +110,12 @@ function ClubInfo() {
     );
   }
 
-  if (!club) {
+  if (error || !club) {
     return (
       <div style={container}>
         <div style={card}>
           <h2>Club not found</h2>
-          <p>Sorry, we couldn't find information for this club.</p>
+          <p>{error || "Sorry, we couldn't find information for this club."}</p>
           <button style={buttonStyle} onClick={handleGoBack}>
             Back to Home
           </button>
@@ -75,34 +134,46 @@ function ClubInfo() {
           <h1 style={titleStyle}>{club.name}</h1>
         </div>
 
+        {club.iconURL && (
+          <div style={clubIconContainer}>
+            <img 
+              src={club.iconURL} 
+              alt={club.name + " logo"} 
+              style={clubIconStyle}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.style.display = 'none';
+              }}
+            />
+          </div>
+        )}
+
         <div style={contentSection}>
           <div style={infoSection}>
             <h2 style={sectionTitle}>About</h2>
-            <p style={descriptionStyle}>{club.description}</p>
+            <p style={descriptionStyle}>
+              {club.description || club.name || "No description available."}
+            </p>
           </div>
 
           <div style={detailsContainer}>
             <div style={detailBox}>
-              <h3 style={detailTitle}>Members</h3>
-              <p style={detailValue}>{club.members || "N/A"}</p>
+              <h3 style={detailTitle}>Contact</h3>
+              <p style={detailValue}>{club.email || "N/A"}</p>
             </div>
-            
-            <div style={detailBox}>
-              <h3 style={detailTitle}>Established</h3>
-              <p style={detailValue}>{club.established || "N/A"}</p>
-            </div>
-          </div>
-
-          <div style={infoSection}>
-            <h2 style={sectionTitle}>Meeting Location</h2>
-            <p style={locationStyle}>{club.meetingLocation || "To be announced"}</p>
           </div>
 
           <div style={actionSection}>
-            <button style={{...buttonStyle, backgroundColor: "#3b82f6"}}>
-              Join Club
+            <button 
+              style={{...buttonStyle, backgroundColor: isJoined ? "#ff5722" : "#3b82f6"}}
+              onClick={handleJoinClub}
+            >
+              {joinButtonText}
             </button>
-            <button style={{...buttonStyle, backgroundColor: "#22c55e"}}>
+            <button 
+              style={{...buttonStyle, backgroundColor: "#22c55e"}}
+              onClick={handleContactLeader}
+            >
               Contact Leader
             </button>
           </div>
@@ -161,6 +232,19 @@ const titleStyle = {
   textAlign: "center",
 };
 
+const clubIconContainer = {
+  display: "flex",
+  justifyContent: "center",
+  marginBottom: "24px",
+};
+
+const clubIconStyle = {
+  width: "150px",
+  height: "150px",
+  objectFit: "contain",
+  borderRadius: "8px",
+};
+
 const contentSection = {
   display: "flex",
   flexDirection: "column",
@@ -182,12 +266,6 @@ const descriptionStyle = {
   fontSize: "1.1rem",
   lineHeight: "1.6",
   color: "#475569",
-};
-
-const locationStyle = {
-  fontSize: "1.1rem",
-  color: "#475569",
-  fontWeight: "500",
 };
 
 const detailsContainer = {
@@ -212,8 +290,8 @@ const detailTitle = {
 };
 
 const detailValue = {
-  fontSize: "1.6rem",
-  fontWeight: "bold",
+  fontSize: "1.1rem",
+  fontWeight: "500",
   color: "#334155",
 };
 
