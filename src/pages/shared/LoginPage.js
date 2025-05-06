@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginPage.css";
 import logoImg from "../../assets/kfupm-logo.png";
@@ -8,6 +8,17 @@ function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const savedUsername = localStorage.getItem("username");
+    const savedPassword = localStorage.getItem("password");
+    if (savedUsername) {
+      setUsername(savedUsername);
+    }
+    if (savedPassword) {
+      setPassword(savedPassword);
+    }
+  }, []); // Empty dependency array means this runs only once on mount
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -27,6 +38,8 @@ function LoginPage() {
       }
 
       localStorage.setItem("token", data.token);
+      localStorage.setItem("username", username); // Save username
+      localStorage.setItem("password", password); // Save password
 
       const tokenPayload = JSON.parse(atob(data.token.split(".")[1]));
       const role = tokenPayload.role;
