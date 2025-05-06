@@ -41,6 +41,29 @@ router.post('/:id', async (req, res) => {
     }
 });
 
+// ADD DELETE ENDPOINT HERE
+router.delete('/:id', async (req, res) => {
+    try {
+        console.log(`Attempting to delete club with ID: ${req.params.id}`);
+        
+        const deletedClub = await Club.findByIdAndDelete(req.params.id);
+        
+        if (!deletedClub) {
+            return res.status(404).json({ error: 'Club not found' });
+        }
+        
+        console.log(`Successfully deleted club: ${deletedClub.name}`);
+        res.status(200).json({ 
+            success: true, 
+            message: 'Club deleted successfully',
+            deletedClub: deletedClub
+        });
+    } catch (error) {
+        console.error(`Error deleting club: ${error.message}`);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 //GETs
 router.get("/", async (req, res) => {
   try {
