@@ -108,7 +108,6 @@ useEffect(()=>{
 
   const handleClubClick = (clubId) => {
 
-
     navigate(`/club/${clubId}`, {
       state: {
         clubData: clubsData.find(club => club.id === clubId)
@@ -185,67 +184,13 @@ useEffect(()=>{
         </div>
 
         <div style={eventsCarousel}>
-<<<<<<< HEAD
-          <button style={eventCard} onClick={() => handleEventClick(101)}>
-            <div style={eventPosterContainer}>
-              <img
-                src={eventPlaceholder}
-                alt="Event Poster"
-                style={eventPoster}
-              />
-            </div>
-            <div style={eventInfo}>
-              <p style={providerDate}>
-                {eventsData[0].provider}
-                <br />
-                {eventsData[0].date} • {eventsData[0].time}
-              </p>
-            </div>
-          </button>
 
-          <button style={eventCard} onClick={() => handleEventClick(102)}>
-            <div style={eventPosterContainer}>
-              <img
-                src={eventPlaceholder2}
-                alt="Event Poster"
-                style={eventPoster}
-              />
-            </div>
-            <div style={eventInfo}>
-              <p style={providerDate}>
-                {eventsData[1].provider}
-                <br />
-                {eventsData[1].date} • {eventsData[1].time}
-              </p>
-            </div>
-          </button>
-=======
-          {events.length > 0 && (
-            <>
-              {/* Event 1 */}
-              <button
-                style={eventCard}
-                onClick={() => handleEventClick(events[0]?._id)}
-              >
-                <div style={eventPosterContainer}>
-                  <img
-                    src={events[0]?.posterURL || eventPlaceholder}
-                    alt="Event Poster 1"
-                    style={eventPoster}
-                  />
-                </div>
-                <div style={eventInfo}>
-                  <p style={providerDate}>
-                    {events[0]?.provider || "Provider"}
-                    <br />
-                    {events[0]?.timing?.date || "Date"} {events[0]?.timing?.time || "Time"}
-                  </p>
-                </div>
-              </button>
+          
+            
 
           
         {events.map((event,index)=>(
-            <button style={eventCard} /**onClick={() => handleEventClick(101)}*/>
+            <button style={{...eventCard, maxWidth: "50px"}} onClick={() => handleEventClick(event._id)}>
             <div style={eventPosterContainer}>
               <img
                 src={event.posterURL}
@@ -265,54 +210,16 @@ useEffect(()=>{
           </button>
           ))}
           
-          <button style={eventCard} onClick={() => handleEventClick(101)}>
-            <div style={eventPosterContainer}>
-              <img
-                src={eventPlaceholder}
-                alt="Event Poster"
-                style={eventPoster}
-              />
-            </div>
-            <div style={eventInfo}>
-              <p style={providerDate}>
-                provider
-                <br />
-                Date & time
-              </p>
-              <button style={editButton}>
-                <img src={editIcon} alt="Edit" style={editIconImg} />
-              </button>
-            </div>
-          </button>
+         
 
-              {/* Event 2 */}
-              {events.length > 1 && (
-                <button
-                  style={eventCard}
-                  onClick={() => handleEventClick(events[1]?._id)}
-                >
-                  <div style={eventPosterContainer}>
-                    <img
-                      src={events[1]?.posterURL || eventPlaceholder2}
-                      alt="Event Poster 2"
-                      style={eventPoster}
-                    />
-                  </div>
-                  <div style={eventInfo}>
-                    <p style={providerDate}>
-                      {events[1]?.provider || "Provider"}
-                      <br />
-                      {events[1]?.timing?.date || "Date"} {events[1]?.timing?.time || "Time"}
-                    </p>
-                  </div>
-                </button>
-              )}
-            </>
-          )}
+              
+            
+          
           {events.length === 0 && (
             <p>No events available.</p>
           )}
->>>>>>> 9860bbc83611a7ee8898a06aa6dc85d0789487b7
+          
+
         </div>
       </section>
     </div>

@@ -184,7 +184,7 @@ function EventsList() {
                   </button>
                   <button
                     ref={el => (detailsButtonRefs.current[event._id] = el)} // Attach ref
-                    onClick={() => handleDetailsClick(event._id)}
+                    onClick={() => navigate(`/event/${event._id}`)}
                     style={{
                       backgroundColor: "darkblue",
                       color: "white",
