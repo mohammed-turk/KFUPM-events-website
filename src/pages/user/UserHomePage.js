@@ -3,14 +3,13 @@ import { useNavigate } from "react-router-dom";
 import HOmePageHeader from "../../components/HomePageHeader";
 import eventPlaceholder from "../../assets/event1.jpg";
 import eventPlaceholder2 from "../../assets/event2.jpg";
-import editIcon from "../../assets/icons/mod.png";
 
 // Load club icons dynamically
 const clubIcons = Array.from({ length: 8 }).map((_, i) =>
   require(`../../assets/icons/Clubs icons/club${(i % 5) + 1}.jpeg`)
 );
 
-// Sample club data - you can replace this with your actual data
+// Sample club data
 const clubsData = [
   { id: 1, name: "Cycling Club", description: "For cycling enthusiasts" },
   { id: 2, name: "Cultural Club", description: "Celebrating diverse cultures" },
@@ -22,12 +21,31 @@ const clubsData = [
   { id: 8, name: "Innovation Club 2", description: "More tech innovations" },
 ];
 
+// Sample event data
+const eventsData = [
+  { 
+    id: 101, 
+    title: "Camp Night", 
+    description: "Join us for a night under the stars!",
+    provider: "Outdoor Club", 
+    date: "May 15, 2025", 
+    time: "7:00 PM"
+  },
+  { 
+    id: 102, 
+    title: "Winter Event", 
+    description: "Celebrate the winter season!",
+    provider: "Cultural Club", 
+    date: "May 20, 2025", 
+    time: "6:00 PM"
+  }
+];
+
 function HomeUser() {
   const navigate = useNavigate();
 
   const handleClubClick = (clubId) => {
     // Navigate to club info page with the club ID as a parameter
-    // This will allow the club info page to fetch the specific club data
     navigate(`/club/${clubId}`, { 
       state: { 
         clubData: clubsData.find(club => club.id === clubId) 
@@ -36,7 +54,12 @@ function HomeUser() {
   };
 
   const handleEventClick = (eventId) => {
-    navigate(`/admin/event/${eventId}`);
+    // Updated to use our new event route with state
+    navigate(`/event/${eventId}`, {
+      state: {
+        eventData: eventsData.find(event => event.id === eventId)
+      }
+    });
   };
 
   const showAll = () => {
@@ -104,13 +127,10 @@ function HomeUser() {
             </div>
             <div style={eventInfo}>
               <p style={providerDate}>
-                provider
+                {eventsData[0].provider}
                 <br />
-                Date & time
+                {eventsData[0].date} • {eventsData[0].time}
               </p>
-              <button style={editButton}>
-                <img src={editIcon} alt="Edit" style={editIconImg} />
-              </button>
             </div>
           </button>
 
@@ -124,13 +144,10 @@ function HomeUser() {
             </div>
             <div style={eventInfo}>
               <p style={providerDate}>
-                provider
+                {eventsData[1].provider}
                 <br />
-                Date & time
+                {eventsData[1].date} • {eventsData[1].time}
               </p>
-              <button style={editButton}>
-                <img src={editIcon} alt="Edit" style={editIconImg} />
-              </button>
             </div>
           </button>
         </div>
@@ -197,10 +214,6 @@ const clubItem = {
   border: "2px solid transparent",
   transition: "border-color 0.3s ease, transform 0.2s ease",
   cursor: "pointer",
-  "&:hover": {
-    borderColor: "#3b82f6",
-    transform: "scale(1.05)",
-  },
 };
 
 const clubIcon = {
@@ -225,9 +238,6 @@ const eventCard = {
   boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
   transition: "transform 0.2s ease",
   cursor: "pointer",
-  "&:hover": {
-    transform: "translateY(-5px)",
-  },
 };
 
 const eventPosterContainer = {
@@ -246,28 +256,12 @@ const eventPoster = {
 const eventInfo = {
   padding: "12px",
   display: "flex",
-  justifyContent: "space-between",
+  justifyContent: "center", // Changed from space-between to center
   alignItems: "center",
 };
 
 const providerDate = {
   fontSize: "0.85rem",
   color: "#475569",
-};
-
-const editButton = {
-  backgroundColor: "#22c55e",
-  border: "none",
-  borderRadius: "50%",
-  width: "28px",
-  height: "28px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  cursor: "pointer",
-};
-
-const editIconImg = {
-  width: "16px",
-  height: "16px",
+  textAlign: "center", // Added center alignment
 };
