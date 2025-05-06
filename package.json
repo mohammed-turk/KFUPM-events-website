@@ -8,7 +8,7 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "bcrypt": "^5.1.1",
-    "bootstrap": "^5.3.5",
+    "bootstrap": "^5.3.6",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.1",
     "path-browserify": "^1.0.1",

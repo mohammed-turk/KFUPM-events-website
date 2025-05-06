@@ -27,6 +27,9 @@ import AddEventPage from "./pages/shared/AddEventPage";
 import ClubInfo from "./pages/shared/ClubInfo";
 import EventInfo from "./pages/shared/EventInfo";
 
+import AdminEventInfo from "./pages/admin/AdminEventInfo";
+import EditEventPage from "./pages/admin/EditEventPage";
+
 
 import React, { useEffect } from "react";
 
@@ -47,6 +50,8 @@ function App() {
           <Route path="/admin/event" element={<EventAdmin />} />
           <Route path="/admin/eventList" element={<AdminAllEventList />} />
           <Route path="/admin/eventList/addEvent" element={<AddEventPage />} />
+          <Route path="/admin/event/:eventId" element={<AdminEventInfo />} />
+          <Route path="/admin/eventList/edit/:eventId" element={<EditEventPage />} />
 
           <Route path="/user/home" element={<HomeUser />} />
           <Route path="/user/prof" element={<UserProfilePage />} />

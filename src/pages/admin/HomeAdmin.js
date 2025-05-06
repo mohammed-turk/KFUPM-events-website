@@ -1,9 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import HOmePageHeader from "../../components/HomePageHeader";
-import eventPlaceholder from "../../assets/event1.jpg";
-import eventPlaceholder2 from "../../assets/event2.jpg";
-import editIcon from "../../assets/icons/mod.png";
 import React, { useState, useEffect } from "react";
+
 // Dynamically load club icons
 const clubIcons = Array.from({ length: 8 }).map((_, i) =>
   require(`../../assets/icons/Clubs icons/club${(i % 5) + 1}.jpeg`)
@@ -12,13 +10,22 @@ const clubIcons = Array.from({ length: 8 }).map((_, i) =>
 function HomeAdmin() {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
+        setLoading(true);
         const res = await fetch("http://localhost:3000/api/events");
+        
+        if (!res.ok) {
+          throw new Error(`Server returned ${res.status}: ${res.statusText}`);
+        }
+        
         const data = await res.json();
-        console.log(data);
+        console.log("Fetched events:", data);
+        
         if (Array.isArray(data)) {
           setEvents(data);
         } else {
@@ -27,6 +34,10 @@ function HomeAdmin() {
         }
       } catch (err) {
         console.error("Failed to fetch events:", err);
+        setError(err.message);
+        setEvents([]);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -69,16 +80,26 @@ function HomeAdmin() {
             Show All
           </button>
         </div>
-        <div style={clubsGrid}>
-          {clubIcons.map((icon, index) => (
-            <button
-              key={index}
-              style={clubItem}
-              onClick={() => handleClubClick(index + 1)}
-            >
-              <img src={icon} alt={`Club ${index + 1}`} style={clubIconStyle} />
-            </button>
-          ))}
+        
+        <div style={scrollContainer}>
+          <div style={clubsGrid}>
+            {clubIcons.map((icon, index) => (
+              <button
+                key={index}
+                style={clubItem}
+                onClick={() => handleClubClick(index + 1)}
+              >
+                <img src={icon} alt={`Club ${index + 1}`} style={clubIconStyle} />
+              </button>
+            ))}
+          </div>
+          
+          {/* Simple scroll indicator */}
+          <div style={scrollIndicator}>
+            <div style={scrollTrack}>
+              <div style={scrollThumb}></div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -90,63 +111,58 @@ function HomeAdmin() {
             &gt; <span style={{ marginLeft: 6 }}>Show more</span>
           </button>
         </div>
-        <div style={eventsCarousel}>
-          {events.length > 0 && (
-            <>
-              {/* Event 1 */}
-              <button
-                style={eventCard}
-                onClick={() => handleEventClick(events[0]?._id)}
-              >
-                <div style={eventPosterContainer}>
-                  <img
-                    src={events[0]?.posterURL || eventPlaceholder}
-                    alt="Event Poster 1"
-                    style={eventPoster}
-                  />
-                </div>
-                <div style={eventInfo}>
-                  <p style={providerDate}>
-                    {events[0]?.provider || "Provider"}
-                    <br />
-                    {events[0]?.timing?.date || "Date"} {events[0]?.timing?.time || "Time"}
-                  </p>
-                  <button style={editButton}>
-                    <img src={editIcon} alt="Edit" style={editIconImg} />
-                  </button>
-                </div>
-              </button>
-
-              {/* Event 2 */}
-              {events.length > 1 && (
+        
+        <div style={scrollContainer}>
+          <div style={eventsCarousel}>
+            {loading ? (
+              <p>Loading events...</p>
+            ) : error ? (
+              <p>Error loading events: {error}</p>
+            ) : events.length > 0 ? (
+              events.map((event, index) => (
                 <button
+                  key={event._id || index}
                   style={eventCard}
-                  onClick={() => handleEventClick(events[1]?._id)}
+                  onClick={() => handleEventClick(event._id)}
                 >
                   <div style={eventPosterContainer}>
                     <img
-                      src={events[1]?.posterURL || eventPlaceholder2}
-                      alt="Event Poster 2"
+                      src={event.posterURL || require(`../../assets/event${index % 2 + 1}.jpg`)}
+                      alt={`Event ${index + 1}`}
                       style={eventPoster}
+                      onError={(e) => {
+                        e.target.src = require(`../../assets/event${index % 2 + 1}.jpg`);
+                      }}
                     />
                   </div>
                   <div style={eventInfo}>
                     <p style={providerDate}>
-                      {events[1]?.provider || "Provider"}
+                      Provider
                       <br />
-                      {events[1]?.timing?.date || "Date"} {events[1]?.timing?.time || "Time"}
+                      Date Time
                     </p>
-                    <button style={editButton}>
-                      <img src={editIcon} alt="Edit" style={editIconImg} />
-                    </button>
                   </div>
                 </button>
-              )}
-            </>
-          )}
-          {events.length === 0 && (
-            <p>No events available.</p>
-          )}
+              ))
+            ) : (
+              <div style={noEventsContainer}>
+                <p>No events available.</p>
+                <button 
+                  style={{...sectionButton, marginTop: "10px"}} 
+                  onClick={() => navigate("/admin/eventList/addEvent")}
+                >
+                  Add New Event
+                </button>
+              </div>
+            )}
+          </div>
+          
+          {/* Simple scroll indicator */}
+          <div style={scrollIndicator}>
+            <div style={scrollTrack}>
+              <div style={scrollThumb}></div>
+            </div>
+          </div>
         </div>
       </section>
     </div>
@@ -193,24 +209,30 @@ const sectionButton = {
   fontSize: "0.9rem",
 };
 
+const scrollContainer = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "10px"
+};
+
 const clubsGrid = {
   display: "flex",
-  flexWrap: "wrap",
+  overflowX: "auto",
   gap: "20px",
-  justifyContent: "flex-start",
-  alignItems: "center",
+  paddingBottom: "10px",
 };
 
 const clubItem = {
   backgroundColor: "#ffffff",
   borderRadius: "10px",
-  width: "100px",
+  minWidth: "100px",
   height: "100px",
   overflow: "hidden",
   padding: 0,
   border: "2px solid transparent",
   transition: "border-color 0.3s ease, transform 0.2s ease",
   cursor: "pointer",
+  flex: "0 0 auto",
 };
 
 const clubIconStyle = {
@@ -225,6 +247,7 @@ const eventsCarousel = {
   overflowX: "auto",
   gap: "20px",
   paddingBottom: "10px",
+  minHeight: "250px",
 };
 
 const eventCard = {
@@ -232,9 +255,11 @@ const eventCard = {
   borderRadius: "10px",
   minWidth: "220px",
   flex: "0 0 auto",
-  boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+  boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
   transition: "transform 0.2s ease",
   cursor: "pointer",
+  position: "relative",
+  overflow: "hidden",
 };
 
 const eventPosterContainer = {
@@ -254,28 +279,49 @@ const eventPoster = {
 const eventInfo = {
   padding: "12px",
   display: "flex",
-  justifyContent: "space-between",
+  justifyContent: "center",
   alignItems: "center",
+  backgroundColor: "white",
 };
 
 const providerDate = {
   fontSize: "0.85rem",
   color: "#475569",
+  margin: 0,
+  textAlign: "center",
 };
 
-const editButton = {
-  backgroundColor: "#22c55e",
-  border: "none",
-  borderRadius: "50%",
-  width: "28px",
-  height: "28px",
+const noEventsContainer = {
   display: "flex",
+  flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  cursor: "pointer",
+  width: "100%",
+  padding: "20px",
 };
 
-const editIconImg = {
-  width: "16px",
-  height: "16px",
+// Simple scroll indicator
+const scrollIndicator = {
+  width: "100%",
+  height: "10px",
+  display: "flex",
+  justifyContent: "center",
+};
+
+const scrollTrack = {
+  width: "50%",
+  height: "4px",
+  backgroundColor: "rgba(255, 255, 255, 0.2)",
+  borderRadius: "2px",
+  position: "relative",
+};
+
+const scrollThumb = {
+  position: "absolute",
+  left: "0",
+  top: "0",
+  height: "100%",
+  width: "100px",
+  backgroundColor: "rgba(255, 255, 255, 0.6)",
+  borderRadius: "2px",
 };
