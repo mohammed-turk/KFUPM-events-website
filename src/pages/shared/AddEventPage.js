@@ -4,10 +4,13 @@ import Select from 'react-select';
 
 function AddEventPage() {
     const [title, setTitle] = useState("");
-    const [selectedProvider, setSelectedProvider] = useState(null);
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
     const [poster, setPoster] = useState(null);
+    const [location, setLocation] = useState("");
+    const [info, setInfo] = useState("");
+    const [selectedProvider, setSelectedProvider] = useState(null);
+
     const [clubOptions, setClubOptions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState("");
@@ -38,53 +41,37 @@ function AddEventPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        //Validation
-        if (!selectedProvider || !poster) {
-            setMessage("Please select a provider and poster image");
-            return;
-        }
-
         setIsLoading(true);
         setMessage("");
 
         try {
+            //Uploading image
             const uploadData = new FormData();
-            uploadData.append('file', poster); // Use the state directly
+            uploadData.append('file', poster);
             uploadData.append('upload_preset', 'event_poster');
-
-            console.log('Uploading file:', poster.name); // Verify file
-
             const cloudinaryResponse = await fetch(
                 'https://api.cloudinary.com/v1_1/dxvl17oal/image/upload',
                 { method: 'POST', body: uploadData }
             );
-
             const cloudinaryResult = await cloudinaryResponse.json();
-            console.log('Cloudinary result:', cloudinaryResult);
-
             if (!cloudinaryResult.secure_url) {
-                throw new Error('Image upload failed: No URL returned');
+                throw new Error('Image upload failed, try again later');
             }
 
-            // 2. Send to backend
+            //Send data to backend
             const backendPayload = {
-                title,
-                provider: selectedProvider,
-                date,
-                timing: time,
-                poster: cloudinaryResult.secure_url
+                title: title,
+                timing: `${String(date)} | ${String(time)}`,
+                posterURL: cloudinaryResult.secure_url,
+                location: location,
+                info: info? info:"No extra information",
+                provider: selectedProvider.label,
             };
-
-            console.log("Final payload:", backendPayload); // Verify before sending
-
-
-            const response = await fetch('http://localhost:3000/api/clubs/admin/addOrg', {
+            const response = await fetch('http://localhost:3000/api/events/addEvent', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(backendPayload)
             });
-
             const result = await response.json();
             if (!response.ok) throw new Error(result.error || 'Failed to create event');
 
@@ -95,6 +82,8 @@ function AddEventPage() {
             setDate("");
             setTime("");
             setPoster(null);
+            setLocation("");
+            setInfo("");
 
         } catch (error) {
             setMessage(error.message);
@@ -164,6 +153,20 @@ function AddEventPage() {
                             accept="image/*"
                             onChange={handleImageChange}
                             required
+                        />
+
+                        <label>Event Location</label>
+                        <input
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                            required
+                        />
+
+                        <label>Extra Information</label>
+                        <input
+                            style={{height:'110px'}}
+                            value={info}
+                            onChange={(e) => setInfo(e.target.value)}
                         />
 
                         <button type="submit" disabled={isLoading}>

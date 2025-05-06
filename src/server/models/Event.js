@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 const eventSchema = new mongoose.Schema({
-    date: { type: String, required: true },
-    posterURL: { type: String, required: true },
-    provider: {type: String,required: true},
-    timing: { type: String, required: true },
     title : { type: String, required: true },
+    timing: { type: String, required: true },
+    posterURL: { type: String, required: true },
+    location: { type: String, required: true },
+    info: { type: String, required: true },
+    provider: {type: String,required: false},
 }, { collection: "Event" });
 
 

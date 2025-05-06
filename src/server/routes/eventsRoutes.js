@@ -7,16 +7,10 @@ const mongoose = require("mongoose");
 // POST - Create new event
 router.post("/addEvent", async (req, res) => {
   try {
-    console.log("reached the route...");
-    const { title, provider, date, timing, posterUrl } = req.body;
+    const { title, timing, posterURL, location, info, provider} = req.body;
     const newEvent = await createEvent({
-      date: date,
-      posterURL: posterUrl,
-      provider: provider,
-      timing: timing,
-      title: title,
+      title, timing, posterURL, location, info, provider
     });
-
     res.status(201).json(newEvent); // Send the newly created event directly
   } catch (error) {
     console.error("Error:", error);
