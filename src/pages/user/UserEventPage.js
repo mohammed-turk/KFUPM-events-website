@@ -21,7 +21,7 @@ function UserAllEventPage(){
             try {
                 const res = await fetch(`http://localhost:3000/api/events/${id}`);  
                 const data = await res.json();
-                setEvent(data.event);  
+                setEvent(data);  
                 console.log("event was found")
             } catch (err) {
                 console.error("Failed to fetch event:", err);
@@ -38,8 +38,9 @@ function UserAllEventPage(){
             
 
             
-        
-
+        {!event ? (
+            <p className="text-center mt-5">Loading event...</p>
+        ) : (
             <div 
                 className="container shadow-lg rounded-4 p-4 mt-5 bg-light" 
                 style={{ maxWidth: "900px" }}
@@ -62,7 +63,7 @@ function UserAllEventPage(){
                     </div>
                 </div>
             </div> 
-      
+          )}
             
             
         

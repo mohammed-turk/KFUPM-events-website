@@ -3,7 +3,6 @@ const eventSchema = new mongoose.Schema({
     title: { type: String, required: true },
     timing: { type: String, required: true },
     posterURL: { type: String, required: true },
-    location:{type:String,required:false},
     info:{type:String, required:false},
     location:{type:String, required:false},
     provider: {

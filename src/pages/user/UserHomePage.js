@@ -45,6 +45,7 @@ function HomeUser() {
 ///////
 
 /// events fetching
+{/*
 const [events, setEvents]=useState([])
 
 useEffect(()=>{
@@ -60,7 +61,7 @@ useEffect(()=>{
   }
   fetchEvents();
 },[]);
-///
+*/}
 
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
@@ -126,7 +127,7 @@ useEffect(()=>{
           </button>
         </div>
         <div style={clubsGrid}>
-          {clubs.slice(0,20).map((icon, index) => (
+          {clubs.slice(0,20).map((club, index) => (
             <button
               key={index}
               style={clubItem}
@@ -134,8 +135,8 @@ useEffect(()=>{
               title={club.name}
             >
               <img
-                  src={icon.iconURL || "https://via.placeholder.com/120"}
-                  alt={icon.name}
+                  src={club.iconURL || "https://via.placeholder.com/120"}
+                  alt={club.name}
                   className="club-img"
                   onError={(e) => {
                     e.target.onerror = null;
