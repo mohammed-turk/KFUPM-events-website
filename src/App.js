@@ -23,8 +23,9 @@ import ClubsList from "./pages/shared/ClubsList";
 import EventList from "./pages/shared/EventList";
 import AdminClubsList from "./pages/admin/AdminClubsList";
 import AddEventPage from "./pages/shared/AddEventPage";
-// New import for ClubInfo
+// Custom info pages
 import ClubInfo from "./pages/shared/ClubInfo";
+import EventInfo from "./pages/shared/EventInfo";
 
 
 import React, { useEffect } from "react";
@@ -58,8 +59,9 @@ function App() {
           <Route path="/org/eventList" element={<OrgAllEventList />} />
           <Route path="/org/addEvent" element={<AddEventPage />} />
 
-          {/* Add the new route for club info */}
+          {/* Custom info pages */}
           <Route path="/club/:clubId" element={<ClubInfo />} />
+          <Route path="/event/:eventId" element={<EventInfo />} />
 
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/ClubsList" element={<ClubsList />} />

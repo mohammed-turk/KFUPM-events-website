@@ -11,7 +11,7 @@ const clubIcons = Array.from({ length: 8 }).map((_, i) =>
   require(`../../assets/icons/Clubs icons/club${(i % 5) + 1}.jpeg`)
 );
 
-// Sample club data - you can replace this with your actual data
+// Sample club data
 const clubsData = [
   { id: 1, name: "Cycling Club", description: "For cycling enthusiasts" },
   { id: 2, name: "Cultural Club", description: "Celebrating diverse cultures" },
@@ -21,6 +21,26 @@ const clubsData = [
   { id: 6, name: "Cycling Club 2", description: "Another cycling group" },
   { id: 7, name: "Cultural Club 2", description: "Another cultural group" },
   { id: 8, name: "Innovation Club 2", description: "More tech innovations" },
+];
+
+// Sample event data
+const eventsData = [
+  { 
+    id: 101, 
+    title: "Camp Night", 
+    description: "Join us for a night under the stars!",
+    provider: "Outdoor Club", 
+    date: "May 15, 2025", 
+    time: "7:00 PM"
+  },
+  { 
+    id: 102, 
+    title: "Winter Event", 
+    description: "Celebrate the winter season!",
+    provider: "Cultural Club", 
+    date: "May 20, 2025", 
+    time: "6:00 PM"
+  }
 ];
 
 /////fetchin clubs info
@@ -87,6 +107,8 @@ useEffect(()=>{
   }, []);
 
   const handleClubClick = (clubId) => {
+
+
     navigate(`/club/${clubId}`, {
       state: {
         clubData: clubsData.find(club => club.id === clubId)
@@ -95,7 +117,12 @@ useEffect(()=>{
   };
 
   const handleEventClick = (eventId) => {
-    navigate(`/admin/event/${eventId}`);
+    // Updated to use our new event route with state
+    navigate(`/event/${eventId}`, {
+      state: {
+        eventData: eventsData.find(event => event.id === eventId)
+      }
+    });
   };
 
   const showAll = () => {
@@ -158,6 +185,41 @@ useEffect(()=>{
         </div>
 
         <div style={eventsCarousel}>
+<<<<<<< HEAD
+          <button style={eventCard} onClick={() => handleEventClick(101)}>
+            <div style={eventPosterContainer}>
+              <img
+                src={eventPlaceholder}
+                alt="Event Poster"
+                style={eventPoster}
+              />
+            </div>
+            <div style={eventInfo}>
+              <p style={providerDate}>
+                {eventsData[0].provider}
+                <br />
+                {eventsData[0].date} • {eventsData[0].time}
+              </p>
+            </div>
+          </button>
+
+          <button style={eventCard} onClick={() => handleEventClick(102)}>
+            <div style={eventPosterContainer}>
+              <img
+                src={eventPlaceholder2}
+                alt="Event Poster"
+                style={eventPoster}
+              />
+            </div>
+            <div style={eventInfo}>
+              <p style={providerDate}>
+                {eventsData[1].provider}
+                <br />
+                {eventsData[1].date} • {eventsData[1].time}
+              </p>
+            </div>
+          </button>
+=======
           {events.length > 0 && (
             <>
               {/* Event 1 */}
@@ -250,26 +312,7 @@ useEffect(()=>{
           {events.length === 0 && (
             <p>No events available.</p>
           )}
-          <button style={eventCard} onClick={() => handleEventClick(102)}>
-            <div style={eventPosterContainer}>
-              <img
-                src={eventPlaceholder2}
-                alt="Event Poster"
-                style={eventPoster}
-              />
-            </div>
-            <div style={eventInfo}>
-              <p style={providerDate}>
-                provider
-                <br />
-                Date & time
-              </p>
-              <button style={editButton}>
-                <img src={editIcon} alt="Edit" style={editIconImg} />
-              </button>
-            </div>
-          </button>
-
+>>>>>>> 9860bbc83611a7ee8898a06aa6dc85d0789487b7
         </div>
       </section>
     </div>
@@ -334,10 +377,6 @@ const clubItem = {
   border: "2px solid transparent",
   transition: "border-color 0.3s ease, transform 0.2s ease",
   cursor: "pointer",
-  "&:hover": {
-    borderColor: "#3b82f6",
-    transform: "scale(1.05)",
-  },
 };
 
 const clubIcon = {
@@ -362,9 +401,6 @@ const eventCard = {
   boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
   transition: "transform 0.2s ease",
   cursor: "pointer",
-  "&:hover": {
-    transform: "translateY(-5px)",
-  },
 };
 
 const eventPosterContainer = {
@@ -384,28 +420,12 @@ const eventPoster = {
 const eventInfo = {
   padding: "12px",
   display: "flex",
-  justifyContent: "space-between",
+  justifyContent: "center", // Changed from space-between to center
   alignItems: "center",
 };
 
 const providerDate = {
   fontSize: "0.85rem",
   color: "#475569",
-};
-
-const editButton = {
-  backgroundColor: "#22c55e",
-  border: "none",
-  borderRadius: "50%",
-  width: "28px",
-  height: "28px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  cursor: "pointer",
-};
-
-const editIconImg = {
-  width: "16px",
-  height: "16px",
+  textAlign: "center", // Added center alignment
 };
