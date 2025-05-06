@@ -10,11 +10,29 @@ const clubIcons = Array.from({ length: 8 }).map((_, i) =>
   require(`../../assets/icons/Clubs icons/club${(i % 5) + 1}.jpeg`)
 );
 
+// Sample club data - you can replace this with your actual data
+const clubsData = [
+  { id: 1, name: "Cycling Club", description: "For cycling enthusiasts" },
+  { id: 2, name: "Cultural Club", description: "Celebrating diverse cultures" },
+  { id: 3, name: "Innovation Club", description: "Technology and innovation" },
+  { id: 4, name: "Computer Club", description: "For computer science students" },
+  { id: 5, name: "Arts Club", description: "Creative arts and performances" },
+  { id: 6, name: "Cycling Club 2", description: "Another cycling group" },
+  { id: 7, name: "Cultural Club 2", description: "Another cultural group" },
+  { id: 8, name: "Innovation Club 2", description: "More tech innovations" },
+];
+
 function HomeUser() {
   const navigate = useNavigate();
 
   const handleClubClick = (clubId) => {
-    navigate(`/admin/club/${clubId}`);
+    // Navigate to club info page with the club ID as a parameter
+    // This will allow the club info page to fetch the specific club data
+    navigate(`/club/${clubId}`, { 
+      state: { 
+        clubData: clubsData.find(club => club.id === clubId) 
+      } 
+    });
   };
 
   const handleEventClick = (eventId) => {
@@ -50,13 +68,18 @@ function HomeUser() {
           </button>
         </div>
         <div style={clubsGrid}>
-          {clubIcons.map((icon, index) => (
+          {clubsData.map((club, index) => (
             <button
               key={index}
               style={clubItem}
-              onClick={() => handleClubClick(index + 1)}
+              onClick={() => handleClubClick(club.id)}
+              title={club.name}
             >
-              <img src={icon} alt={`Club ${index + 1}`} style={clubIcon} />
+              <img 
+                src={clubIcons[index]} 
+                alt={club.name}
+                style={clubIcon} 
+              />
             </button>
           ))}
         </div>
@@ -118,7 +141,7 @@ function HomeUser() {
 
 export default HomeUser;
 
-// === Styles remain unchanged ===
+// === Styles ===
 
 const sectionBox = {
   backgroundColor: "rgba(64, 92, 118, 0.76)",
@@ -174,6 +197,10 @@ const clubItem = {
   border: "2px solid transparent",
   transition: "border-color 0.3s ease, transform 0.2s ease",
   cursor: "pointer",
+  "&:hover": {
+    borderColor: "#3b82f6",
+    transform: "scale(1.05)",
+  },
 };
 
 const clubIcon = {
@@ -198,6 +225,9 @@ const eventCard = {
   boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
   transition: "transform 0.2s ease",
   cursor: "pointer",
+  "&:hover": {
+    transform: "translateY(-5px)",
+  },
 };
 
 const eventPosterContainer = {

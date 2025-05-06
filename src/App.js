@@ -22,6 +22,8 @@ import ClubsList from "./pages/shared/ClubsList";
 import EventList from "./pages/shared/EventList";
 import AdminClubsList from "./pages/admin/AdminClubsList";
 import AddEventPage from "./pages/shared/AddEventPage";
+// New import for ClubInfo
+import ClubInfo from "./pages/shared/ClubInfo";
 
 function App() {
   return (
@@ -50,11 +52,15 @@ function App() {
           <Route path="/org/eventList" element={<OrgAllEventList />} />
           <Route path="/org/addEvent" element={<AddEventPage />} />
 
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="*" element={<h1>Page Not Found</h1>} />
+          {/* Add the new route for club info */}
+          <Route path="/club/:clubId" element={<ClubInfo />} />
 
+          <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/ClubsList" element={<ClubsList />} />
           <Route path="/EventList" element={<EventList />} />
+          
+          {/* This wildcard route should be last */}
+          <Route path="*" element={<h1>Page Not Found</h1>} />
         </Routes>
       </BrowserRouter>
     </div>
