@@ -51,7 +51,7 @@ function App() {
           <Route path="/user/home" element={<HomeUser />} />
           <Route path="/user/prof" element={<UserProfilePage />} />
           <Route path="/user/eventList" element={<UserAllEventList />} />
-          <Route path="/user/event/:id" element={<UserEventPage/>}/>
+          <Route path="/event/:id" element={<UserEventPage/>}/>
 
           <Route path="/org/home" element={<HOmeOrg />} />
           <Route path="/org/prof" element={<OrgProfilePage />} />
