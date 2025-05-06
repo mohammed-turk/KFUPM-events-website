@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import {useNavigate} from "react-router-dom";
 
@@ -6,13 +6,30 @@ function AdminAllEventList() {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const [events, setEvents] = useState([
-    { id: 1, title: 'EventPoster', provider: 'provider', date: 'Date & time' },
-    { id: 2, title: 'EventPoster', provider: 'provider', date: 'Date & time' },
-    { id: 3, title: 'EventPoster', provider: 'provider', date: 'Date & time' },
-    { id: 4, title: 'EventPoster', provider: 'provider', date: 'Date & time' },
-    { id: 5, title: 'EventPoster', provider: 'provider', date: 'Date & time' },
-    { id: 6, title: 'EventPoster', provider: 'provider', date: 'Date & time' },
   ]);
+
+  
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/events");
+        const data = await res.json();
+        console.log(data);
+        if (Array.isArray(data)) {
+          setEvents(data);
+        } else {
+          console.error("API response is not an array:", data);
+          setEvents([]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch events:", err);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -128,7 +145,19 @@ function AdminAllEventList() {
                 justifyContent: "center",
                 color: "white"
               }}>
-                <h3>{event.title}</h3>
+                <img
+                  src={event.posterURL}
+                  alt={event.title}
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                    objectFit: "contain",
+                  }}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "https://via.placeholder.com/120";
+                  }}
+                />
               </div>
               <div style={{
                 backgroundColor: "#4286f4",

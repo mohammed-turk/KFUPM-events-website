@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Header from "../../components/Header";
 import "./ClubList.css";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 
 function EventsList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [events, setEvents] = useState([]);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
+  const detailsButtonRefs = useRef({}); // Ref to hold button elements
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const res = await fetch("http://localhost:3000/api/events");
         const data = await res.json();
-        console.log(data);
         if (Array.isArray(data)) {
           setEvents(data);
         } else {
@@ -28,6 +28,22 @@ function EventsList() {
     fetchEvents();
   }, []);
 
+  useEffect(() => {
+    // Check button overflow after the component renders
+    Object.keys(detailsButtonRefs.current).forEach(eventId => {
+      const button = detailsButtonRefs.current[eventId];
+      const container = button?.parentElement;
+      if (button && container && button.offsetWidth > container.offsetWidth) {
+        button.style.fontSize = '12px'; // Reduce font size if overflowing
+        button.style.padding = '3px 6px'; // Adjust padding as well
+      } else if (button) {
+        // Revert to default size if no longer overflowing
+        button.style.fontSize = '14px';
+        button.style.padding = '5px 10px';
+      }
+    });
+  }, [events]); // Re-run effect when events update
+
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -41,11 +57,20 @@ function EventsList() {
   };
 
   const handleDetailsClick = (id) => {
-    navigate(`/events/${id}`); // Programmatically navigate to the details page
+    navigate(`/events/${id}`);
+  };
+
+  const formatTiming = (timing) => {
+    if (typeof timing === 'object' && timing !== null) {
+      return `${timing.date || ''} | ${timing.time || ''}`;
+    }
+    return timing;
   };
 
   const filteredEvents = events.filter((event) =>
-    event.provider?.includes(searchTerm)
+    event.provider?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    formatTiming(event.timing)?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    event.title?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -56,7 +81,6 @@ function EventsList() {
           Events Listing
         </h1>
 
-        {/* Search Bar */}
         <div style={{ maxWidth: "600px", margin: "0 auto", padding: "0 20px" }}>
           <input
             type="text"
@@ -73,7 +97,6 @@ function EventsList() {
           />
         </div>
 
-        {/* Events List */}
         <h2>All Events</h2>
 
         <div
@@ -129,16 +152,14 @@ function EventsList() {
                   backgroundColor: "#4286f4",
                   padding: "10px",
                   display: "flex",
-                  justifyContent: "space-between", // Distribute space between elements
+                  justifyContent: "space-between",
                   alignItems: "center",
                 }}
               >
-                <div style={{ color: "white" }}>
-                  <p>{event.provider}</p>
+                <div style={{ color: "white", flexGrow: 1, marginRight: "10px", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
+                  <p style={{ marginBottom: "5px" }}>{event.provider}</p>
                 </div>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  {" "}
-                  {/* Container for buttons */}
+                <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
                   <button
                     onClick={() => handleAddToMyList(event._id)}
                     style={{
@@ -162,6 +183,7 @@ function EventsList() {
                     {event.added ? "✓" : "+"}
                   </button>
                   <button
+                    ref={el => (detailsButtonRefs.current[event._id] = el)} // Attach ref
                     onClick={() => handleDetailsClick(event._id)}
                     style={{
                       backgroundColor: "darkblue",

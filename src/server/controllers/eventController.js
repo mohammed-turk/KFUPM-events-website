@@ -12,8 +12,11 @@ async function fetchEvents() {
 
 async function createEvent(eventData) {
     try {
+        console.log("Uploading...");
         const result = await cloudinary.uploader.upload(eventData.posterURL);
         eventData.posterURL = result.secure_url;
+
+        console.log("URL obtained...")
         const event = new Event(eventData);
         await event.save();
         console.log(`${event.title} created!`);

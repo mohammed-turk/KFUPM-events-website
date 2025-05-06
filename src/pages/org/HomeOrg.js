@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react"; // Import useState and useEffect
 import { useNavigate } from "react-router-dom";
 import HOmePageHeader from "../../components/HomePageHeader";
 import eventPlaceholder from "../../assets/event1.jpg";
@@ -12,6 +12,39 @@ const clubIcons = Array.from({ length: 8 }).map((_, i) =>
 
 function HomeOrg() {
   const navigate = useNavigate();
+  const [events, setEvents] = useState([]); 
+  const loggedInUsername = localStorage.getItem("username"); 
+
+   useEffect(() => {
+      const fetchEvents = async () => {
+        try {
+          const res = await fetch("http://localhost:3000/api/events");
+          const data = await res.json();
+          console.log("All Events Data:", data);
+          if (Array.isArray(data)) {
+           
+            const organizerEvents = data.filter(
+              (event) => event.provider === loggedInUsername
+            );
+            console.log("Organizer's Events:", organizerEvents);
+            setEvents(organizerEvents);
+          } else {
+            console.error("API response is not an array:", data);
+            setEvents([]);
+          }
+        } catch (err) {
+          console.error("Failed to fetch events:", err);
+          setEvents([]); 
+        }
+      };
+  
+      if (loggedInUsername) {
+        fetchEvents();
+      } else {
+        console.log("Username not found in localStorage. Cannot fetch organizer's events.");
+        setEvents([]); 
+      }
+    }, [loggedInUsername]); 
 
   const handleClubClick = (clubId) => {
     navigate(`/admin/club/${clubId}`);
@@ -71,27 +104,60 @@ function HomeOrg() {
           </button>
         </div>
         <div style={eventsCarousel}>
-          {[eventPlaceholder, eventPlaceholder2].map((poster, index) => (
-            <button
-              key={index}
-              style={eventCard}
-              onClick={() => handleEventClick(index + 101)}
-            >
-              <div style={eventPosterContainer}>
-                <img src={poster} alt="Event Poster" style={eventPoster} />
-              </div>
-              <div style={eventInfo}>
-                <p style={providerDate}>
-                  provider
-                  <br />
-                  Date & time
-                </p>
-                <button style={editButton}>
-                  <img src={editIcon} alt="Edit" style={editIconImg} />
+          {events.length > 0 && (
+            <>
+              {/* Event 1 */}
+              <button
+                style={eventCard}
+                onClick={() => handleEventClick(events[0]?._id)}
+              >
+                <div style={eventPosterContainer}>
+                  <img
+                    src={events[0]?.posterURL || eventPlaceholder}
+                    alt={events[0]?.title}
+                    style={eventPoster}
+                  />
+                </div>
+                <div style={eventInfo}>
+                  <p style={providerDate}>
+                    {events[0]?.provider || "Provider"}
+                    
+                  </p>
+                  <button style={editButton}>
+                    <img src={editIcon} alt="Edit" style={editIconImg} />
+                  </button>
+                </div>
+              </button>
+
+              {/* Event 2 */}
+              {events.length > 1 && (
+                <button
+                  style={eventCard}
+                  onClick={() => handleEventClick(events[1]?._id)}
+                >
+                  <div style={eventPosterContainer}>
+                    <img
+                      src={events[1]?.posterURL || eventPlaceholder2}
+                      alt={events[0]?.title}
+                      style={eventPoster}
+                    />
+                  </div>
+                  <div style={eventInfo}>
+                    <p style={providerDate}>
+                      {events[1]?.provider || "Provider"}
+                      
+                    </p>
+                    <button style={editButton}>
+                      <img src={editIcon} alt="Edit" style={editIconImg} />
+                    </button>
+                  </div>
                 </button>
-              </div>
-            </button>
-          ))}
+              )}
+            </>
+          )}
+          {events.length === 0 && (
+            <p>No events available.</p>
+          )}
         </div>
       </section>
     </div>
@@ -100,8 +166,7 @@ function HomeOrg() {
 
 export default HomeOrg;
 
-// === Inline Styles (unchanged) ===
-// ... (styles same as your original code)
+// === Inline Styles ===
 
 const sectionBox = {
   backgroundColor: "rgba(64, 92, 118, 0.76)",
@@ -184,7 +249,7 @@ const eventCard = {
 };
 
 const eventPosterContainer = {
-  height: "120px",
+  height: "180px", // Increased height for better image display
   borderTopLeftRadius: "10px",
   borderTopRightRadius: "10px",
   overflow: "hidden",
@@ -193,7 +258,8 @@ const eventPosterContainer = {
 const eventPoster = {
   width: "100%",
   height: "100%",
-  objectFit: "cover",
+  objectFit: "cover", // Ensure images cover the container without stretching
+  display: "block",
 };
 
 const eventInfo = {

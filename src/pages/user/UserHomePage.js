@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import HOmePageHeader from "../../components/HomePageHeader";
 import eventPlaceholder from "../../assets/event1.jpg";
@@ -43,13 +43,41 @@ const eventsData = [
 
 function HomeUser() {
   const navigate = useNavigate();
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/events");
+        const data = await res.json();
+        console.log(data);
+        if (Array.isArray(data)) {
+          setEvents(data);
+        } else {
+          console.error("API response is not an array:", data);
+          setEvents([]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch events:", err);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   const handleClubClick = (clubId) => {
+<<<<<<< HEAD
     // Navigate to club info page with the club ID as a parameter
     navigate(`/club/${clubId}`, { 
       state: { 
         clubData: clubsData.find(club => club.id === clubId) 
       } 
+=======
+    navigate(`/club/${clubId}`, {
+      state: {
+        clubData: clubsData.find(club => club.id === clubId)
+      }
+>>>>>>> 9860bbc83611a7ee8898a06aa6dc85d0789487b7
     });
   };
 
@@ -98,10 +126,10 @@ function HomeUser() {
               onClick={() => handleClubClick(club.id)}
               title={club.name}
             >
-              <img 
-                src={clubIcons[index]} 
+              <img
+                src={clubIcons[index]}
                 alt={club.name}
-                style={clubIcon} 
+                style={clubIcon}
               />
             </button>
           ))}
@@ -117,6 +145,7 @@ function HomeUser() {
           </button>
         </div>
         <div style={eventsCarousel}>
+<<<<<<< HEAD
           <button style={eventCard} onClick={() => handleEventClick(101)}>
             <div style={eventPosterContainer}>
               <img
@@ -150,6 +179,58 @@ function HomeUser() {
               </p>
             </div>
           </button>
+=======
+          {events.length > 0 && (
+            <>
+              {/* Event 1 */}
+              <button
+                style={eventCard}
+                onClick={() => handleEventClick(events[0]?._id)}
+              >
+                <div style={eventPosterContainer}>
+                  <img
+                    src={events[0]?.posterURL || eventPlaceholder}
+                    alt="Event Poster 1"
+                    style={eventPoster}
+                  />
+                </div>
+                <div style={eventInfo}>
+                  <p style={providerDate}>
+                    {events[0]?.provider || "Provider"}
+                    <br />
+                    {events[0]?.timing?.date || "Date"} {events[0]?.timing?.time || "Time"}
+                  </p>
+                </div>
+              </button>
+
+              {/* Event 2 */}
+              {events.length > 1 && (
+                <button
+                  style={eventCard}
+                  onClick={() => handleEventClick(events[1]?._id)}
+                >
+                  <div style={eventPosterContainer}>
+                    <img
+                      src={events[1]?.posterURL || eventPlaceholder2}
+                      alt="Event Poster 2"
+                      style={eventPoster}
+                    />
+                  </div>
+                  <div style={eventInfo}>
+                    <p style={providerDate}>
+                      {events[1]?.provider || "Provider"}
+                      <br />
+                      {events[1]?.timing?.date || "Date"} {events[1]?.timing?.time || "Time"}
+                    </p>
+                  </div>
+                </button>
+              )}
+            </>
+          )}
+          {events.length === 0 && (
+            <p>No events available.</p>
+          )}
+>>>>>>> 9860bbc83611a7ee8898a06aa6dc85d0789487b7
         </div>
       </section>
     </div>
@@ -241,7 +322,7 @@ const eventCard = {
 };
 
 const eventPosterContainer = {
-  height: "120px",
+  height: "180px", // Increased height for better image display
   borderTopLeftRadius: "10px",
   borderTopRightRadius: "10px",
   overflow: "hidden",
@@ -251,6 +332,7 @@ const eventPoster = {
   width: "100%",
   height: "100%",
   objectFit: "cover",
+  display: "block",
 };
 
 const eventInfo = {
