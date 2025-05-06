@@ -215,13 +215,13 @@ useEffect(()=>{
               <img
                 src={event.posterURL}
                 alt="Event Poster"
-                style={eventPoster}
+                style={eventPosterShrink} 
               />
               
             </div>
             <div style={eventInfo}>
               <p style={providerDate}>
-                {event.title}
+                {event.provider}
                 <br />
                 {event.timing}
               </p>
@@ -393,3 +393,27 @@ const providerDate = {
   color: "#475569",
   textAlign: "center", // Added center alignment
 };
+
+const editButton = {
+  backgroundColor: "#22c55e",
+  border: "none",
+  borderRadius: "50%",
+  width: "28px",
+  height: "28px",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  cursor: "pointer",
+  };
+  
+  const editIconImg = {
+    width: "16px", 
+    height: "16px", 
+    verticalAlign: "middle", 
+  };
+  const eventPosterShrink = {
+    width: "100%",
+    height: "100%",
+    objectFit: "scale-down", // Shrinks to fit within the container
+    display: "block",
+  };
