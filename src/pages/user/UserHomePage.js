@@ -66,18 +66,10 @@ function HomeUser() {
   }, []);
 
   const handleClubClick = (clubId) => {
-<<<<<<< HEAD
-    // Navigate to club info page with the club ID as a parameter
-    navigate(`/club/${clubId}`, { 
-      state: { 
-        clubData: clubsData.find(club => club.id === clubId) 
-      } 
-=======
     navigate(`/club/${clubId}`, {
       state: {
         clubData: clubsData.find(club => club.id === clubId)
       }
->>>>>>> 9860bbc83611a7ee8898a06aa6dc85d0789487b7
     });
   };
 
@@ -145,41 +137,6 @@ function HomeUser() {
           </button>
         </div>
         <div style={eventsCarousel}>
-<<<<<<< HEAD
-          <button style={eventCard} onClick={() => handleEventClick(101)}>
-            <div style={eventPosterContainer}>
-              <img
-                src={eventPlaceholder}
-                alt="Event Poster"
-                style={eventPoster}
-              />
-            </div>
-            <div style={eventInfo}>
-              <p style={providerDate}>
-                {eventsData[0].provider}
-                <br />
-                {eventsData[0].date} • {eventsData[0].time}
-              </p>
-            </div>
-          </button>
-
-          <button style={eventCard} onClick={() => handleEventClick(102)}>
-            <div style={eventPosterContainer}>
-              <img
-                src={eventPlaceholder2}
-                alt="Event Poster"
-                style={eventPoster}
-              />
-            </div>
-            <div style={eventInfo}>
-              <p style={providerDate}>
-                {eventsData[1].provider}
-                <br />
-                {eventsData[1].date} • {eventsData[1].time}
-              </p>
-            </div>
-          </button>
-=======
           {events.length > 0 && (
             <>
               {/* Event 1 */}
@@ -230,7 +187,6 @@ function HomeUser() {
           {events.length === 0 && (
             <p>No events available.</p>
           )}
->>>>>>> 9860bbc83611a7ee8898a06aa6dc85d0789487b7
         </div>
       </section>
     </div>
