@@ -61,7 +61,7 @@ function AddEventPage() {
             //Send data to backend
             const backendPayload = {
                 title: title,
-                timing: `${String(date)} | ${String(time)}`,
+                timing: `date: ${String(date)} | time: ${String(time)}`,
                 posterURL: cloudinaryResult.secure_url,
                 location: location,
                 info: info? info:"No extra information",

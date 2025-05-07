@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import HOmePageHeader from "../../components/HomePageHeader";
-import eventPlaceholder from "../../assets/event1.jpg";
-import eventPlaceholder2 from "../../assets/event2.jpg";
+import EventContainer from "../../components/EventContainer";
+import ClubsContainer from "../../components/ClubContainer";
 
 function HomeUser() {
   const navigate = useNavigate();
@@ -88,10 +88,27 @@ function HomeUser() {
     navigate("/EventList");
   };
 
+  function getUserRole() {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("Token not found in localStorage.");
+      return null;
+    }
+
+    try {
+      // Decoding token payload without using a library
+      const payload = JSON.parse(atob(token.split(".")[1])); // Extract payload
+      return payload.role;
+    } catch (err) {
+      console.error("Failed to decode token.", err);
+      return null;
+    }
+  }
+
   return (
     <div style={pageContainer}>
       {/* Header */}
-      <HOmePageHeader name="user" />
+      <HOmePageHeader type={getUserRole()} />
 
       {/* Clubs Section */}
       <section style={sectionBox}>
@@ -108,26 +125,7 @@ function HomeUser() {
           ) : error ? (
             <p>Error loading clubs: {error}</p>
           ) : clubs.length > 0 ? (
-            <div style={horizontalScrollContainer}>
-              {clubs.map((club, index) => (
-                <button
-                  key={club._id || index}
-                  style={clubItem}
-                  onClick={() => handleClubClick(club)}
-                  title={club.name}
-                >
-                  <img
-                    src={club.iconURL}
-                    alt={club.name}
-                    style={clubIcon}
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "https://via.placeholder.com/100";
-                    }}
-                  />
-                </button>
-              ))}
-            </div>
+            <ClubsContainer clubs={clubs} handleClick={handleClubClick} max={8}/>
           ) : (
             <p>No clubs available.</p>
           )}
@@ -142,43 +140,14 @@ function HomeUser() {
             &gt; <span style={{ marginLeft: 6 }}>Show more</span>
           </button>
         </div>
-        
+
         <div>
           {loading ? (
             <p>Loading events...</p>
           ) : error ? (
             <p>Error loading events: {error}</p>
           ) : events.length > 0 ? (
-            <div style={eventsContainer}>
-              {events.slice(0, 4).map((event, index) => (
-                <button
-                  key={event._id || index}
-                  style={eventCard}
-                  onClick={() => handleEventClick(event._id)}
-                >
-                  <div style={eventPosterContainer}>
-                    <img
-                      src={event.posterURL || (index % 2 === 0 ? eventPlaceholder : eventPlaceholder2)}
-                      alt={`Event ${index + 1}`}
-                      style={eventPoster}
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = index % 2 === 0 ? eventPlaceholder : eventPlaceholder2;
-                      }}
-                    />
-                  </div>
-                  <div style={eventInfo}>
-                    <p style={providerDate}>
-                      Provider
-                      <br />
-                      {event.timing ? 
-                        event.timing.split('|')[0].replace('date:', '').trim() : 
-                        "Date"}
-                    </p>
-                  </div>
-                </button>
-              ))}
-            </div>
+            <EventContainer events={events} handleEventClick={handleEventClick} max={4}/>
           ) : (
             <p>No events available.</p>
           )}
@@ -234,98 +203,4 @@ const sectionButton = {
   fontWeight: "bold",
   cursor: "pointer",
   fontSize: "0.9rem",
-};
-
-// Horizontal scroll container for clubs
-const horizontalScrollContainer = {
-  display: "flex",
-  flexWrap: "nowrap",
-  gap: "10px",
-  overflowX: "auto",
-  paddingBottom: "10px",
-  // Hide scrollbar for Chrome, Safari and Opera
-  "&::-webkit-scrollbar": {
-    display: "none"
-  },
-  // Hide scrollbar for IE, Edge and Firefox
-  msOverflowStyle: "none",  // IE and Edge
-  scrollbarWidth: "none",   // Firefox
-};
-
-const clubItem = {
-  backgroundColor: "#ffffff",
-  borderRadius: "10px",
-  width: "100px",
-  height: "100px",
-  overflow: "hidden",
-  padding: 0,
-  border: "2px solid transparent",
-  transition: "transform 0.2s ease",
-  cursor: "pointer",
-  flexShrink: 0,
-};
-
-const clubIcon = {
-  width: "100%",
-  height: "100%",
-  objectFit: "cover",
-  display: "block",
-};
-
-// Event styles - horizontal scroll container
-const eventsContainer = {
-  display: "flex",
-  flexWrap: "nowrap",
-  gap: "10px",
-  overflowX: "auto",
-  paddingBottom: "10px",
-  // Hide scrollbar for Chrome, Safari and Opera
-  "&::-webkit-scrollbar": {
-    display: "none"
-  },
-  // Hide scrollbar for IE, Edge and Firefox
-  msOverflowStyle: "none",  // IE and Edge
-  scrollbarWidth: "none",   // Firefox
-};
-
-const eventCard = {
-  backgroundColor: "#f1f5f9",
-  borderRadius: "10px",
-  width: "220px",
-  height: "250px",
-  boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-  transition: "transform 0.2s ease",
-  cursor: "pointer",
-  overflow: "hidden",
-  flexShrink: 0,
-};
-
-const eventPosterContainer = {
-  height: "180px",
-  borderTopLeftRadius: "10px",
-  borderTopRightRadius: "10px",
-  overflow: "hidden",
-};
-
-const eventPoster = {
-  width: "100%",
-  height: "100%",
-  objectFit: "cover",
-  display: "block",
-};
-
-const eventInfo = {
-  padding: "12px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  backgroundColor: "white",
-  height: "70px",
-};
-
-const providerDate = {
-  fontSize: "0.85rem",
-  color: "#475569",
-  textAlign: "center",
-  margin: 0,
 };

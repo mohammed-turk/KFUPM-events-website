@@ -1,14 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function HOmePageHeader({ name }) {
+function HOmePageHeader({ type }) {
   const navigate = useNavigate();
 
   const goToProfile = () => {
-    if (name === "admin") {
-      navigate("/admin/prof");
-    } else if (name === "org") {
-      navigate("/org/prof");
+    if (type === 0) {
+      navigate("admin/prof");
+    } else if (type === 1) {
+      navigate("org/prof");
     } else {
       navigate("/user/prof");
     }
@@ -19,11 +19,13 @@ function HOmePageHeader({ name }) {
   };
 
   const mode =
-    name === "admin"
+    type === 0
       ? "Admin Mode"
-      : name === "org"
+      : type === 1
       ? "Event Organizer Mode"
       : "Normal user Mode";
+
+  console.log("token is: ",type)
 
   return (
     <section
@@ -52,7 +54,7 @@ function HOmePageHeader({ name }) {
       </h3>
 
       <div style={{ display: "flex", gap: "12px" }}>
-          {name !== "admin" && (
+          {type !== 0 && (
               <button
                   onClick={goToProfile}
                   style={{

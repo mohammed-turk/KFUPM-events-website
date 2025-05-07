@@ -93,10 +93,27 @@ function HomeAdmin() {
     navigate("/admin/eventList");
   };
 
+  function getUserRole() {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("Token not found in localStorage.");
+      return null;
+    }
+
+    try {
+      // Decoding token payload without using a library
+      const payload = JSON.parse(atob(token.split(".")[1])); // Extract payload
+      return payload.role;
+    } catch (err) {
+      console.error("Failed to decode token.", err);
+      return null;
+    }
+  }
+
   return (
     <div style={pageContainer}>
       {/* Header */}
-      <HOmePageHeader name="admin" />
+      <HOmePageHeader type={getUserRole()} />
 
       {/* Clubs Section */}
       <section style={sectionBox}>
@@ -147,51 +164,43 @@ function HomeAdmin() {
             &gt; <span style={{ marginLeft: 6 }}>Show more</span>
           </button>
         </div>
-        
+
         <div>
           {loading ? (
-            <p>Loading events...</p>
+              <p>Loading events...</p>
           ) : error ? (
-            <p>Error loading events: {error}</p>
+              <p>Error loading events: {error}</p>
           ) : events.length > 0 ? (
-            <div style={eventsContainer}>
-              {events.slice(0, 4).map((event, index) => (
-                <button
-                  key={event._id || index}
-                  style={eventCard}
-                  onClick={() => handleEventClick(event._id)}
-                >
-                  <div style={eventPosterContainer}>
-                    <img
-                      src={event.posterURL || (index === 0 ? eventPlaceholder : eventPlaceholder2)}
-                      alt={`Event ${index + 1}`}
-                      style={eventPoster}
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = index === 0 ? eventPlaceholder : eventPlaceholder2;
-                      }}
-                    />
-                  </div>
-                  <div style={eventInfo}>
-                    <p style={providerDate}>
-                      {event.provider}
-                      <br />
-                      {event.timing}
-                    </p>
-                  </div>
-                </button>
-              ))}
-            </div>
+              <div style={eventsContainer}>
+                {events.slice(0, 4).map((event, index) => (
+                    <button
+                        key={event._id || index}
+                        style={eventCard}
+                        onClick={() => handleEventClick(event._id)}
+                    >
+                      <div style={eventPosterContainer}>
+                        <img
+                            src={event.posterURL || (index % 2 === 0 ? eventPlaceholder : eventPlaceholder2)}
+                            alt={`Event ${index + 1}`}
+                            style={eventPoster}
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = index % 2 === 0 ? eventPlaceholder : eventPlaceholder2;
+                            }}
+                        />
+                      </div>
+                      <div style={eventInfo}>
+                        <p style={providerDate}>
+                          {event.provider}
+                          <br/>
+                          {event.timing}
+                        </p>
+                      </div>
+                    </button>
+                ))}
+              </div>
           ) : (
-            <div style={noEventsContainer}>
               <p>No events available.</p>
-              <button 
-                style={{...sectionButton, marginTop: "10px"}} 
-                onClick={() => navigate("/admin/eventList/addEvent")}
-              >
-                Add New Event
-              </button>
-            </div>
           )}
         </div>
       </section>
@@ -219,6 +228,7 @@ const sectionBox = {
   maxWidth: "1200px",
   marginInline: "auto",
   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+  position: "relative",
 };
 
 const sectionHeader = {
@@ -282,20 +292,31 @@ const clubIcon = {
   display: "block",
 };
 
-// Event styles
+// Event styles - horizontal scroll container
 const eventsContainer = {
   display: "flex",
-  gap: "20px",
-  justifyContent: "space-between",
+  flexWrap: "nowrap",
+  gap: "10px",
+  overflowX: "auto",
+  paddingBottom: "10px",
+  // Hide scrollbar for Chrome, Safari and Opera
+  "&::-webkit-scrollbar": {
+    display: "none"
+  },
+  // Hide scrollbar for IE, Edge and Firefox
+  msOverflowStyle: "none",  // IE and Edge
+  scrollbarWidth: "none",   // Firefox
 };
 
 const eventCard = {
   backgroundColor: "#f1f5f9",
   borderRadius: "10px",
   width: "220px",
+  height: "250px",
   boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
   transition: "transform 0.2s ease",
   cursor: "pointer",
+  overflow: "hidden",
   flexShrink: 0,
 };
 
@@ -319,6 +340,7 @@ const eventInfo = {
   justifyContent: "center",
   alignItems: "center",
   backgroundColor: "white",
+  height: "70px",
 };
 
 const providerDate = {
@@ -326,12 +348,4 @@ const providerDate = {
   color: "#475569",
   textAlign: "center",
   margin: 0,
-};
-
-const noEventsContainer = {
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  padding: "20px",
 };
