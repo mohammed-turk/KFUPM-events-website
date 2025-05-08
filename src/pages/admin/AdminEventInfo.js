@@ -8,6 +8,7 @@ function AdminEventInfo() {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userType, setUserType] = useState();
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -24,6 +25,15 @@ function AdminEventInfo() {
         // Otherwise fetch from API
         const response = await fetch(`http://localhost:3000/api/events/${eventId}`);
         
+        const usersList = await fetch("http://localhost:3000/api/users");
+        const userData = await usersList.json();
+        console.log("Fetched users data:", userData);
+        
+        
+        const user = userData.find((user) => user.username === localStorage.getItem("username"));
+        setUserType(user.usertype);
+        console.log("User type:", userType);
+
         if (!response.ok) {
           throw new Error(`Server returned ${response.status}: ${response.statusText}`);
         }
@@ -43,9 +53,13 @@ function AdminEventInfo() {
   }, [eventId, location.state]);
 
   const handleGoBack = () => {
-    // Navigate to the admin events list instead of home
+    
     navigate("/admin/eventList");
-  };
+   if (userType === 1) {
+    navigate("/org/home");
+  }
+  
+}
 
   const handleEditEvent = () => {
     // Check if your edit route is properly configured
