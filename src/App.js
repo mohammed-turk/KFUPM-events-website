@@ -70,7 +70,7 @@ function App() {
           <Route path="/org/prof" element={<OrgProfilePage />} />
           <Route path="/org/members" element={<MembersList />} />
           <Route path="/org/eventList" element={<OrgAllEventList />} />
-          <Route path="/org/addEvent" element={<AddEventPage />} />
+          <Route path="/org/home/addEvent" element={<AddEventPage />} />
 
           {/* Custom info pages */}
           <Route path="/club/:clubId" element={<ClubInfo />} />

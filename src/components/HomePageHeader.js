@@ -54,7 +54,7 @@ function HOmePageHeader({ type }) {
       </h3>
 
       <div style={{ display: "flex", gap: "12px" }}>
-          {type !== 0 && (
+          {type !== 0 && type != 1 && (
               <button
                   onClick={goToProfile}
                   style={{

@@ -7,7 +7,13 @@ function EditEventPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+  const [title, setTitle] = useState('');
+  const [provider, setProvider] = useState('');
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
+  const [posterURL, setPosterURL] = useState('');
+  const [location, setLocation] = useState('');
+  const [info, setInfo] = useState('');
   // Form state
   const [formData, setFormData] = useState({
     title: "",
@@ -63,7 +69,18 @@ function EditEventPage() {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    console.log("Form Data being sent:", formData);
+    const eventData = {
+      title: title,
+      provider: provider,
+      timing: {
+        date: date,
+        time: time,
+      },
+      posterURL: posterURL,
+      location: location,
+      info: info,
+    };
     try {
       setLoading(true);
       

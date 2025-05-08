@@ -4,50 +4,89 @@ import HOmePageHeader from "../../components/HomePageHeader";
 import eventPlaceholder from "../../assets/event1.jpg";
 import eventPlaceholder2 from "../../assets/event2.jpg";
 import editIcon from "../../assets/icons/mod.png";
-
+import EventMod from "../../components/Event&Mod";
+import e1 from "../../assets/event1.jpg";
+import c1 from "../../assets/club.jpg";
 // Load club icons dynamically
 const clubIcons = Array.from({ length: 8 }).map((_, i) =>
   require(`../../assets/icons/Clubs icons/club${(i % 5) + 1}.jpeg`)
 );
 
+
+
 function HomeOrg() {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]); 
-  const loggedInUsername = localStorage.getItem("username"); 
-
-   useEffect(() => {
-      const fetchEvents = async () => {
-        try {
-          const res = await fetch("http://localhost:3000/api/events");
-          const data = await res.json();
-          console.log("All Events Data:", data);
-          if (Array.isArray(data)) {
-           
-            const organizerEvents = data.filter(
-              (event) => event.provider === loggedInUsername
-            );
-            console.log("Organizer's Events:", organizerEvents);
-            setEvents(organizerEvents);
-          } else {
-            console.error("API response is not an array:", data);
-            setEvents([]);
-          }
-        } catch (err) {
-          console.error("Failed to fetch events:", err);
-          setEvents([]); 
+  const [clubs, setClubs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const loggedInUsername = localStorage.getItem("username");
+   const [club, setClub] = useState(""); 
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    // Fetch both clubs and events when component mounts
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        
+        // Fetch events
+        const eventsRes = await fetch("http://localhost:3000/api/events");
+        if (!eventsRes.ok) {
+          throw new Error(`Events API returned ${eventsRes.status}`);
         }
-      };
-  
-      if (loggedInUsername) {
-        fetchEvents();
-      } else {
-        console.log("Username not found in localStorage. Cannot fetch organizer's events.");
-        setEvents([]); 
+        const eventsData = await eventsRes.json();
+        
+        // Fetch clubs
+        const clubsRes = await fetch("http://localhost:3000/api/clubs");
+        if (!clubsRes.ok) {
+          throw new Error(`Clubs API returned ${clubsRes.status}`);
+        }
+        const clubsData = await clubsRes.json();
+        
+        console.log("Fetched events:", eventsData);
+        console.log("Fetched clubs:", clubsData);
+        
+        if (Array.isArray(eventsData)) {
+          const organizerEvents = eventsData.filter(
+            (event) => event.provider === loggedInUsername
+          );
+          setEvents(organizerEvents);
+        } else {
+          console.error("Events API response is not an array:", eventsData);
+          setEvents([]);
+        }
+        
+        if (Array.isArray(clubsData)) {
+          setClubs(clubsData);
+          console.log("Clubs data:", loggedInUsername);
+          setClub(clubsData.find((club) => club.name === loggedInUsername));
+          console.log(",,,",club)
+        } else {
+          console.error("Clubs API response is not an array:", clubsData);
+          setClubs([]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch data:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-    }, [loggedInUsername]); 
+    };
 
-  const handleClubClick = (clubId) => {
-    navigate(`/admin/club/${clubId}`);
+    fetchData();
+  }, [loggedInUsername]); 
+
+  
+  const handleClubClick = (club) => {
+    if (!club || !club._id) {
+      console.error("Attempted to navigate to club with missing ID");
+      return;
+    }
+    
+    navigate(`/admin/club/${club._id}`, {
+      state: {
+        clubData: club
+      }
+    });
   };
 
   const handleEventClick = (eventId) => {
@@ -62,6 +101,23 @@ function HomeOrg() {
     navigate("/org/eventList");
   };
 
+  function getUserRole() {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("Token not found in localStorage.");
+      return null;
+    }
+
+    try {
+      // Decoding token payload without using a library
+      const payload = JSON.parse(atob(token.split(".")[1])); // Extract payload
+      return payload.role;
+    } catch (err) {
+      console.error("Failed to decode token.", err);
+      return null;
+    }
+  }
+
   return (
     <div
       style={{
@@ -72,92 +128,89 @@ function HomeOrg() {
       }}
     >
       {/* Header */}
-      <HOmePageHeader name="org" />
+      <HOmePageHeader type= {getUserRole()} />
 
       {/* Clubs Section */}
-      <section style={sectionBox}>
-        <div style={sectionHeader}>
-          <h2 style={sectionTitle}>Clubs & Colleges</h2>
-          <button style={sectionButton} onClick={showAll}>
-            Show All
-          </button>
-        </div>
-        <div style={clubsGrid}>
-          {clubIcons.map((icon, index) => (
-            <button
-              key={index}
-              style={clubItem}
-              onClick={() => handleClubClick(index + 1)}
-            >
-              <img src={icon} alt={`Club ${index + 1}`} style={clubIconStyle} />
-            </button>
-          ))}
-        </div>
-      </section>
+      <div className={"pageBody"}>
+                <div className={"info"}>
+                    <img 
+                        className={"profImg"} 
+                        src={club?.iconURL || c1} 
+                        alt="club"
+                        onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = c1;
+                        }}
+                    />
+                    <div>
+                        <h2>{club?.name || "Club name"}</h2>
+                        <p>{club?.description || "This club is the best club ever. It offers wonderful events, fruitful lectures, and innovative contests. Join our club now!!"}</p>
+                    </div>
+                </div>
+                
+            </div>
+
+      
+     
+     
 
       {/* Events Section */}
       <section style={sectionBox}>
         <div style={sectionHeader}>
           <h2 style={sectionTitle}>Events</h2>
-          <button style={sectionButton} onClick={showMore}>
-            &gt; <span style={{ marginLeft: 6 }}>Show more</span>
+          <button 
+            onClick={() => navigate("./addEvent")}
+            style={{
+              backgroundColor: "#4CAF50",
+              color: "white",
+              border: "line",
+
+              width: "160px",
+              height: "40px",
+              fontSize: "24px",
+              cursor: "pointer",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: "20px"
+            }}
+          >
+            add event
           </button>
         </div>
         <div style={eventsCarousel}>
-          {events.length > 0 && (
-            <>
-              {/* Event 1 */}
-              <button
-                style={eventCard}
-                onClick={() => handleEventClick(events[0]?._id)}
-              >
-                <div style={eventPosterContainer}>
-                  <img
-                    src={events[0]?.posterURL || eventPlaceholder}
-                    alt={events[0]?.title}
-                    style={eventPoster}
-                  />
-                </div>
-                <div style={eventInfo}>
-                  <p style={providerDate}>
-                    {events[0]?.provider || "Provider"}
-                    
-                  </p>
-                  <button style={editButton}>
-                    <img src={editIcon} alt="Edit" style={editIconImg} />
-                  </button>
-                </div>
-              </button>
+          
 
-              {/* Event 2 */}
-              {events.length > 1 && (
-                <button
-                  style={eventCard}
-                  onClick={() => handleEventClick(events[1]?._id)}
-                >
-                  <div style={eventPosterContainer}>
-                    <img
-                      src={events[1]?.posterURL || eventPlaceholder2}
-                      alt={events[0]?.title}
-                      style={eventPoster}
-                    />
-                  </div>
-                  <div style={eventInfo}>
-                    <p style={providerDate}>
-                      {events[1]?.provider || "Provider"}
-                      
-                    </p>
-                    <button style={editButton}>
-                      <img src={editIcon} alt="Edit" style={editIconImg} />
-                    </button>
-                  </div>
+        {
+          events.map( event => (
+            <button
+              key={event._id}
+              style={eventCard}
+              onClick={() => handleEventClick(event._id)}
+            >
+              <div style={eventPosterContainer}>
+                <img
+                  src={event.posterURL || eventPlaceholder}
+                  alt={event.title}
+                  style={eventPoster}
+                />
+              </div>
+              <div style={eventInfo}>
+                <p style={providerDate}>
+                  {event.provider || "Provider"}
+                  
+                </p>
+                <button style={editButton}>
+                  <img src={editIcon} alt="Edit" style={editIconImg} />
                 </button>
-              )}
-            </>
-          )}
-          {events.length === 0 && (
-            <p>No events available.</p>
-          )}
+              </div>
+            </button>
+          ))
+        }
+          
+          
+            
+          
         </div>
       </section>
     </div>

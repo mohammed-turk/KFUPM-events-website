@@ -15,6 +15,9 @@ function AddEventPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState("");
 
+    const [userType, setUserType] = useState();
+      
+
     // Fetch clubs for provider dropdown
     useEffect(() => {
         const fetchClubs = async () => {
@@ -25,6 +28,14 @@ function AddEventPage() {
                     value: club._id,
                     label: club.name
                 })));
+                const usersList = await fetch("http://localhost:3000/api/users");
+                const userData = await usersList.json();
+                console.log("Fetched users data:", userData);
+      
+      
+      const user = userData.find((user) => user.username === localStorage.getItem("username"));
+      setUserType(user.usertype);
+      console.log("User type:", userType);
             } catch (error) {
                 console.error("Error fetching clubs:", error);
                 setMessage("Failed to load clubs");
@@ -32,6 +43,16 @@ function AddEventPage() {
         };
         fetchClubs();
     }, []);
+
+    const handleHeader = () => {
+       if (userType === 0) {
+            return "Admin mode";
+        }
+        else if (userType === 1) {
+            return "Organizer mode";
+        }
+
+    }
 
     const handleImageChange = (e) => {
         const file = e.target.files?.[0];
@@ -94,7 +115,7 @@ function AddEventPage() {
 
     return (
         <div>
-            <Header type={"Admin mode"}/>
+            <Header type={handleHeader()}/>
             <div className="pageBody" id={"loginPage"}>
                 <div className="loginTab">
                     <h1 style={{fontSize:"62px", letterSpacing:"7px"}}>Add a new event</h1>
