@@ -12,4 +12,22 @@ async function getJoinedClubs(userId) {
     }
 }
 
-module.exports = {getJoinedClubs};
+async function joinClub(userID, clubId) {
+    try {
+        const alreadyJoined = await Joined.findOne({ user: userID, club: clubId });
+        if (alreadyJoined) {
+            throw new Error("User already follows this club.");
+        }
+
+        const joined = new Joined({ user: userID, club: clubId });
+        const result = await joined.save();
+        return result;
+    } catch (err) {
+        console.error('Error following club:', err);
+        throw err;
+    }
+}
+
+
+
+module.exports = {getJoinedClubs, joinClub};
