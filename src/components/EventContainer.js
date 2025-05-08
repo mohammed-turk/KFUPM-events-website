@@ -1,6 +1,9 @@
 import React from "react";
+import {useNavigate} from "react-router-dom";
 
-const EventsContainer = ({ events, handleClick, max}) => {
+const EventsContainer = ({ events, max}) => {
+    const navigate = useNavigate();
+
     const eventsContainer = {
         display: "flex",
         flexWrap: "nowrap",
@@ -52,6 +55,15 @@ const EventsContainer = ({ events, handleClick, max}) => {
         color: "#475569",
         textAlign: "center",
         margin: 0,
+    };
+
+    function handleClick(eventId){
+        // Navigate to event details
+        navigate(`/event/${eventId}`, {
+            state: {
+                eventData: events.find(event => event._id === eventId)
+            }
+        });
     };
 
     function shuffle(array) {

@@ -42,13 +42,11 @@ Header {
 }
 
 .pageBody {
-  margin-left: 25px;
   height: 100%;
-  background-color: rgb(166, 191, 215); /* soft light blue-gray */
+  background-color: rgb(166, 191, 215);
   margin: 0;
-  padding: 0;
+  padding: 15px 25px;
   font-family: "Segoe UI", sans-serif;
-  border-radius: 20px;
 }
 
 .info {

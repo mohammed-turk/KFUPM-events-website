@@ -1,71 +1,77 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Header from "../../components/Header";
-import EventMod from "../../components/Event&Mod";
-import m1 from "../../assets/member1.jpg";
-import e1 from "../../assets/event1.jpg";
-import e2 from "../../assets/event2.jpg";
-import c1 from "../../assets/club.jpg";
 import { useNavigate } from "react-router-dom";
-
-// Sample user data - in a real app, you would fetch this from an API
-const userData = {
-  id: 1,
-  name: "User 1",
-  favoriteEvents: [
-    { id: 101, image: e1, title: "Summer Camp" },
-    { id: 102, image: e2, title: "Winter Event" }
-  ],
-  joinedClubs: [
-    { id: 1, image: c1, name: "Computer Club" },
-    { id: 2, image: c1, name: "Cultural Club" }
-  ]
-};
+import EventsContainer from "../../components/EventContainer";
+import ClubsContainer from "../../components/ClubContainer";
+const username = localStorage.getItem("username");
 
 function UserProfilePage() {
   const navigate = useNavigate();
+  const[favEvents, setFavEvents] = useState([]);
+  const[joinedClubs, setJoinedClubs] = useState([]);
 
-  const handleClubClick = (clubId) => {
-    navigate(`/club/${clubId}`);
-  };
+  useEffect(() => {
+    // Fetch both clubs and events when component mounts
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token")
+        const payload = JSON.parse(atob(token.split(".")[1])); // Extract payload
+        const userId = payload.id;
+        console.log("fetching events...");
+        // Fetch events
+        const eventsRes = await fetch(`http://localhost:3000/api/fav?userid=${userId}`);
+        if (!eventsRes.ok) {
+          throw new Error(`Events API returned ${eventsRes.status}`);
+        }
+        const favEvents = await eventsRes.json();
+
+        // Fetch clubs
+        const clubsRes = await fetch(`http://localhost:3000/api/joined?userid=${userId}`);
+        if (!clubsRes.ok) {
+          throw new Error(`Clubs API returned ${clubsRes.status}`);
+        }
+        const clubsData = await clubsRes.json();
+
+        console.log("Fetched events:", favEvents);
+        console.log("Fetched clubs:", clubsData);
+
+        if (Array.isArray(favEvents)) {
+          setFavEvents(favEvents);
+        } else {
+          console.error("Events API response is not an array:", favEvents);
+          setFavEvents([]);
+        }
+
+        if (Array.isArray(clubsData)) {
+          setJoinedClubs(clubsData);
+        } else {
+          console.error("Clubs API response is not an array:", clubsData);
+          setJoinedClubs([]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch data:", err);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div>
       <Header />
       <div className="pageBody">
-        <div className={"info"}>
-          <img src={m1} alt="Member Profile Pic" className={"profImg"} />
-          <h1>{userData.name}</h1>
-        </div>
+          <h1 style={{margin:"75px 70px", letterSpacing:"5px"}}>{username}</h1>
+
 
         {/* Favorite Events Section */}
-        <h2>Favorite Events</h2>
-        <div className={"EventsList"}>
-          {userData.favoriteEvents.map((event, index) => (
-            <EventMod 
-              key={event.id} 
-              src={event.image} 
-              user={index === 0 ? 2 : undefined} 
-              onClick={() => navigate(`/event/${event.id}`)}
-            />
-          ))}
-        </div>
+        <h3>Favorite Events</h3>
+        <EventsContainer events={favEvents} max={favEvents.length}/>
+        <br/> <br/>
 
         {/* Joined Clubs Section */}
-        <h2>Joined clubs</h2>
-        <div className={"EventsList"}>
-          {userData.joinedClubs.map((club) => (
-            <div 
-              key={club.id} 
-              className={"joinedClub"} 
-              onClick={() => handleClubClick(club.id)}
-              style={{ cursor: 'pointer' }}
-            >
-              <img src={club.image} alt={`Club Icon`} className={"memberPic"} />
-              <h3>club</h3>
-            </div>
-          ))}
-        </div>
-        <br />
+        <h3>Joined clubs</h3>
+        <ClubsContainer clubs={joinedClubs} max={joinedClubs.length}/>
+
       </div>
     </div>
   );
