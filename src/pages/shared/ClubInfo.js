@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import EventsContainer from "../../components/EventContainer";
 
 function ClubInfo() {
   const { clubId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const userId = JSON.parse(atob(localStorage.getItem("token").split(".")[1])).id //getting user ID from token
   const [club, setClub] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isJoined, setIsJoined] = useState(false);
   const [joinButtonText, setJoinButtonText] = useState("Join Club");
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     const fetchClubData = async () => {
@@ -47,11 +50,10 @@ function ClubInfo() {
   }, [clubId, location.state]);
 
   // Function to check if user has already joined this club
-  const checkIfJoined = (clubId) => {
-    // In a real app, you would check this from your backend
-    // For now, we'll use localStorage to simulate this
-    const joinedClubs = JSON.parse(localStorage.getItem('joinedClubs') || '[]');
-    const alreadyJoined = joinedClubs.includes(clubId);
+  const checkIfJoined = async(clubId) => {
+    const joinedClubs = (await fetch(`http://localhost:3000/api/joined?userid=${userId}`)).json();
+    console.log("Joined clubs are: ",await joinedClubs);
+    const alreadyJoined = ((await joinedClubs).map(club=>club._id)).includes(clubId);
     
     setIsJoined(alreadyJoined);
     setJoinButtonText(alreadyJoined ? "Leave Club" : "Join Club");
@@ -156,6 +158,11 @@ function ClubInfo() {
             </p>
           </div>
 
+          <div style={infoSection}>
+            <h2 style={sectionTitle}>Events</h2>
+            {/*<EventsContainer events={club.events} max={club.events.length} />*/}
+          </div>
+
           <div style={detailsContainer}>
             <div style={detailBox}>
               <h3 style={detailTitle}>Contact</h3>
@@ -165,7 +172,7 @@ function ClubInfo() {
 
           <div style={actionSection}>
             <button 
-              style={{...buttonStyle, backgroundColor: isJoined ? "#ff5722" : "#3b82f6"}}
+              style={{...buttonStyle, backgroundColor: isJoined ? "red" : "#3b82f6", transition:"0.25s"}}
               onClick={handleJoinClub}
             >
               {joinButtonText}

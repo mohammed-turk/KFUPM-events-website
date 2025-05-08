@@ -15,7 +15,7 @@ function UserProfilePage() {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token")
-        const payload = JSON.parse(atob(token.split(".")[1])); // Extract payload
+        const payload = JSON.parse(atob(token.split(".")[1]));
         const userId = payload.id;
         console.log("fetching events...");
         // Fetch events
