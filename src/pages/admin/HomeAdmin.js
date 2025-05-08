@@ -1,10 +1,10 @@
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import HOmePageHeader from "../../components/HomePageHeader";
 import eventPlaceholder from "../../assets/event1.jpg";
 import eventPlaceholder2 from "../../assets/event2.jpg";
-import editIcon from "../../assets/icons/mod.png";
-import React, { useState, useEffect } from "react";
-// Dynamically load club icons
+
+// Load club icons dynamically
 const clubIcons = Array.from({ length: 8 }).map((_, i) =>
   require(`../../assets/icons/Clubs icons/club${(i % 5) + 1}.jpeg`)
 );
@@ -12,33 +12,77 @@ const clubIcons = Array.from({ length: 8 }).map((_, i) =>
 function HomeAdmin() {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
+  const [clubs, setClubs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchEvents = async () => {
+    // Fetch both clubs and events when component mounts
+    const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/events");
-        const data = await res.json();
-        console.log(data);
-        if (Array.isArray(data)) {
-          setEvents(data);
+        setLoading(true);
+        
+        // Fetch events
+        const eventsRes = await fetch("http://localhost:3000/api/events");
+        if (!eventsRes.ok) {
+          throw new Error(`Events API returned ${eventsRes.status}`);
+        }
+        const eventsData = await eventsRes.json();
+        
+        // Fetch clubs
+        const clubsRes = await fetch("http://localhost:3000/api/clubs");
+        if (!clubsRes.ok) {
+          throw new Error(`Clubs API returned ${clubsRes.status}`);
+        }
+        const clubsData = await clubsRes.json();
+        
+        console.log("Fetched events:", eventsData);
+        console.log("Fetched clubs:", clubsData);
+        
+        if (Array.isArray(eventsData)) {
+          setEvents(eventsData);
         } else {
-          console.error("API response is not an array:", data);
+          console.error("Events API response is not an array:", eventsData);
           setEvents([]);
         }
+        
+        if (Array.isArray(clubsData)) {
+          setClubs(clubsData);
+        } else {
+          console.error("Clubs API response is not an array:", clubsData);
+          setClubs([]);
+        }
       } catch (err) {
-        console.error("Failed to fetch events:", err);
+        console.error("Failed to fetch data:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchEvents();
+    fetchData();
   }, []);
 
-  const handleClubClick = (clubId) => {
-    navigate(`/admin/club/${clubId}`);
+  const handleClubClick = (club) => {
+    if (!club || !club._id) {
+      console.error("Attempted to navigate to club with missing ID");
+      return;
+    }
+    
+    navigate(`/admin/club/${club._id}`, {
+      state: {
+        clubData: club
+      }
+    });
   };
 
   const handleEventClick = (eventId) => {
-    navigate(`/admin/event/${eventId}`);
+    // Navigate to event details
+    navigate(`/admin/event/${eventId}`, {
+      state: {
+        eventData: events.find(event => event._id === eventId)
+      }
+    });
   };
 
   const showAll = () => {
@@ -49,17 +93,27 @@ function HomeAdmin() {
     navigate("/admin/eventList");
   };
 
+  function getUserRole() {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("Token not found in localStorage.");
+      return null;
+    }
+
+    try {
+      // Decoding token payload without using a library
+      const payload = JSON.parse(atob(token.split(".")[1])); // Extract payload
+      return payload.role;
+    } catch (err) {
+      console.error("Failed to decode token.", err);
+      return null;
+    }
+  }
+
   return (
-    <div
-      style={{
-        padding: "30px",
-        backgroundColor: "rgb(160, 179, 197)",
-        minHeight: "100vh",
-        fontFamily: "'Segoe UI', sans-serif",
-      }}
-    >
+    <div style={pageContainer}>
       {/* Header */}
-      <HOmePageHeader name="admin" />
+      <HOmePageHeader type={getUserRole()} />
 
       {/* Clubs Section */}
       <section style={sectionBox}>
@@ -69,16 +123,36 @@ function HomeAdmin() {
             Show All
           </button>
         </div>
-        <div style={clubsGrid}>
-          {clubIcons.map((icon, index) => (
-            <button
-              key={index}
-              style={clubItem}
-              onClick={() => handleClubClick(index + 1)}
-            >
-              <img src={icon} alt={`Club ${index + 1}`} style={clubIconStyle} />
-            </button>
-          ))}
+        
+        <div>
+          {loading ? (
+            <p>Loading clubs...</p>
+          ) : error ? (
+            <p>Error loading clubs: {error}</p>
+          ) : clubs.length > 0 ? (
+            <div style={horizontalScrollContainer}>
+              {clubs.map((club, index) => (
+                <button
+                  key={club._id || index}
+                  style={clubItem}
+                  onClick={() => handleClubClick(club)}
+                  title={club.name}
+                >
+                  <img
+                    src={club.iconURL || clubIcons[index % clubIcons.length]}
+                    alt={club.name || `Club ${index + 1}`}
+                    style={clubIcon}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = clubIcons[index % clubIcons.length];
+                    }}
+                  />
+                </button>
+              ))}
+            </div>
+          ) : (
+            <p>No clubs available.</p>
+          )}
         </div>
       </section>
 
@@ -90,62 +164,43 @@ function HomeAdmin() {
             &gt; <span style={{ marginLeft: 6 }}>Show more</span>
           </button>
         </div>
-        <div style={eventsCarousel}>
-          {events.length > 0 && (
-            <>
-              {/* Event 1 */}
-              <button
-                style={eventCard}
-                onClick={() => handleEventClick(events[0]?._id)}
-              >
-                <div style={eventPosterContainer}>
-                  <img
-                    src={events[0]?.posterURL || eventPlaceholder}
-                    alt="Event Poster 1"
-                    style={eventPoster}
-                  />
-                </div>
-                <div style={eventInfo}>
-                  <p style={providerDate}>
-                    {events[0]?.provider || "Provider"}
-                    <br />
-                    {events[0]?.timing?.date || "Date"} {events[0]?.timing?.time || "Time"}
-                  </p>
-                  <button style={editButton}>
-                    <img src={editIcon} alt="Edit" style={editIconImg} />
-                  </button>
-                </div>
-              </button>
 
-              {/* Event 2 */}
-              {events.length > 1 && (
-                <button
-                  style={eventCard}
-                  onClick={() => handleEventClick(events[1]?._id)}
-                >
-                  <div style={eventPosterContainer}>
-                    <img
-                      src={events[1]?.posterURL || eventPlaceholder2}
-                      alt="Event Poster 2"
-                      style={eventPoster}
-                    />
-                  </div>
-                  <div style={eventInfo}>
-                    <p style={providerDate}>
-                      {events[1]?.provider || "Provider"}
-                      <br />
-                      {events[1]?.timing?.date || "Date"} {events[1]?.timing?.time || "Time"}
-                    </p>
-                    <button style={editButton}>
-                      <img src={editIcon} alt="Edit" style={editIconImg} />
+        <div>
+          {loading ? (
+              <p>Loading events...</p>
+          ) : error ? (
+              <p>Error loading events: {error}</p>
+          ) : events.length > 0 ? (
+              <div style={eventsContainer}>
+                {events.slice(0, 4).map((event, index) => (
+                    <button
+                        key={event._id || index}
+                        style={eventCard}
+                        onClick={() => handleEventClick(event._id)}
+                    >
+                      <div style={eventPosterContainer}>
+                        <img
+                            src={event.posterURL || (index % 2 === 0 ? eventPlaceholder : eventPlaceholder2)}
+                            alt={`Event ${index + 1}`}
+                            style={eventPoster}
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = index % 2 === 0 ? eventPlaceholder : eventPlaceholder2;
+                            }}
+                        />
+                      </div>
+                      <div style={eventInfo}>
+                        <p style={providerDate}>
+                          {event.provider}
+                          <br/>
+                          {event.timing}
+                        </p>
+                      </div>
                     </button>
-                  </div>
-                </button>
-              )}
-            </>
-          )}
-          {events.length === 0 && (
-            <p>No events available.</p>
+                ))}
+              </div>
+          ) : (
+              <p>No events available.</p>
           )}
         </div>
       </section>
@@ -157,6 +212,13 @@ export default HomeAdmin;
 
 // === Styles ===
 
+const pageContainer = {
+  padding: "30px",
+  backgroundColor: "rgb(160, 179, 197)",
+  minHeight: "100vh",
+  fontFamily: "'Segoe UI', sans-serif",
+};
+
 const sectionBox = {
   backgroundColor: "rgba(64, 92, 118, 0.76)",
   borderRadius: "16px",
@@ -166,6 +228,7 @@ const sectionBox = {
   maxWidth: "1200px",
   marginInline: "auto",
   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+  position: "relative",
 };
 
 const sectionHeader = {
@@ -193,12 +256,20 @@ const sectionButton = {
   fontSize: "0.9rem",
 };
 
-const clubsGrid = {
+// Horizontal scroll container for clubs
+const horizontalScrollContainer = {
   display: "flex",
-  flexWrap: "wrap",
-  gap: "20px",
-  justifyContent: "flex-start",
-  alignItems: "center",
+  flexWrap: "nowrap",
+  gap: "10px",
+  overflowX: "auto",
+  paddingBottom: "10px",
+  // Hide scrollbar for Chrome, Safari and Opera
+  "&::-webkit-scrollbar": {
+    display: "none"
+  },
+  // Hide scrollbar for IE, Edge and Firefox
+  msOverflowStyle: "none",  // IE and Edge
+  scrollbarWidth: "none",   // Firefox
 };
 
 const clubItem = {
@@ -209,36 +280,48 @@ const clubItem = {
   overflow: "hidden",
   padding: 0,
   border: "2px solid transparent",
-  transition: "border-color 0.3s ease, transform 0.2s ease",
+  transition: "transform 0.2s ease",
   cursor: "pointer",
+  flexShrink: 0,
 };
 
-const clubIconStyle = {
+const clubIcon = {
   width: "100%",
   height: "100%",
   objectFit: "cover",
   display: "block",
 };
 
-const eventsCarousel = {
+// Event styles - horizontal scroll container
+const eventsContainer = {
   display: "flex",
+  flexWrap: "nowrap",
+  gap: "10px",
   overflowX: "auto",
-  gap: "20px",
   paddingBottom: "10px",
+  // Hide scrollbar for Chrome, Safari and Opera
+  "&::-webkit-scrollbar": {
+    display: "none"
+  },
+  // Hide scrollbar for IE, Edge and Firefox
+  msOverflowStyle: "none",  // IE and Edge
+  scrollbarWidth: "none",   // Firefox
 };
 
 const eventCard = {
   backgroundColor: "#f1f5f9",
   borderRadius: "10px",
-  minWidth: "220px",
-  flex: "0 0 auto",
-  boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+  width: "220px",
+  height: "250px",
+  boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
   transition: "transform 0.2s ease",
   cursor: "pointer",
+  overflow: "hidden",
+  flexShrink: 0,
 };
 
 const eventPosterContainer = {
-  height: "180px", 
+  height: "180px",
   borderTopLeftRadius: "10px",
   borderTopRightRadius: "10px",
   overflow: "hidden",
@@ -254,28 +337,15 @@ const eventPoster = {
 const eventInfo = {
   padding: "12px",
   display: "flex",
-  justifyContent: "space-between",
+  justifyContent: "center",
   alignItems: "center",
+  backgroundColor: "white",
+  height: "70px",
 };
 
 const providerDate = {
   fontSize: "0.85rem",
   color: "#475569",
-};
-
-const editButton = {
-  backgroundColor: "#22c55e",
-  border: "none",
-  borderRadius: "50%",
-  width: "28px",
-  height: "28px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  cursor: "pointer",
-};
-
-const editIconImg = {
-  width: "16px",
-  height: "16px",
+  textAlign: "center",
+  margin: 0,
 };

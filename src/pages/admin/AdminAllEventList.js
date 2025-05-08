@@ -5,10 +5,8 @@ import {useNavigate} from "react-router-dom";
 function AdminAllEventList() {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
-  const [events, setEvents] = useState([
-  ]);
+  const [events, setEvents] = useState([]);
 
-  
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -29,21 +27,17 @@ function AdminAllEventList() {
     fetchEvents();
   }, []);
 
-
-
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
-
-  const handleDeleteEvent = (id) => {
-    // Function to delete an event
-    setEvents(events.filter(event => event.id !== id));
+  const handleEventClick = (eventId) => {
+    navigate(`/admin/event/${eventId}`);
   };
 
   const filteredEvents = events.filter(event => 
-    event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    event.provider.toLowerCase().includes(searchTerm.toLowerCase())
+    (event.title?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+    (event.provider?.toLowerCase() || "").includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -105,38 +99,18 @@ function AdminAllEventList() {
           padding: "20px"
         }}>
           {filteredEvents.map(event => (
-            <div key={event.id} style={{
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              overflow: "hidden",
-              width: "300px",
-              backgroundColor: "#f0f8ff",
-              position: "relative" // Added for absolute positioning of X button
-            }}>
-              {/* X Button for Delete */}
-              <button 
-                onClick={() => handleDeleteEvent(event.id)}
-                style={{
-                  position: "absolute",
-                  top: "8px",
-                  right: "8px",
-                  backgroundColor: "#ff4d4d",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "50%",
-                  width: "30px",
-                  height: "30px",
-                  fontSize: "16px",
-                  cursor: "pointer",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  zIndex: "1"
-                }}
-              >
-                ×
-              </button>
-
+            <div 
+              key={event._id} 
+              style={{
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                overflow: "hidden",
+                width: "300px",
+                backgroundColor: "#f0f8ff",
+                cursor: "pointer"
+              }}
+              onClick={() => handleEventClick(event._id)}
+            >
               <div style={{
                 height: "200px",
                 backgroundColor: "#2d5ba9",
@@ -162,25 +136,11 @@ function AdminAllEventList() {
               <div style={{
                 backgroundColor: "#4286f4",
                 padding: "10px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center"
+                textAlign: "center", // Center the text content
+                color: "white"
               }}>
-                <div style={{color: "white"}}>
-                  <p>{event.provider}</p>
-                  <p>{event.date}</p>
-                </div>
-                <button style={{
-                  backgroundColor: "#4CAF50",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "50%",
-                  width: "30px",
-                  height: "30px",
-                  cursor: "pointer"
-                }}>
-                  ✏️
-                </button>
+                <p>{event.provider || "Provider"}</p>
+                <p>{event.timing ? event.timing.split('|')[0].replace('date:', '').trim() : "Date not specified"}</p>
               </div>
             </div>
           ))}

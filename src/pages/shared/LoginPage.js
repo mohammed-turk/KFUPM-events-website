@@ -10,20 +10,22 @@ function LoginPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const savedUsername = localStorage.getItem("username");
-    const savedPassword = localStorage.getItem("password");
-    if (savedUsername) {
-      setUsername(savedUsername);
-    }
-    if (savedPassword) {
-      setPassword(savedPassword);
-    }
+    setUsername("");
+    setPassword("");
   }, []); // Empty dependency array means this runs only once on mount
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
+      // const savedUsername = localStorage.getItem("username");
+      // const savedPassword = localStorage.getItem("password");
+      // if (savedUsername) {
+      //   setUsername(savedUsername);
+      // }
+      // if (savedPassword) {
+      //   setPassword(savedPassword);
+      // }
       const res = await fetch("http://localhost:3000/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -50,6 +52,9 @@ function LoginPage() {
     } catch (err) {
       console.error(err);
       setError("Login failed");
+    } finally {
+      setUsername("");
+      setPassword("");
     }
   };
 

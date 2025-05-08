@@ -27,6 +27,12 @@ import AddEventPage from "./pages/shared/AddEventPage";
 import ClubInfo from "./pages/shared/ClubInfo";
 import EventInfo from "./pages/shared/EventInfo";
 
+import AdminEventInfo from "./pages/admin/AdminEventInfo";
+import EditEventPage from "./pages/admin/EditEventPage";
+// Add EditClub component import
+import EditClub from "./pages/admin/EditClub";
+// Add DeleteTest component import
+import DeleteTest from "./pages/admin/DeleteTest";
 
 import React, { useEffect } from "react";
 
@@ -40,13 +46,20 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
 
           <Route path="/admin/home" element={<HomeAdmin />} />
-          <Route path="/admin/club" element={<AdminClubPage />} />
+          {/* Updated route path to use ID parameter */}
+          <Route path="/admin/club/:id" element={<AdminClubPage />} />
           <Route path="/admin/prof" element={<AdminProfilePage />} />
           <Route path="/admin/clubsList" element={<AdminClubsList />} />
           <Route path="/admin/clubsList/addOrg" element={<AddOrgPage />} />
+          {/* This is the edit route for clubs */}
+          <Route path="/admin/club/edit/:id" element={<EditClub />} />
           <Route path="/admin/event" element={<EventAdmin />} />
           <Route path="/admin/eventList" element={<AdminAllEventList />} />
           <Route path="/admin/eventList/addEvent" element={<AddEventPage />} />
+          <Route path="/admin/event/:eventId" element={<AdminEventInfo />} />
+          <Route path="/admin/eventList/edit/:eventId" element={<EditEventPage />} />
+          {/* Test route for deletion troubleshooting */}
+          <Route path="/admin/delete-test" element={<DeleteTest />} />
 
           <Route path="/user/home" element={<HomeUser />} />
           <Route path="/user/prof" element={<UserProfilePage />} />

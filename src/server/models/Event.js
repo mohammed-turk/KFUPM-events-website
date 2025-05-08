@@ -5,11 +5,7 @@ const eventSchema = new mongoose.Schema({
     posterURL: { type: String, required: true },
     info:{type:String, required:false},
     location:{type:String, required:false},
-    provider: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Club',
-        required: true
-    },
+    provider: {type: String, required:true},
 }, {collection: 'Event'});
 
 
