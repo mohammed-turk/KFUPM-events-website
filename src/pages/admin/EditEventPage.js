@@ -14,6 +14,8 @@ function EditEventPage() {
   const [posterURL, setPosterURL] = useState('');
   const [location, setLocation] = useState('');
   const [info, setInfo] = useState('');
+const [userType, setUserType] = useState();
+
   // Form state
   const [formData, setFormData] = useState({
     title: "",
@@ -29,6 +31,14 @@ function EditEventPage() {
       try {
         setLoading(true);
         const response = await fetch(`http://localhost:3000/api/events/${eventId}`);
+
+        const usersList = await fetch("http://localhost:3000/api/users");
+        const userData = await usersList.json();
+        console.log("Fetched users data:", userData);
+        
+        
+        const user = userData.find((user) => user.username === localStorage.getItem("username"));
+        setUserType(user.usertype);
         
         if (!response.ok) {
           throw new Error(`Server returned ${response.status}: ${response.statusText}`);
@@ -112,11 +122,27 @@ function EditEventPage() {
   const handleCancel = () => {
     navigate(`/admin/event/${eventId}`);
   };
+  const handleGoBack = () => {
+    
+    navigate("/admin/eventList");
+   if (userType === 1) {
+    navigate("/org/home");
+  }
+  
+}
+
+const headerType = () => {
+  
+  if (userType === 1)
+    return "Organization Mode";
+
+  return "Admin Mode"
+}
 
   if (loading && !formData.title) {
     return (
       <div>
-        <Header type="Admin Mode" />
+        <Header type={headerType()} />
         <div className="pageBody">
           <h1>Loading event data...</h1>
         </div>

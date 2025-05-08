@@ -200,9 +200,7 @@ function HomeOrg() {
                   {event.provider || "Provider"}
                   
                 </p>
-                <button style={editButton}>
-                  <img src={editIcon} alt="Edit" style={editIconImg} />
-                </button>
+                
               </div>
             </button>
           ))
