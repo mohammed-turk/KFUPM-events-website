@@ -5,6 +5,7 @@ const clubRoutes = require("./routes/clubRoutes");
 const eventsRoutes = require("./routes/eventsRoutes");
 const favEventsRoutes = require("./routes/favRoutes");
 const joinedRoutes = require("./routes/joinedRoutes");
+const clubEventsRoutes = require("./routes/clubEventsRoutes");
 
 const cors = require("cors");
 
@@ -28,7 +29,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/clubs", clubRoutes);
 app.use("/api/events", eventsRoutes);
 app.use("/api/fav", favEventsRoutes);
-app.use("/api/joined", joinedRoutes)
+app.use("/api/joined", joinedRoutes);
+app.use("/api/clubEvents", clubEventsRoutes);
 
 // Test route
 app.get("/", (req, res) => {
