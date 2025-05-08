@@ -220,7 +220,7 @@ function ClubsListAdmin() {
         )}
       </div>
 
-      {/* Add CSS to show this is clickable */}
+      
       <style jsx>{`
         .admin-card:hover {
           transform: translateY(-5px);
