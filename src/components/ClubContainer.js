@@ -1,6 +1,9 @@
 import React from "react";
+import {useNavigate} from "react-router-dom";
 
-const ClubsContainer = ({ clubs, handleClick, max}) => {
+const ClubsContainer = ({ clubs, max}) => {
+    const navigate = useNavigate();
+
     const horizontalScrollContainer = {
         display: "flex",
         flexWrap: "nowrap",
@@ -31,6 +34,18 @@ const ClubsContainer = ({ clubs, handleClick, max}) => {
         display: "block",
     };
 
+    function handleClick(club){
+        if (!club || !club._id) {
+            console.error("Attempted to navigate to club with missing ID");
+            return;
+        }
+
+        navigate(`/club/${club._id}`, {
+            state: {
+                clubData: club
+            }
+        });
+    };
 
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {

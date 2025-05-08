@@ -58,28 +58,6 @@ function HomeUser() {
     fetchData();
   }, []);
 
-  const handleClubClick = (club) => {
-    if (!club || !club._id) {
-      console.error("Attempted to navigate to club with missing ID");
-      return;
-    }
-    
-    navigate(`/club/${club._id}`, {
-      state: {
-        clubData: club
-      }
-    });
-  };
-
-  const handleEventClick = (eventId) => {
-    // Navigate to event details
-    navigate(`/event/${eventId}`, {
-      state: {
-        eventData: events.find(event => event._id === eventId)
-      }
-    });
-  };
-
   const showAll = () => {
     navigate("/ClubsList");
   };
@@ -125,7 +103,7 @@ function HomeUser() {
           ) : error ? (
             <p>Error loading clubs: {error}</p>
           ) : clubs.length > 0 ? (
-            <ClubsContainer clubs={clubs} handleClick={handleClubClick} max={8}/>
+            <ClubsContainer clubs={clubs} max={8}/>
           ) : (
             <p>No clubs available.</p>
           )}
@@ -147,7 +125,7 @@ function HomeUser() {
           ) : error ? (
             <p>Error loading events: {error}</p>
           ) : events.length > 0 ? (
-            <EventContainer events={events} handleEventClick={handleEventClick} max={4}/>
+            <EventContainer events={events} max={4}/>
           ) : (
             <p>No events available.</p>
           )}
