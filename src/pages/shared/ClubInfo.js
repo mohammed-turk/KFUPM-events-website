@@ -19,7 +19,6 @@ function ClubInfo() {
       try {
         setLoading(true);
         
-        // First check if club data was passed via location state
         if (location.state?.clubData) {
           setClub(location.state.clubData);
           checkIfJoined(location.state.clubData._id);
@@ -27,16 +26,25 @@ function ClubInfo() {
           return;
         }
         
-        // Otherwise fetch from API
         const response = await fetch(`http://localhost:3000/api/clubs/${clubId}`);
+        const data = await response.json();
+        console.log("Fetched club data:", data);
+        setClub(data);
+
+        //getting the events
+        const eventsList = (await fetch(`http://localhost:3000/api/clubEvents/${data.name}`)).json();
+        if (Array.isArray(await eventsList)) {
+          setEvents(await eventsList);
+        } else {
+          console.error("Events API response is not an array:", await eventsList);
+          setEvents([]);
+        }
         
         if (!response.ok) {
           throw new Error(`Server returned ${response.status}: ${response.statusText}`);
         }
         
-        const data = await response.json();
-        console.log("Fetched club data:", data);
-        setClub(data);
+
         checkIfJoined(data._id);
       } catch (err) {
         console.error("Error loading club:", err);
@@ -160,7 +168,7 @@ function ClubInfo() {
 
           <div style={infoSection}>
             <h2 style={sectionTitle}>Events</h2>
-            {/*<EventsContainer events={club.events} max={club.events.length} />*/}
+            <EventsContainer events={events} max={events.length} />
           </div>
 
           <div style={detailsContainer}>

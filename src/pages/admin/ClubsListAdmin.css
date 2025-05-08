@@ -76,6 +76,7 @@
   flex-wrap: wrap;
   gap: 25px;
   justify-content: center;
+  transition: 0.25s;
 }
 
 /* Club Card */

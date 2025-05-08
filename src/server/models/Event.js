@@ -17,6 +17,10 @@ eventSchema.statics.getEventById = async function (eventId) {
     return await this.findById(eventId);
 };
 
+eventSchema.statics.getEventByClub = async function (club) {
+    return await this.find({provider: club});
+};
+
 eventSchema.statics.getEventDate = async function (eventId) {
     const event = await this.findById(eventId, 'date');
     return event ? event.date : null;
