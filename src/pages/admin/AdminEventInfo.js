@@ -15,14 +15,14 @@ function AdminEventInfo() {
       try {
         setLoading(true);
         
-        // First check if event data was passed via location state
+       
         if (location.state?.eventData) {
           setEvent(location.state.eventData);
           setLoading(false);
           return;
         }
         
-        // Otherwise fetch from API
+        
         const response = await fetch(`http://localhost:3000/api/events/${eventId}`);
         
         const usersList = await fetch("http://localhost:3000/api/users");
