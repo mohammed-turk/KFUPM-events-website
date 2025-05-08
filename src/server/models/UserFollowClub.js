@@ -1,18 +1,21 @@
 const mongoose = require('mongoose');
 
 const userFollowClubSchema = new mongoose.Schema({
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
-    club: {
+    clubId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Club',
         required: true
     },
 }, {collection: 'UserFollowClub'});
 
+userFollowClubSchema.statics.getAll = async function(){
+    return await this.find();
+}
 
 userFollowClubSchema.statics.getUsersByClubId = async function (clubId) {
     const users = await this.find({ club: clubId }).populate('user');

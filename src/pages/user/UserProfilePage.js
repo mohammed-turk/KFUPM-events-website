@@ -60,7 +60,7 @@ function UserProfilePage() {
     <div>
       <Header />
       <div className="pageBody">
-          <h1 style={{margin:"75px 70px", letterSpacing:"5px"}}>{username}</h1>
+          <h1 style={{margin:"75px 70px", letterSpacing:"5px", textDecoration:"underline"}}>{username}</h1>
 
 
         {/* Favorite Events Section */}
