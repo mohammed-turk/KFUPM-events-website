@@ -208,15 +208,25 @@ REACT_APP_FIREBASE_KEY=your-firebase-key
 ## 📸 Screenshots
 
 > - Login and Signup
-> - ![login](https://github.com/user-attachments/assets/e420bcb7-554a-4c58-b93d-207cbbff0c82)
-
-![image](https://github.com/user-attachments/assets/b92703f6-97c0-4581-b6f2-fef4031fbf0c)
-![image](https://github.com/user-attachments/assets/c4c783e2-ab42-4412-b30d-dc5de6a97d62)
-![image](https://github.com/user-attachments/assets/45c6f435-7e94-45a1-96c9-dd32e87b8c30)
+![{69400793-E69E-478C-AB31-3E342F47022D}](https://github.com/user-attachments/assets/70c17695-e0a5-4b14-b949-68923ee61004)
+![{261DC089-62E6-4B60-9B22-BF92DBE7BB12}](https://github.com/user-attachments/assets/20405d98-be31-47fc-bb32-8bd032fa1950)
 
 
-> - Mobile Responsiveness
-> - ![phonelogin](https://github.com/user-attachments/assets/4fdaa8b0-7611-4402-b1f8-f5ed1bb56021)
+> - **difrent users home pages:**
+> - Admin:
+![{71F250A8-98AA-4652-90B2-1B76D8748DAF}](https://github.com/user-attachments/assets/3aa3eecf-438c-4c60-a13f-d8b8fdc3639e)
+> - organizer:
+![{2D93FD29-D67F-4AD1-803F-00BC7B23A241}](https://github.com/user-attachments/assets/b1fcd3ad-3ad7-4020-b28c-47b741c77861)
+> - user:
+![{3A72BEFF-2D13-49B8-AB45-9FB256B76960}](https://github.com/user-attachments/assets/253ce579-fc5e-4e04-b38b-33587bf1e6b5)
+
+
+
+
+> - **Mobile Responsiveness:**
+
+>   ![{4A55D162-A7FF-4E8E-A7F5-73F65F875E75}](https://github.com/user-attachments/assets/26c44833-c7a4-4be3-a83d-30628694361a)
+
 
 ---
 
