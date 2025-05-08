@@ -42,7 +42,7 @@ function OrgAllEventList() {
   };
 
   const handleAddEvent = () => {
-    // Function to add a new event (you might want to pre-fill the provider here)
+   
     const newEvent = {
       id: events.length + 1,
       title: 'New Event',
