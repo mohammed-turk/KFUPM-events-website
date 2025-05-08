@@ -30,10 +30,10 @@ function AddOrgPage() {
         try {
             // 1. Upload to Cloudinary
             const uploadData = new FormData();
-            uploadData.append('file', icon); // Use the state directly
+            uploadData.append('file', icon); 
             uploadData.append('upload_preset', 'club_icons');
 
-            console.log('Uploading file:', icon.name); // Verify file
+            console.log('Uploading file:', icon.name); 
 
             const cloudinaryResponse = await fetch(
                 'https://api.cloudinary.com/v1_1/dxvl17oal/image/upload',
@@ -52,10 +52,10 @@ function AddOrgPage() {
                 name,
                 email,
                 password,
-                icon: cloudinaryResult.secure_url // Change this to match backend expectation
+                icon: cloudinaryResult.secure_url 
             };
 
-            console.log("Final payload:", backendPayload); // Verify before sending
+            console.log("Final payload:", backendPayload); 
 
             const response = await fetch('http://localhost:3000/api/clubs/admin/addOrg', {
                 method: 'POST',
