@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ReturnHeader from "../../components/ReturnHeader";
 import "./ClubList.css"; // Make sure this line is here to load styles
+import { useNavigate } from "react-router-dom";
+
 
 function ClubsList() {
   const [clubs, setClubs] = useState([]);
@@ -19,6 +21,13 @@ function ClubsList() {
     fetchClubs();
   }, []);
 
+  const navigate = useNavigate();
+
+  const handleEventClick = (clubid) => {
+    navigate(`/club/${clubid}`, {
+    });
+  };
+
   return (
     <div>
       <ReturnHeader />
@@ -28,6 +37,7 @@ function ClubsList() {
 
         <div className="club-grid">
           {clubs.map((club, index) => (
+            <button style={{backgroundColor:"transparent",  border: "none", outline: "none"}} onClick={() => handleEventClick(club._id)}>
             <div key={index} className="club-card">
               <div className="club-img-wrapper">
                 <img
@@ -42,6 +52,7 @@ function ClubsList() {
               </div>
               <p className="club-name">{club.name}</p>
             </div>
+            </button>
           ))}
         </div>
       </div>

@@ -157,7 +157,7 @@ useEffect(()=>{
             <button
               key={index}
               style={clubItem}
-              onClick={() => handleClubClick(club.id)}
+              onClick={() => handleClubClick(club._id)}
               title={club.name}
             >
               <img
