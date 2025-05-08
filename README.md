@@ -11,9 +11,9 @@ KFUPM hosts many events across colleges, clubs, and departments, including semin
 ## 🎯 Key Features
 
 - 👥 Multiple User Roles: User, Event Organizer, Admin  
-- 📝 Event Creation & Registration  
-- 🗂️ Event Categorization by Type  
-- 📱 Responsive Design for Desktop and Mobile  
+- 📝 Event Creation & favoration  
+- 🗂️ clubs joining and viewing 
+- 📱 Responsive Design for Desktop and Mobile
 
 ---
 
@@ -32,6 +32,7 @@ https://www.figma.com/design/1GilhMtuSwCYXVcQJ3G0GC/Events-Website?node-id=0-1&t
 - **Routing:** React Router  
 - **Version Control:** Git & GitHub  
 - **Design:** Figma
+- **Backend:** mongoDB and node.js
 
 ---
 
@@ -39,71 +40,113 @@ https://www.figma.com/design/1GilhMtuSwCYXVcQJ3G0GC/Events-Website?node-id=0-1&t
 
 ```bash
 kfupm-events-website/
-├── .idea/                         # IDE settings (optional)
-├── .vscode/                       # VS Code settings (optional)
-├── public/                        # Static assets and index.html
-│   ├── admin.jpg
-│   ├── club.jpg
-│   ├── event1.jpg
-│   ├── event2.jpg
-│   ├── member1.jpg
-│   ├── member2.jpg
-│   └── ...
-│
-├── src/
-│   ├── admin/                     # Admin pages
-│   │   ├── AdminAllEventList.js
-│   │   ├── AdminClubPage.js
-│   │   ├── AdminClubsList.js
-│   │   ├── AdminProfilePage.js
-│   │   ├── ClubListAdmin.js
-│   │   └── HomeAdmin.js
-│
-│   ├── assets/                    # Images, icons
-│   │   ├── BackBtn.png
-│   │   ├── add.png
-│   │   ├── delete.png
-│   │   ├── fav.png
-│   │   └── mod.png
-│
-│   ├── components/               # Reusable components
-│   │   ├── Event&Mod.js
-│   │   ├── Header.js
-│   │   ├── HomePageHeader.js
-│   │   ├── Member.js
-│   │   └── ReturnHeader.js
-│
-│   ├── org/                      # Organizer pages
-│   │   ├── AddOrgPage.js
-│   │   ├── HomeOrg.js
-│   │   └── OrgProfilePage.js
-│
-│   ├── pages/                    # Shared pages
-│   │   ├── LoginPage.js
-│   │   ├── SignUpPage.js
-│   │   └── EventsCalendar.js
-│
-│   ├── shared/                   # Shared utilities or layout
-│
-│   ├── user/                     # user pages
-│   │   ├── ClubPage.js
-│   │   ├── UserAllEventList.js
-│   │   ├── UserHomePage.js
-│   │   └── UserProfilePage.js
-│
-│   ├── App.js                    # Root app file with routes
-│   ├── App.css
-│   ├── index.js                  # Entry point
-│   ├── index.css
-│   ├── reportWebVitals.js
-│   └── setupTests.js
-│
-├── .env.example                  # Sample environment file
-├── .gitignore                    # Ignore sensitive/system files
-├── README.md                     # This file 😄
-├── package.json                  # Project dependencies
-├── package-lock.json
-└── ClubsList.js                  # Club component for users/admins
+Okay, I understand what you're looking for! You want a representation of the full folder structure we've explored, presented in a tree-like format with annotations, similar to the image you just showed.
+
+Here's the structure based on the images you've provided:
+
+KFUPM-events-website/
+├── node_modules/
+├── university-events/
+│   ├── .idea/                     # IDE settings (optional)
+│   ├── .vscode/                   # VS Code settings (optional)
+│   ├── build/
+│   ├── public/                    # Static assets and index.html
+│   │   ├── admin.jpg
+│   │   ├── club.jpg
+│   │   ├── event1.jpg
+│   │   ├── event2.jpg
+│   │   ├── member1.jpg
+│   │   ├── member2.jpg
+│   │   └── ...
+│   ├── src/                       # Main source code
+│   │   ├── assets/
+│   │   ├── components/              # Reusable UI components
+│   │   │   ├── ClubContainer.js
+│   │   │   ├── Event&ModContainer.js
+│   │   │   ├── EventContainer.js
+│   │   │   ├── EventsCalendar.css
+│   │   │   ├── EventsCalendar.js
+│   │   │   ├── Header.js
+│   │   │   ├── HomePageHeader.js
+│   │   │   ├── Member.js
+│   │   │   └── ReturnHeader.js
+│   │   ├── pages/                 # Application views/screens
+│   │   │   ├── admin/               # Admin pages
+│   │   │   │   ├── AddOrgPageList.js
+│   │   │   │   ├── AdminAllEventList.js
+│   │   │   │   ├── AdminClubPage.js
+│   │   │   │   ├── AdminClubsList.js
+│   │   │   │   ├── AdminEventInfo.js
+│   │   │   │   ├── AdminProfilePage.js
+│   │   │   │   ├── EditClub.css
+│   │   │   │   ├── EditClub.js
+│   │   │   │   ├── EditEventPage.js
+│   │   │   │   ├── HomeAdmin.css
+│   │   │   │   └── HomeAdmin.js
+│   │   │   ├── org/                 # Organization pages
+│   │   │   │   ├── ClubPage.css
+│   │   │   │   ├── ClubPage.js
+│   │   │   │   ├── HomeOrg.css
+│   │   │   │   ├── HomeOrg.js
+│   │   │   │   ├── MembersList.js
+│   │   │   │   ├── OrgAllEventList.js
+│   │   │   │   └── OrgProfilePage.js
+│   │   │   ├── shared/              # Reusable page components
+│   │   │   │   ├── AddEventPage.js
+│   │   │   │   ├── ClubInfo.js
+│   │   │   │   ├── ClubList.css
+│   │   │   │   ├── ClubList.js
+│   │   │   │   ├── EventInfo.js
+│   │   │   │   ├── EventList.css
+│   │   │   │   ├── EventList.js
+│   │   │   │   ├── LoginPage.css
+│   │   │   │   └── LoginPage.js
+│   │   │   ├── user/                # User pages
+│   │   │   │   ├── SignUpPage.js
+│   │   │   │   ├── UserAllEventList.js
+│   │   │   │   ├── UserEventPage.js
+│   │   │   │   ├── UserHomePage.css
+│   │   │   │   ├── UserHomePage.js
+│   │   │   │   └── UserProfilePage.js
+│   │   ├── server/                # Backend logic
+│   │   │   ├── controllers/         # Request handlers
+│   │   │   │   ├── clubController.js
+│   │   │   │   ├── eventController.js
+│   │   │   │   ├── favController.js
+│   │   │   │   ├── joinedController.js
+│   │   │   │   └── userController.js
+│   │   │   ├── models/              # Data models/schemas
+│   │   │   │   ├── Club.js
+│   │   │   │   ├── Event.js
+│   │   │   │   ├── User.js
+│   │   │   │   ├── UserFavEvent.js
+│   │   │   │   └── UserFollowClub.js
+│   │   │   └── routes/              # API endpoints
+│   │   │       ├── clubEventsRoutes.js
+│   │   │       ├── clubRoutes.js
+│   │   │       ├── eventRoutes.js
+│   │   │       ├── eventsRoutes.js
+│   │   │       ├── favRoutes.js
+│   │   │       ├── joinedRoutes.js
+│   │   │       └── userRoutes.js
+│   │   ├── utils/
+│   │   ├── .env
+│   │   ├── package-lock.json
+│   │   ├── package.json
+│   │   ├── server.js                # Backend entry point
+│   │   ├── App.css
+│   │   ├── App.js                   # Root frontend component
+│   │   ├── App.test.js
+│   │   ├── index.css
+│   │   ├── index.js                 # Frontend entry point
+│   │   ├── reportWebVitals.js
+│   │   └── setupTests.js
+│   ├── .gitignore
+│   ├── config-overrides.js
+│   ├── package-lock.json
+│   ├── package.json
+│   └── README.md
+└── node_modules/
 ```
 
 ---
@@ -117,17 +160,23 @@ cd KFUPM-events-website
 git checkout Aljubaili
 ```
 
-2. **Install dependencies**
+**FrontEnd setup:** Install dependencies and running the react app
 ```bash
-npm install
+npm install xxxx (all required packeges)
 ```
-
-3. **Start the development server**
+**Start the react app**
 ```bash
 npm start
 ```
 
 > App will be running at `http://localhost:3000`
+
+**Backend setup:**
+  1. navigate to the server folder by: cd src, then cd server 
+  2. run this command: npm init -y
+  3. run this command: node server.js
+
+
 
 ---
 
@@ -136,7 +185,7 @@ npm start
 Create a `.env` file based on this template:
 
 ```env
-REACT_APP_API_URL=http://localhost:5000/api
+REACT_APP_API_URL=http://localhost:3000/api
 REACT_APP_FIREBASE_KEY=your-firebase-key
 ```
 
