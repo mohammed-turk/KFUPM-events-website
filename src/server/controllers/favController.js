@@ -1,5 +1,5 @@
 const FavEvent = require('../models/UserFavEvent');
-const FavClub = require('../models/UserFavClub');
+const FavClub = require('../models/UserFollowClub');
 
 async function getFavClubs(userId) {
     try {

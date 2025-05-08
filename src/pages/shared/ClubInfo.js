@@ -33,10 +33,10 @@ function ClubInfo() {
 
         //getting the events
         const eventsList = (await fetch(`http://localhost:3000/api/clubEvents/${data.name}`)).json();
-        if (Array.isArray(eventsList)) {
-          setEvents(eventsList);
+        if (Array.isArray(await eventsList)) {
+          setEvents(await eventsList);
         } else {
-          console.error("Events API response is not an array:", favEvents);
+          console.error("Events API response is not an array:", await eventsList);
           setEvents([]);
         }
         

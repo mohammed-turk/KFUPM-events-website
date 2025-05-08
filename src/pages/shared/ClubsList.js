@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function ClubsList() {
   const [clubs, setClubs] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchClubs = async () => {
@@ -20,8 +21,6 @@ function ClubsList() {
 
     fetchClubs();
   }, []);
-
-  const navigate = useNavigate();
 
   const handleEventClick = (clubid) => {
     navigate(`/club/${clubid}`, {

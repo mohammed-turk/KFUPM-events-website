@@ -76,32 +76,39 @@ const EventsContainer = ({ events, max}) => {
 
     return (
         <div style={eventsContainer}>
-            {shuffle(events).slice(0, max).map((event, index) => (
-                <button
-                    key={event._id || index}
-                    style={eventCard}
-                    onClick={() => handleClick(event._id)}
-                >
-                    <div style={eventPosterContainer}>
-                        <img
-                            src={event.posterURL}
-                            alt={`Event ${index + 1}`}
-                            style={eventPoster}
-                            onError={(e) => {
-                                e.target.onerror = null;
-                            }}
-                        />
-                    </div>
-                    <div style={eventInfo}>
-                        <p style={providerDate}>
-                            {event.provider}
-                            <br />
-                            {event.timing}
-                        </p>
-                    </div>
-                </button>
-            ))}
+            {events.length > 0 ? (
+                shuffle(events).slice(0, max).map((event, index) => (
+                    <button
+                        key={event._id || index}
+                        style={eventCard}
+                        onClick={() => handleClick(event._id)}
+                    >
+                        <div style={eventPosterContainer}>
+                            <img
+                                src={event.posterURL}
+                                alt={`Event ${index + 1}`}
+                                style={eventPoster}
+                                onError={(e) => {
+                                    e.target.onerror = null;
+                                }}
+                            />
+                        </div>
+                        <div style={eventInfo}>
+                            <p style={providerDate}>
+                                {event.provider}
+                                <br />
+                                {event.timing}
+                            </p>
+                        </div>
+                    </button>
+                ))
+            ) : (
+                <p><em>
+                    No events available for this club.
+                </em></p>
+            )}
         </div>
+
     );
 };
 
